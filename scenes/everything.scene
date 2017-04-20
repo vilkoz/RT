@@ -1,0 +1,11 @@
+c 300 600 0 -3 -10 0
+l 600 1000 300
+# o center: x y z dir: x y z alpha height color
+o 200 0 300 14 0 -11 30 10000 0xffff00
+# p center: x y z dir: x y z color
+p 0 0 0 1 0 0 0xff00ff
+p 0 -500 0 0 1 0 0x50ac
+# s center: x y z radius color
+s 100 0 0 200 0xff0000
+# y center: x y z dir: x y z radius height
+y 0 25 -350 25 -3 30 100 100000
