@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 16:11:37 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/24 23:48:27 by tor              ###   ########.fr       */
+/*   Updated: 2017/04/20 19:28:28 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,6 +182,7 @@ typedef struct		s_plane
 	t_p3d			p;
 	t_v3d			norm;
 	int				color;
+	void			*tex;
 }					t_plane;
 
 /*
