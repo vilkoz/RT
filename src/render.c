@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/15 17:36:47 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/21 21:02:11 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/21 21:47:11 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,12 +101,45 @@ int			find_nearest(t_scene *s, t_v3d dir, t_p3d *inter_p, t_o3d **obj1)
 		return (TRUE);
 }
 
+t_p2d		new_p2d(double x, double y)
+{
+	t_p2d	p;
+
+	p.x = x;
+	p.y = y;
+	return (p);
+}
+
+int			anti_alias(t_p2d p, t_scene *s)
+{
+	t_p3d	p2;
+	t_p2d	p3;
+	int		res;
+	t_p3d	inter_p;
+	t_o3d	*obj;
+
+	p2 = new_p3d(-2, -2, 0);
+	res = 0;
+	while (++p2.x < 2)
+	{
+		p2.y = -2;
+		while (++p2.y < 2)
+		{
+			p3 = new_p2d(p.x + p2.x / 1300, p.y + p2.y / 700);
+			if (find_nearest(s, pix_vector(p3, s), &inter_p, &obj))
+				res = mix_colors(res, get_light_color(s, obj, inter_p,
+					obj->get_color(obj, inter_p)));
+		}
+	}
+	return (res);
+}
+
 void		find_intersect(t_e *e, t_scene *s)
 {
 	t_p2d		p;
 	t_p2d		p1;
-	t_p3d		inter_p;
-	t_o3d		*obj;
+	// t_p3d		inter_p;
+	// t_o3d		*obj;
 
 	p1.y = -1;
 	while (++p1.y < e->h)
@@ -116,11 +149,12 @@ void		find_intersect(t_e *e, t_scene *s)
 		{
 			p.x = ((p1.x - e->w / 2.0) / e->w) * ASP;
 			p.y = (p1.y - e->h / 2.0) / e->h;
-			if (find_nearest(s, pix_vector(p, s), &inter_p, &obj))
-				ft_img_px_put(e, p1.x, p1.y, get_light_color(s,
-					obj, inter_p, obj->get_color(obj, inter_p)));
-			if (e->v_x == p1.x && e->v_y == p1.y)
-				printf("inter_p = %f %f %f\n", inter_p.x, inter_p.y, inter_p.z);
+			// if (find_nearest(s, pix_vector(p, s), &inter_p, &obj))
+				// ft_img_px_put(e, p1.x, p1.y, get_light_color(s,
+				// 	obj, inter_p, obj->get_color(obj, inter_p)));
+			ft_img_px_put(e, p1.x, p1.y, anti_alias(p, s));
+			// if (e->v_x == p1.x && e->v_y == p1.y)
+			// 	printf("inter_p = %f %f %f\n", inter_p.x, inter_p.y, inter_p.z);
 		}
 	}
 }
