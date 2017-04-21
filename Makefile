@@ -6,7 +6,7 @@
 #    By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/23 14:08:11 by vrybalko          #+#    #+#              #
-#    Updated: 2017/04/21 20:45:11 by vrybalko         ###   ########.fr        #
+#    Updated: 2017/04/22 01:28:10 by tor              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ VPATH = src:includes
 
 BIN_DIR = bin/
 
-FLAGS = -Wall -Wextra -Werror -I$(IDIR) -g
+FLAGS = -Wall -Wextra -Werror -I$(IDIR) -g -pthread
 
 FLAGS_MLX = -lmlx -framework OpenGl -framework AppKit
 
@@ -49,7 +49,7 @@ all: $(NAME)
 
 $(NAME): $(BINS)
 	make -C libft/
-	gcc -o $(NAME) $(BINS) $(FLAGS) $(FLAGS_MLX) $(LIB)
+	gcc -o $(NAME) $(BINS) $(FLAGS) $(FLAGS_X11) $(LIB)
 
 $(BIN_DIR)%.o: %.c
 	gcc $(FLAGS) -c -o $@ $<

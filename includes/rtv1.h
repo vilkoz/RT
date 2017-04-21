@@ -24,6 +24,8 @@
 # define COSA2 (sp->cos_a) * (sp->cos_a)
 # define SINA2 (sp->sin_a) * (sp->sin_a)
 # define ASP ((double)((double)e->w / (double)e->h))
+# define SAMPLES 1
+# define THREADS 8
 
 # include "../libft/libft.h"
 # include "mlx.h"
@@ -31,6 +33,7 @@
 # include <stdio.h>
 # include <fcntl.h>
 # include <time.h>
+# include <pthread.h>
 
 /*
 ** struct for key events
@@ -169,6 +172,14 @@ typedef struct		s_e
 	t_scene			*s;
 }					t_e;
 
+typedef struct		s_thread
+{
+	pthread_t		id;
+	t_e				*e;
+	t_p2d			start;
+	t_p2d			end;
+}					t_thread;
+
 /*
 ** OBJECTS:
 ** sphere
@@ -274,7 +285,11 @@ t_v3d				pix_vector(t_p2d p, t_scene *s);
 ** color.c
 */
 
+int					new_color(t_rgb res);
+t_rgb				int_to_rgb(int c);
 int					add_colors(int cl1, int cl2);
+t_rgb				add_rgb_col(t_rgb c1, t_rgb c2);
+t_rgb				mul_rgb_col(t_rgb c, double k);
 int					mul_colors(int cl1, double k);
 int					shade_colors(int cl1, double k);
 int					mix_colors(int cl1, int cl2);

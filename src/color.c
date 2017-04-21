@@ -33,6 +33,26 @@ t_rgb	int_to_rgb(int c)
 	return (r);
 }
 
+t_rgb	add_rgb_col(t_rgb c1, t_rgb c2)
+{
+	t_rgb	res;
+
+	res.r = c1.r + c2.r;
+	res.g = c1.g + c2.g;
+	res.b = c1.b + c2.b;
+	return (res);
+}
+
+t_rgb	mul_rgb_col(t_rgb c, double k)
+{
+	t_rgb	res;
+
+	res.r = c.r * k;
+	res.g = c.g * k;
+	res.b = c.b * k;
+	return (res);
+}
+
 int		add_colors(int cl1, int cl2)
 {
 	t_rgb	c1;
