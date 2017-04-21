@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/19 19:12:32 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/24 14:16:43 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/21 20:47:38 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ t_v3d	get_norm_cone(void *dat, t_p3d inter_p)
 	return (normalize(r));
 }
 
-int		get_cone_color(void *data, t_p3d inter_p)
+int		get_cone_color(t_o3d *obj, t_p3d inter_p)
 {
 	(void)inter_p;
-	return (((t_cone *)data)->color);
+	return (((t_cone *)obj->data)->color);
 }
 
 int		solve_quad_rot(const void *data, t_vec v, double *t0, double *t1)

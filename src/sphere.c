@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 19:05:49 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/17 01:05:01 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/21 20:46:07 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ t_v3d	get_norm_sphere(void *dat, t_p3d inter_p)
 	return (normalize(res));
 }
 
-int		get_sphere_color(void *data, t_p3d inter_p)
+int		get_sphere_color(t_o3d *obj, t_p3d inter_p)
 {
 	(void)inter_p;
-	return (((t_sphere *)data)->color);
+	return (((t_sphere *)obj->data)->color);
 }
 
 int		solve_quad(t_p3d p, double *t0, double *t1)

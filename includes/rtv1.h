@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 16:11:37 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/20 19:28:28 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/21 20:59:31 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,13 @@ typedef struct		s_vec
 	t_p3d			p;
 }					t_vec;
 
+typedef struct		s_tex
+{
+	void			*img;
+	int				w;
+	int				h;
+}					t_tex;
+
 /*
 ** Object3D
 */
@@ -94,9 +101,10 @@ typedef struct		s_o3d
 						const t_p3d ray_start,
 						const t_v3d ray,
 						t_p3d *inter_p);
-	int				(*get_color)(void *data,
+	int				(*get_color)(struct s_o3d *data,
 								t_p3d inter_p);
 	t_v3d			(*get_norm)(void *data, t_p3d inter_p);
+	t_tex			tex;
 }					t_o3d;
 
 typedef struct		s_lin
@@ -182,7 +190,7 @@ typedef struct		s_plane
 	t_p3d			p;
 	t_v3d			norm;
 	int				color;
-	void			*tex;
+	t_tex			tex;
 }					t_plane;
 
 /*
@@ -277,7 +285,7 @@ int					mix_colors(int cl1, int cl2);
 
 int					solve_quad(t_p3d p, double *t0, double *t1);
 t_o3d				*new_sphere(t_p3d center, double radius, int color);
-t_o3d				*new_plane(t_p3d p, t_v3d norm, int color);
+t_o3d				*new_plane(t_p3d p, t_v3d norm, int color, t_tex tex);
 t_o3d				*new_cyl(t_vec v, double radius, double h, int color);
 t_o3d				*new_cone(t_vec v, double h, int color, double alpha);
 
@@ -296,5 +304,12 @@ t_mat				new_mat1(t_v3d x);
 */
 
 t_scene				*read_file(char *name);
+
+/*
+** textures.c
+*/
+
+t_tex				new_tex(char *path);
+int					ft_img_px_get(t_tex tex, int x, int y);
 
 #endif

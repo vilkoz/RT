@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 18:57:56 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/24 19:00:29 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/21 21:01:00 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,11 +113,10 @@ void		read_plane(t_scene *s, char **arr)
 	t_plane		p;
 	int			i;
 
-	p.p.x = 0;
-	p.p.y = 1;
-	p.p.z = 2;
+	p.p = new_p3d(0, 1, 2);
 	p.norm = new_v3d(0, 1, 0);
 	p.color = 0xff50ff;
+	p.tex.img = NULL;
 	i = 0;
 	while (arr[++i] != NULL)
 	{
@@ -129,10 +128,11 @@ void		read_plane(t_scene *s, char **arr)
 		(i == 6) ? p.norm.z = ft_atoi(arr[i]) : 23;
 		if (i == 7 && ft_strchr(arr[i], 'x') != NULL)
 			p.color = ft_atoi_base(ft_strchr(arr[i], 'x') + 1, 16);
+		(i == 8) ? p.tex = new_tex(arr[i]) : p.tex;
 	}
 	p.norm = (!p.norm.x && !p.norm.y && !p.norm.z) ? new_v3d(0, 1, 0) : p.norm;
 	s->objects[s->cur_o] = new_plane(new_p3d(p.p.x, p.p.y, p.p.z),
-		new_v3d(p.norm.x, p.norm.y, p.norm.z), p.color);
+		new_v3d(p.norm.x, p.norm.y, p.norm.z), p.color, p.tex);
 	s->cur_o++;
 	free_arr(&arr);
 }

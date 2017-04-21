@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/19 15:28:14 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/20 15:52:04 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/21 20:47:04 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ t_v3d	get_norm_cyl(void *dat, t_p3d inter_p)
 	return (normalize(res));
 }
 
-int		get_cyl_color(void *data, t_p3d inter_p)
+int		get_cyl_color(t_o3d *obj, t_p3d inter_p)
 {
 	(void)inter_p;
-	return (((t_cyl *)data)->color);
+	return (((t_cyl *)obj->data)->color);
 }
 
 int		solver(t_cyl *sp, t_vec v, double *t0, double *t1)
@@ -59,8 +59,6 @@ int		intersect_cyl(const void *data, const t_p3d ray_start,
 	sp = (t_cyl *)data;
 	if (!solver(sp, new_vec(ray, ray_start), &t0, &t1))
 		return (FALSE);
-	if (t0 > t1)
-		SWAP_D(t0, t1);
 	if ((t0 < 0) && ((t0 = t1) < 0))
 		return (FALSE);
 	*inter_p = new_p3d(ray_start.x + t0 * ray.x, ray_start.y + t0 * ray.y,
