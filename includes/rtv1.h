@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 16:11:37 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/22 16:02:19 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/22 19:54:32 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # define COSA2 (sp->cos_a) * (sp->cos_a)
 # define SINA2 (sp->sin_a) * (sp->sin_a)
 # define ASP ((double)((double)e->w / (double)e->h))
-# define SAMPLES 3
+# define SAMPLES 2
 # define THREADS 8
 
 # include "../libft/libft.h"
@@ -190,6 +190,7 @@ typedef struct		s_sphere
 	t_p3d			center;
 	double			radius;
 	int				color;
+	t_tex			tex;
 }					t_sphere;
 
 /*
@@ -299,7 +300,8 @@ int					mix_colors(int cl1, int cl2);
 */
 
 int					solve_quad(t_p3d p, double *t0, double *t1);
-t_o3d				*new_sphere(t_p3d center, double radius, int color);
+t_o3d				*new_sphere(t_p3d center, double radius, int color,
+						t_tex tex);
 t_o3d				*new_plane(t_p3d p, t_v3d norm, int color, t_tex tex);
 t_o3d				*new_cyl(t_vec v, double radius, double h, int color);
 t_o3d				*new_cone(t_vec v, double h, int color, double alpha);
