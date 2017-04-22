@@ -6,7 +6,7 @@
 #    By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/23 14:08:11 by vrybalko          #+#    #+#              #
-#    Updated: 2017/04/22 16:00:41 by vrybalko         ###   ########.fr        #
+#    Updated: 2017/04/22 23:59:12 by vrybalko         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,11 +18,11 @@ VPATH = src:includes
 
 BIN_DIR = bin/
 
-FLAGS = -Wall -Wextra -Werror -I$(IDIR) -g #-pthread
+FLAGS = -Wall -Wextra -Werror -I$(IDIR) -g
 
 FLAGS_MLX = -lmlx -framework OpenGl -framework AppKit
 
-FLAGS_X11 = -lmlx -lXext -lX11 -lm
+FLAGS_X11 = -pthread -lmlx -lXext -lX11 -lm
 
 LIB = libft/libft.a
 
@@ -41,7 +41,8 @@ SRCS = main.c						\
 			 plane.c					\
 			 matrix.c					\
 			 read_file.c			\
-			 textures.c
+			 textures.c				\
+			 get_color.c
 
 BINS = $(addprefix $(BIN_DIR), $(SRCS:.c=.o))
 
@@ -49,7 +50,7 @@ all: $(NAME)
 
 $(NAME): $(BINS)
 	make -C libft/
-	gcc -o $(NAME) $(BINS) $(FLAGS) $(FLAGS_MLX) $(LIB)
+	gcc -o $(NAME) $(BINS) $(FLAGS) $(FLAGS_X11) $(LIB)
 
 $(BIN_DIR)%.o: %.c
 	gcc $(FLAGS) -c -o $@ $<

@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 18:57:56 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/21 21:01:00 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/22 19:53:27 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,14 @@ void		read_sphere(t_scene *s, char **arr)
 	int			i;
 	t_sphere	sp;
 
+
 	i = 0;
 	sp.center.x = 0;
 	sp.center.y = 0;
 	sp.center.z = 0;
 	sp.radius = 10;
 	sp.color = 0xff50ff;
+	sp.tex.img = NULL;
 	while (arr[++i] != NULL)
 	{
 		(i == 1) ? sp.center.x = ft_atoi(arr[i]) : 23;
@@ -80,9 +82,10 @@ void		read_sphere(t_scene *s, char **arr)
 		(i == 4) ? sp.radius = (double)ft_atoi(arr[i]) : 23;
 		if (i == 5 && ft_strchr(arr[i], 'x') != NULL)
 			sp.color = ft_atoi_base(ft_strchr(arr[i], 'x') + 1, 16);
+		(i == 6) ? sp.tex = new_tex(arr[i]) : sp.tex;
 	}
 	s->objects[s->cur_o] = new_sphere(new_p3d(sp.center.x, sp.center.y,
-		sp.center.z), sp.radius, sp.color);
+		sp.center.z), sp.radius, sp.color, sp.tex);
 	s->cur_o++;
 	free_arr(&arr);
 }

@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 19:05:49 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/21 20:59:36 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/23 00:25:45 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,5 +79,6 @@ t_o3d	*new_plane(t_p3d p, t_v3d norm, int color, t_tex tex)
 	obj->intersect = intersect_plane;
 	obj->get_norm = get_norm_plane;
 	obj->tex = tex;
+	obj->material.refl = 0;
 	return (obj);
 }

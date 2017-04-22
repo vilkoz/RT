@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 19:05:49 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/21 20:46:07 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/23 00:58:43 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,19 @@ t_v3d	get_norm_sphere(void *dat, t_p3d inter_p)
 
 int		get_sphere_color(t_o3d *obj, t_p3d inter_p)
 {
-	(void)inter_p;
-	return (((t_sphere *)obj->data)->color);
+	t_v3d		norm;
+	t_p2d		p;
+
+	if (obj->tex.img)
+	{
+		norm = obj->get_norm(obj->data, inter_p);
+		p.x = norm.x / 2 + 0.5;
+		p.y = norm.y / 2 + 0.5;
+		return (ft_img_px_get(obj->tex, (int)(p.x * obj->tex.w) * 3 % 64,
+			(int)(p.y * obj->tex.h) * 3 % 64));
+	}
+	else
+		return (((t_sphere *)obj->data)->color);
 }
 
 int		solve_quad(t_p3d p, double *t0, double *t1)
@@ -80,7 +91,7 @@ int		intersect_sphere(const void *data, const t_p3d ray_start,
 	return (1);
 }
 
-t_o3d	*new_sphere(t_p3d center, double radius, int color)
+t_o3d	*new_sphere(t_p3d center, double radius, int color, t_tex tex)
 {
 	t_sphere	*sp;
 	t_o3d		*obj;
@@ -94,5 +105,7 @@ t_o3d	*new_sphere(t_p3d center, double radius, int color)
 	obj->get_color = get_sphere_color;
 	obj->intersect = intersect_sphere;
 	obj->get_norm = get_norm_sphere;
+	obj->tex = tex;
+	obj->material.refl = 0.1;
 	return (obj);
 }

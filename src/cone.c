@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/19 19:12:32 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/21 20:47:38 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/23 00:26:07 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,5 +105,6 @@ t_o3d	*new_cone(t_vec v, double h, int color, double alpha)
 	obj->get_color = get_cone_color;
 	obj->intersect = intersect_cone;
 	obj->get_norm = get_norm_cone;
+	obj->material.refl = 0;
 	return (obj);
 }
