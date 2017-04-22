@@ -3,6 +3,6 @@ c 300 600 0 -1 -2 0
 # o center: x y z dir: x y z alpha height color
 o 100 0 0 1 0 0 30 10000 0xffff00
 # p center: x y z dir: x y z color
-p 0 0 0 1 0 0 0xff00ff
+p 0 0 0 1 0 0 0xff00ff tex/wood.xpm
 # s center: x y z radius color
 s 100 -100 100 50 0xff
