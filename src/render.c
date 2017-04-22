@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/15 17:36:47 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/22 18:56:42 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/23 00:33:42 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,41 +38,12 @@ int			is_viewable(t_p3d p1, t_p3d p2, t_scene *s, t_o3d *obj1)
 	return (TRUE);
 }
 
-int			get_light_color(t_scene *s, t_o3d *obj, t_p3d inter_p, int c)
-{
-	double		cosv;
-	int			light_c;
-	int			ret_c;
-	t_v3d		norm;
-	int			i;
-
-	norm = obj->get_norm(obj->data, inter_p);
-	i = -1;
-	while (++i < s->ls_num)
-	{
-		if (is_viewable(inter_p, *s->ls[i], s, obj))
-		{
-			light_c = add_colors(c, mul_colors(0xffffff, 0.4));
-			cosv = (dot_product(normalize(norm), normalize(new_v3d_p(*s->ls[i],
-				inter_p))) - 0.95) * 20;
-			if ((cosv) < 0.1)
-				light_c = shade_colors(light_c, (1 - cosv) / 21);
-			else
-				light_c = add_colors(light_c, mul_colors(light_c, cosv));
-		}
-		else
-			light_c = shade_colors(c, 0.975);
-		ret_c = (i == 0) ? light_c : mix_colors(ret_c, light_c);
-	}
-	return (ret_c);
-}
-
 /*
-** p.x = min
-** p.y = dist
+** p.x = min_distance
+** p.y = current_distance
 */
 
-int			find_nearest(t_scene *s, t_v3d dir, t_p3d *inter_p, t_o3d **obj1)
+int			find_nearest(t_scene *s, t_vec vec, t_p3d *inter_p, t_o3d **obj1)
 {
 	t_o3d	*obj;
 	t_p3d	p;
@@ -82,9 +53,9 @@ int			find_nearest(t_scene *s, t_v3d dir, t_p3d *inter_p, t_o3d **obj1)
 	while (++p.z < s->obj_num)
 	{
 		obj = s->objects[(int)p.z];
-		if (obj->intersect(obj->data, s->cam.pos, dir, inter_p))
+		if (obj->intersect(obj->data, vec.p, vec.dir, inter_p))
 		{
-			p.y = distance(*inter_p, s->cam.pos);
+			p.y = distance(*inter_p, vec.p);
 			(p.x == 0) ? p.x = p.y : 23;
 			if (p.y <= p.x)
 			{
@@ -94,7 +65,7 @@ int			find_nearest(t_scene *s, t_v3d dir, t_p3d *inter_p, t_o3d **obj1)
 			}
 		}
 	}
-	*inter_p = (p.x != 0) ? new_p3d(min_p.x, min_p.y, min_p.z) : *inter_p;
+	(p.x != 0) ? *inter_p = new_p3d(min_p.x, min_p.y, min_p.z) : *inter_p;
 	if (p.x == 0)
 		return (FALSE);
 	else
@@ -127,9 +98,10 @@ int			anti_alias(t_p2d p, t_scene *s)
 		{
 			p3 = new_p2d(p.x + (p2.x / (1300. * SAMPLES)) * (1300. / 700.),
 				p.y + p2.y / (700. * SAMPLES));
-			if (find_nearest(s, pix_vector(p3, s), &inter_p, &obj))
-				res = add_rgb_col(res, int_to_rgb(get_light_color(s, obj,
-					inter_p, obj->get_color(obj, inter_p))));
+			if (find_nearest(s, new_vec(pix_vector(p3, s), s->cam.pos),
+				&inter_p, &obj))
+				res = add_rgb_col(res, int_to_rgb(get_color(s, obj,
+					inter_p, pix_vector(p3, s))));
 		}
 	}
 	return (new_color(mul_rgb_col(res, 1. /

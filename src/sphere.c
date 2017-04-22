@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 19:05:49 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/22 20:11:27 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/23 00:58:43 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,5 +106,6 @@ t_o3d	*new_sphere(t_p3d center, double radius, int color, t_tex tex)
 	obj->intersect = intersect_sphere;
 	obj->get_norm = get_norm_sphere;
 	obj->tex = tex;
+	obj->material.refl = 0.1;
 	return (obj);
 }

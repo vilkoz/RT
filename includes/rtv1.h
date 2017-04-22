@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 16:11:37 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/22 19:54:32 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/23 00:50:19 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,11 @@ typedef struct		s_tex
 	int				h;
 }					t_tex;
 
+typedef struct		s_material
+{
+	float			refl;
+}					t_material;
+
 /*
 ** Object3D
 */
@@ -108,6 +113,7 @@ typedef struct		s_o3d
 								t_p3d inter_p);
 	t_v3d			(*get_norm)(void *data, t_p3d inter_p);
 	t_tex			tex;
+	t_material		material;
 }					t_o3d;
 
 typedef struct		s_lin
@@ -243,10 +249,14 @@ int					mouse_hook(int key, int x, int y, t_e *e);
 int					move_hook(int x, int y, t_e *e);
 int					intersect_sphere(const void *data, const t_p3d ray_start,
 						const t_v3d ray, t_p3d *inter_p);
-void				example(t_e *e);
+/*
+** render.c
+*/
+
 void				render(t_e *e);
-int					find_nearest(t_scene *s, t_v3d dir, t_p3d *inter_p,
-					t_o3d **obj1);
+int					find_nearest(t_scene *s, t_vec vec, t_p3d *inter_p,
+						t_o3d **obj1);
+int					is_viewable(t_p3d p1, t_p3d p2, t_scene *s, t_o3d *obj1);
 
 /*
 ** ray_tools.c
@@ -328,5 +338,15 @@ t_scene				*read_file(char *name);
 
 t_tex				new_tex(char *path);
 int					ft_img_px_get(t_tex tex, int x, int y);
+
+/*
+** get_color.c
+*/
+
+int					get_reflect_color(t_scene *s, t_o3d *obj, t_p3d inter_p,
+						t_v3d fall);
+int					get_light_color(t_scene *s, t_o3d *obj, t_p3d inter_p);
+int					get_color(t_scene *s, t_o3d *obj, t_p3d inter_p,
+						t_v3d fall);
 
 #endif

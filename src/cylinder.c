@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/19 15:28:14 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/21 20:47:04 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/23 00:26:30 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,5 +93,6 @@ t_o3d	*new_cyl(t_vec v, double radius, double h, int color)
 	obj->get_color = get_cyl_color;
 	obj->intersect = intersect_cyl;
 	obj->get_norm = get_norm_cyl;
+	obj->material.refl = 0;
 	return (obj);
 }
