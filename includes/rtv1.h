@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 16:11:37 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/23 00:50:19 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/24 00:45:50 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,8 @@ typedef struct		s_tex
 
 typedef struct		s_material
 {
+	int				color;
+	t_tex			tex;
 	float			refl;
 }					t_material;
 
@@ -310,11 +312,13 @@ int					mix_colors(int cl1, int cl2);
 */
 
 int					solve_quad(t_p3d p, double *t0, double *t1);
-t_o3d				*new_sphere(t_p3d center, double radius, int color,
-						t_tex tex);
-t_o3d				*new_plane(t_p3d p, t_v3d norm, int color, t_tex tex);
-t_o3d				*new_cyl(t_vec v, double radius, double h, int color);
-t_o3d				*new_cone(t_vec v, double h, int color, double alpha);
+t_o3d				*new_sphere(t_p3d center, double radius,
+						t_material material);
+t_o3d				*new_plane(t_p3d p, t_v3d norm, t_material material);
+t_o3d				*new_cyl(t_vec v, double radius, double h,
+						t_material material);
+t_o3d				*new_cone(t_vec v, double h, double alpha,
+						t_material material);
 
 /*
 ** matrix.c
@@ -343,10 +347,14 @@ int					ft_img_px_get(t_tex tex, int x, int y);
 ** get_color.c
 */
 
-int					get_reflect_color(t_scene *s, t_o3d *obj, t_p3d inter_p,
-						t_v3d fall);
+int					get_reflect_color(t_scene *s, t_o3d *obj, t_vec v, int rn);
 int					get_light_color(t_scene *s, t_o3d *obj, t_p3d inter_p);
-int					get_color(t_scene *s, t_o3d *obj, t_p3d inter_p,
-						t_v3d fall);
+int					get_color(t_scene *s, t_o3d *obj, t_vec v, int rn);
+
+/*
+** material.c
+*/
+
+t_material			new_material(int color, t_tex tex, float refl);
 
 #endif

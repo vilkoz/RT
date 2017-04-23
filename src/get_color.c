@@ -6,33 +6,31 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/22 23:57:04 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/23 01:01:06 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/24 00:47:37 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-int			get_reflect_color(t_scene *s, t_o3d *obj, t_p3d inter_p, t_v3d fall)
+int			get_reflect_color(t_scene *s, t_o3d *obj, t_vec v, int rn)
 {
-	// static int	rec_count = 3;
 	t_v3d		norm;
-	t_v3d		ref_ray;
 	t_p3d		inter_p2;
 	t_o3d		*obj2;
 
-	// if (--rec_count > 0)
-	// {
-		norm = obj->get_norm(obj->data, inter_p);
-		inter_p = new_p3d(inter_p.x + norm.x * 0.01, inter_p.y + norm.y * 0.01,
-			inter_p.z + norm.z * 0.01);
-		ref_ray = normalize(v_sub(fall,
-			v_mul(norm, 2 * dot_product(fall, norm))));
-		if (find_nearest(s, new_vec(ref_ray, inter_p), &inter_p2, &obj2))
-			return (get_light_color(s, obj2, inter_p2));
+	if (rn > 0)
+	{
+		norm = obj->get_norm(obj->data, v.p);
+		v.p = new_p3d(v.p.x + norm.x * 0.01, v.p.y + norm.y * 0.01,
+			v.p.z + norm.z * 0.01);
+		if (find_nearest(s, new_vec(normalize(v_sub(v.dir, v_mul(norm,
+			2 * dot_product(v.dir, norm)))), v.p), &inter_p2, &obj2))
+			return (get_color(s, obj2, new_vec(new_v3d_p(inter_p2, v.p),
+				inter_p2), rn - 1));
 		else
 			return (0);
-	// }
-	// return (0);
+	}
+	return (0);
 }
 
 int			get_light_color(t_scene *s, t_o3d *obj, t_p3d inter_p)
@@ -65,16 +63,16 @@ int			get_light_color(t_scene *s, t_o3d *obj, t_p3d inter_p)
 	return (ret_c);
 }
 
-int			get_color(t_scene *s, t_o3d *obj, t_p3d inter_p, t_v3d fall)
+int			get_color(t_scene *s, t_o3d *obj, t_vec v, int rn)
 {
 	int		res;
 
 	res = 0;
-	res = get_light_color(s, obj, inter_p);
+	res = get_light_color(s, obj, v.p);
 	if ((obj->material.refl) > EPSILON)
 	{
 		res = shade_colors(res, obj->material.refl);
-		res = mix_colors(res, get_reflect_color(s, obj, inter_p, fall));
+		res = mix_colors(res, get_reflect_color(s, obj, v, rn));
 	}
 	return (res);
 }

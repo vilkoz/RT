@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/15 17:36:47 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/23 00:33:42 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/24 00:49:58 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ int			anti_alias(t_p2d p, t_scene *s)
 			if (find_nearest(s, new_vec(pix_vector(p3, s), s->cam.pos),
 				&inter_p, &obj))
 				res = add_rgb_col(res, int_to_rgb(get_color(s, obj,
-					inter_p, pix_vector(p3, s))));
+					new_vec(pix_vector(p3, s), inter_p), 3)));
 		}
 	}
 	return (new_color(mul_rgb_col(res, 1. /

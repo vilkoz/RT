@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/19 15:28:14 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/23 00:26:30 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/23 23:24:35 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int		intersect_cyl(const void *data, const t_p3d ray_start,
 	return (TRUE);
 }
 
-t_o3d	*new_cyl(t_vec v, double radius, double h, int color)
+t_o3d	*new_cyl(t_vec v, double radius, double h, t_material material)
 {
 	t_cyl		*sp;
 	t_o3d		*obj;
@@ -86,13 +86,14 @@ t_o3d	*new_cyl(t_vec v, double radius, double h, int color)
 	sp->center = v.p;
 	sp->dir = normalize(v.dir);
 	sp->radius = radius;
-	sp->color = color;
+	sp->color = material.color;
 	sp->h = h;
 	obj = (t_o3d *)malloc(sizeof(t_o3d));
 	obj->data = (void *)sp;
 	obj->get_color = get_cyl_color;
 	obj->intersect = intersect_cyl;
 	obj->get_norm = get_norm_cyl;
-	obj->material.refl = 0;
+	obj->tex = material.tex;
+	obj->material = material;
 	return (obj);
 }

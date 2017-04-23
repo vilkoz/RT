@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/19 19:12:32 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/23 00:26:07 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/23 23:25:27 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int		intersect_cone(const void *data, const t_p3d ray_start,
 	return (TRUE);
 }
 
-t_o3d	*new_cone(t_vec v, double h, int color, double alpha)
+t_o3d	*new_cone(t_vec v, double h, double alpha, t_material material)
 {
 	t_cone		*sp;
 	t_o3d		*obj;
@@ -95,7 +95,7 @@ t_o3d	*new_cone(t_vec v, double h, int color, double alpha)
 	sp = (t_cone *)malloc(sizeof(t_cone));
 	sp->center = v.p;
 	sp->dir = v.dir;
-	sp->color = color;
+	sp->color = material.color;
 	sp->h = h;
 	sp->a = alpha * RAD;
 	sp->sin_a = sin(sp->a);
@@ -105,6 +105,7 @@ t_o3d	*new_cone(t_vec v, double h, int color, double alpha)
 	obj->get_color = get_cone_color;
 	obj->intersect = intersect_cone;
 	obj->get_norm = get_norm_cone;
-	obj->material.refl = 0;
+	obj->tex = material.tex;
+	obj->material = material;
 	return (obj);
 }

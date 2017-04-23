@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 18:57:56 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/22 19:53:27 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/24 00:22:59 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void		read_sphere(t_scene *s, char **arr)
 {
 	int			i;
 	t_sphere	sp;
-
+	t_material	m;
 
 	i = 0;
 	sp.center.x = 0;
@@ -74,6 +74,7 @@ void		read_sphere(t_scene *s, char **arr)
 	sp.radius = 10;
 	sp.color = 0xff50ff;
 	sp.tex.img = NULL;
+	m.refl = 0;
 	while (arr[++i] != NULL)
 	{
 		(i == 1) ? sp.center.x = ft_atoi(arr[i]) : 23;
@@ -82,10 +83,12 @@ void		read_sphere(t_scene *s, char **arr)
 		(i == 4) ? sp.radius = (double)ft_atoi(arr[i]) : 23;
 		if (i == 5 && ft_strchr(arr[i], 'x') != NULL)
 			sp.color = ft_atoi_base(ft_strchr(arr[i], 'x') + 1, 16);
-		(i == 6) ? sp.tex = new_tex(arr[i]) : sp.tex;
+		if (i == 6 && ft_strcmp("NULL", arr[i]))
+			sp.tex = new_tex(arr[i]);
+		(i == 7) ? m.refl = ft_atod(arr[i]) : m.refl;
 	}
 	s->objects[s->cur_o] = new_sphere(new_p3d(sp.center.x, sp.center.y,
-		sp.center.z), sp.radius, sp.color, sp.tex);
+		sp.center.z), sp.radius, new_material(sp.color, sp.tex, m.refl));
 	s->cur_o++;
 	free_arr(&arr);
 }
@@ -114,12 +117,14 @@ void		read_light(t_scene *s, char **arr)
 void		read_plane(t_scene *s, char **arr)
 {
 	t_plane		p;
+	t_material	m;
 	int			i;
 
 	p.p = new_p3d(0, 1, 2);
 	p.norm = new_v3d(0, 1, 0);
 	p.color = 0xff50ff;
 	p.tex.img = NULL;
+	m.refl = 0;
 	i = 0;
 	while (arr[++i] != NULL)
 	{
@@ -135,7 +140,8 @@ void		read_plane(t_scene *s, char **arr)
 	}
 	p.norm = (!p.norm.x && !p.norm.y && !p.norm.z) ? new_v3d(0, 1, 0) : p.norm;
 	s->objects[s->cur_o] = new_plane(new_p3d(p.p.x, p.p.y, p.p.z),
-		new_v3d(p.norm.x, p.norm.y, p.norm.z), p.color, p.tex);
+		new_v3d(p.norm.x, p.norm.y, p.norm.z),
+		new_material(p.color, p.tex, m.refl));
 	s->cur_o++;
 	free_arr(&arr);
 }
@@ -168,7 +174,7 @@ void		read_cam(t_scene *s, char **arr)
 	free_arr(&arr);
 }
 
-void		init_cyl(t_cyl *c)
+void		init_cyl(t_cyl *c, t_material *m)
 {
 	c->center.x = 0;
 	c->center.y = 0;
@@ -179,15 +185,18 @@ void		init_cyl(t_cyl *c)
 	c->radius = 100;
 	c->h = 10000;
 	c->color = 0xffa0;
+	m->tex.img = NULL;
+	m->refl = 0;
 }
 
 void		read_cyl(t_scene *s, char **arr)
 {
-	t_cyl	c;
-	int		i;
+	t_cyl		c;
+	t_material	m;
+	int			i;
 
 	i = 0;
-	init_cyl(&c);
+	init_cyl(&c, &m);
 	while (arr[++i])
 	{
 		(i == 1) ? c.center.x = ft_atoi(arr[i]) : 23;
@@ -204,12 +213,13 @@ void		read_cyl(t_scene *s, char **arr)
 	c.dir = (!c.dir.x && !c.dir.y && !c.dir.z) ? new_v3d(0, 1, 0) :
 		c.dir;
 	s->objects[s->cur_o] = new_cyl(new_vec(new_v3d(c.dir.x, c.dir.y, c.dir.z),
-		new_p3d(c.center.x, c.center.y, c.center.z)), c.radius, c.h, c.color);
+		new_p3d(c.center.x, c.center.y, c.center.z)), c.radius, c.h,
+		new_material(c.color, m.tex, m.refl));
 	s->cur_o++;
 	free_arr(&arr);
 }
 
-void		init_cone(t_cone *c)
+void		init_cone(t_cone *c, t_material *m)
 {
 	c->center.x = 0;
 	c->center.y = 0;
@@ -220,15 +230,18 @@ void		init_cone(t_cone *c)
 	c->a = 60;
 	c->h = 10000;
 	c->color = 0xffa0;
+	m->tex.img = NULL;
+	m->refl = 0;
 }
 
 void		read_cone(t_scene *s, char **arr)
 {
-	t_cone	c;
-	int		i;
+	t_material	m;
+	t_cone		c;
+	int			i;
 
 	i = 0;
-	init_cone(&c);
+	init_cone(&c, &m);
 	while (arr[++i])
 	{
 		(i == 1) ? c.center.x = ft_atoi(arr[i]) : 23;
@@ -245,8 +258,8 @@ void		read_cone(t_scene *s, char **arr)
 	c.dir = (!c.dir.x && !c.dir.y && !c.dir.z) ? new_v3d(0, 1, 0) :
 		c.dir;
 	s->objects[s->cur_o] = new_cone(new_vec(normalize(new_v3d(c.dir.x, c.dir.y,
-		c.dir.z)), new_p3d(c.center.x, c.center.y, c.center.z)), c.h, c.color,
-		c.a);
+		c.dir.z)), new_p3d(c.center.x, c.center.y, c.center.z)), c.h, c.a,
+			new_material(c.color, m.tex, m.refl));
 	s->cur_o++;
 	free_arr(&arr);
 }

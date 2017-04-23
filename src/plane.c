@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 19:05:49 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/23 00:25:45 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/23 23:25:58 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int		intersect_plane(const void *data, const t_p3d ray_start,
 	return (TRUE);
 }
 
-t_o3d	*new_plane(t_p3d p, t_v3d norm, int color, t_tex tex)
+t_o3d	*new_plane(t_p3d p, t_v3d norm, t_material material)
 {
 	t_plane		*sp;
 	t_o3d		*obj;
@@ -72,13 +72,13 @@ t_o3d	*new_plane(t_p3d p, t_v3d norm, int color, t_tex tex)
 	sp = (t_plane *)malloc(sizeof(t_plane));
 	sp->p = p;
 	sp->norm = norm;
-	sp->color = color;
+	sp->color = material.color;
 	obj = (t_o3d *)malloc(sizeof(t_o3d));
 	obj->data = (void *)sp;
 	obj->get_color = get_plane_color;
 	obj->intersect = intersect_plane;
 	obj->get_norm = get_norm_plane;
-	obj->tex = tex;
-	obj->material.refl = 0;
+	obj->tex = material.tex;
+	obj->material = material;
 	return (obj);
 }

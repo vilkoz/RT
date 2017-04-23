@@ -6,7 +6,7 @@
 #    By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/23 14:08:11 by vrybalko          #+#    #+#              #
-#    Updated: 2017/04/22 23:59:12 by vrybalko         ###   ########.fr        #
+#    Updated: 2017/04/23 23:22:01 by vrybalko         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,8 @@ SRCS = main.c						\
 			 matrix.c					\
 			 read_file.c			\
 			 textures.c				\
-			 get_color.c
+			 get_color.c			\
+			 material.c
 
 BINS = $(addprefix $(BIN_DIR), $(SRCS:.c=.o))
 
