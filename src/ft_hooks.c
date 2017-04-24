@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/14 17:13:21 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/25 00:50:53 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/24 19:48:26 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int		loop_hook(t_e *e)
 	render(e);
 	mlx_clear_window(e->mlx, e->win);
 	mlx_put_image_to_window(e->mlx, e->win, e->img, 0, 0);
+	mlx_loop_hook(e->mlx, NULL, e);
 	return (0);
 }
 

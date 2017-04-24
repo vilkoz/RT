@@ -1,9 +1,13 @@
 l 100 300 0
+l 100 -300 0
+l 100 0 -300
+# c 300 0 -800 0 -2 20
 c 300 600 0 -1 -2 0
 # o center: x y z dir: x y z alpha height color
-# o 100 0 0 1 0 0 30 10000 0xffff00
+# o 100 0 0 1 0 0 30 10000 0xffff00 tex/wood.xpm
+y 0 0 0 1 0 1 100 300 0xff00 tex/wood.xpm
 # p center: x y z dir: x y z color
 p 0 0 0 1 0 0 0xff00ff tex/wood.xpm
 # s center: x y z radius color
-s 200 400 70 50 0xff NULL 1
-s 200 400 -70 50 0xff NULL 1
+# s 200 400 150 50 0xff NULL 1
+# s 200 400 -150 50 0xff NULL 1

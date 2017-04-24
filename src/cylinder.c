@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/19 15:28:14 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/23 23:24:35 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/24 20:36:59 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,25 @@ t_v3d	get_norm_cyl(void *dat, t_p3d inter_p)
 
 int		get_cyl_color(t_o3d *obj, t_p3d inter_p)
 {
-	(void)inter_p;
+	t_cyl	*c;
+	t_p2d	t;
+	t_v3d	p;
+	t_v3d	zero;
+
+	if (obj->material.tex.img)
+	{
+		c = (t_cyl*)obj->data;
+		p = new_v3d_p(inter_p, c->center);
+		t.y = v_len(v_mul(c->dir, dot_product(p, c->dir)));
+		zero = normalize(cross_product(c->dir, new_v3d(0, 0, 1)));
+		p = v_sub(v_mul(c->dir, dot_product(p, c->dir)), p);
+		t.x = fabs(acos(cos_vectors(p, zero)) / M_PI) * 2 * (double)c->radius /
+			(double)obj->material.tex.w;
+		t.x = (t.x < 0) ? 1 - fabs(t.x) : t.x;
+		return (ft_img_px_get(obj->material.tex,
+			(int)(t.x * (double)obj->material.tex.w) % obj->material.tex.w,
+			(int)t.y % obj->material.tex.h));
+	}
 	return (((t_cyl *)obj->data)->color);
 }
 
