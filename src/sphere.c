@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 19:05:49 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/24 00:32:07 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/24 18:09:00 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ int		get_sphere_color(t_o3d *obj, t_p3d inter_p)
 		norm = obj->get_norm(obj->data, inter_p);
 		p.x = norm.x / 2 + 0.5;
 		p.y = norm.y / 2 + 0.5;
-		return (ft_img_px_get(obj->tex, (int)(p.x * obj->tex.w) * 3 % 64,
-			(int)(p.y * obj->tex.h) * 3 % 64));
+		return (ft_img_px_get(obj->tex, (int)(p.x * obj->tex.w) * 3 %
+			obj->tex.w, (int)(p.y * obj->tex.h) * 3 % obj->tex.h));
 	}
 	else
 		return (((t_sphere *)obj->data)->color);
