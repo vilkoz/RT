@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 19:05:49 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/23 23:25:58 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/24 18:33:44 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ int		get_plane_color(t_o3d *o, t_p3d inter_p)
 		p.y = v_len(perp);
 		p.x = v_len(new_v3d_p(new_p3d(inter_p.x + perp.x, inter_p.y + perp.y,
 			inter_p.z + perp.z), pl->p));
-		return (ft_img_px_get(o->tex, ((int)(p.x) % 64), ((int)(p.y) % 64)));
+		return (ft_img_px_get(o->tex, ((int)(p.x) % o->tex.w),
+			((int)(p.y) % o->tex.h)));
 	}
 	else
 		return (pl->color);
