@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 18:57:56 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/24 19:26:11 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/25 21:21:05 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -257,6 +257,8 @@ void		read_cone(t_scene *s, char **arr)
 		(i == 8) ? c.h = (double)ft_atoi(arr[i]) : 23;
 		if (i == 9 && ft_strchr(arr[i], 'x') != NULL)
 			c.color = ft_atoi_base(ft_strchr(arr[i], 'x') + 1, 16);
+		(i == 10) ? m.tex = new_tex(arr[i]) : m.tex;
+		(i == 11) ? m.refl = ft_atod(arr[i]) : m.refl;
 	}
 	c.dir = (!c.dir.x && !c.dir.y && !c.dir.z) ? new_v3d(0, 1, 0) :
 		c.dir;
