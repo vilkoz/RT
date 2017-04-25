@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 18:57:56 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/25 21:21:05 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/25 23:56:19 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,7 @@ void		read_plane(t_scene *s, char **arr)
 		if (i == 7 && ft_strchr(arr[i], 'x') != NULL)
 			p.color = ft_atoi_base(ft_strchr(arr[i], 'x') + 1, 16);
 		(i == 8) ? p.tex = new_tex(arr[i]) : p.tex;
+		(i == 9) ? m.refl = ft_atod(arr[i]) : m.refl;
 	}
 	p.norm = (!p.norm.x && !p.norm.y && !p.norm.z) ? new_v3d(0, 1, 0) : p.norm;
 	s->objects[s->cur_o] = new_plane(new_p3d(p.p.x, p.p.y, p.p.z),
