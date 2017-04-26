@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/15 17:22:27 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/21 21:33:45 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/26 20:47:37 by kshcherb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,4 +101,17 @@ int		shade_colors(int cl1, double k)
 	res.g *= 1 - k;
 	res.b *= 1 - k;
 	return (new_color(res));
+}
+
+int		gray_scale(int color)
+{
+	t_rgb 	c;
+	int		avg;
+
+	c = int_to_rgb(color);
+	avg = (c.r + c.g + c.b) / 3;
+	c.r = avg;
+	c.g = c.r;
+	c.b = c.g;
+	return (new_color(c));
 }

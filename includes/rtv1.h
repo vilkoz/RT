@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 16:11:37 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/26 19:15:15 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/26 20:47:50 by kshcherb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -303,6 +303,7 @@ t_rgb				mul_rgb_col(t_rgb c, double k);
 int					mul_colors(int cl1, double k);
 int					shade_colors(int cl1, double k);
 int					mix_colors(int cl1, int cl2);
+int					gray_scale(int color);
 
 /*
 ** objects
