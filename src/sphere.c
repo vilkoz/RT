@@ -6,18 +6,18 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 19:05:49 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/25 23:53:19 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/26 19:00:32 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-t_v3d	get_norm_sphere(void *dat, t_p3d inter_p)
+t_v3d	get_norm_sphere(t_o3d *dat, t_p3d inter_p)
 {
 	t_sphere	*sp;
 	t_v3d		res;
 
-	sp = (t_sphere *)dat;
+	sp = (t_sphere *)dat->data;
 	res = new_v3d(inter_p.x - sp->center.x, inter_p.y - sp->center.y,
 		inter_p.z - sp->center.z);
 	return (normalize(res));
@@ -71,7 +71,7 @@ int		solve_quad(t_p3d p, double *t0, double *t1)
 	return (TRUE);
 }
 
-int		intersect_sphere(const void *data, const t_p3d ray_start,
+int		intersect_sphere(const t_o3d *data, const t_p3d ray_start,
 						const t_v3d ray, t_p3d *inter_p)
 {
 	double		t0;
@@ -79,7 +79,7 @@ int		intersect_sphere(const void *data, const t_p3d ray_start,
 	double		t;
 	t_sphere	*sp;
 
-	sp = (t_sphere *)data;
+	sp = (t_sphere *)data->data;
 	if (!solve_quad(new_p3d(1., 2 * (ray.x * (ray_start.x - sp->center.x) +
 					ray.y * (ray_start.y - sp->center.y) +
 					ray.z * (ray_start.z - sp->center.z)),

@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/22 23:57:04 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/24 00:47:37 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/26 18:39:53 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int			get_reflect_color(t_scene *s, t_o3d *obj, t_vec v, int rn)
 
 	if (rn > 0)
 	{
-		norm = obj->get_norm(obj->data, v.p);
+		norm = obj->get_norm(obj, v.p);
 		v.p = new_p3d(v.p.x + norm.x * 0.01, v.p.y + norm.y * 0.01,
 			v.p.z + norm.z * 0.01);
 		if (find_nearest(s, new_vec(normalize(v_sub(v.dir, v_mul(norm,
@@ -41,7 +41,7 @@ int			get_light_color(t_scene *s, t_o3d *obj, t_p3d inter_p)
 	t_v3d		norm;
 	int			i;
 
-	norm = obj->get_norm(obj->data, inter_p);
+	norm = obj->get_norm(obj, inter_p);
 	i = -1;
 	while (++i < s->ls_num)
 	{

@@ -6,20 +6,20 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/19 19:12:32 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/25 21:22:50 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/26 19:14:48 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-t_v3d	get_norm_cone(void *dat, t_p3d inter_p)
+t_v3d	get_norm_cone(t_o3d *dat, t_p3d inter_p)
 {
 	t_cone	*sp;
 	t_v3d	r;
 	t_v3d	dp;
 	t_v3d	n;
 
-	sp = (t_cone *)dat;
+	sp = (t_cone *)dat->data;
 	dp = (new_v3d_p(inter_p, sp->center));
 	r = (v_sub(dp, v_mul(sp->dir, dot_product(sp->dir, dp))));
 	n = cross_product(dp, r);
@@ -73,7 +73,7 @@ int		solve_quad_rot(const void *data, t_vec v, double *t0, double *t1)
 	return (TRUE);
 }
 
-int		intersect_cone(const void *data, const t_p3d ray_start,
+int		intersect_cone(const t_o3d *data, const t_p3d ray_start,
 						const t_v3d ray, t_p3d *inter_p)
 {
 	double		t0;
@@ -81,8 +81,8 @@ int		intersect_cone(const void *data, const t_p3d ray_start,
 	t_cone		*sp;
 	t_v3d		dp;
 
-	sp = (t_cone *)data;
-	if (!solve_quad_rot(data, new_vec(ray, ray_start), &t0, &t1))
+	sp = (t_cone *)data->data;
+	if (!solve_quad_rot(data->data, new_vec(ray, ray_start), &t0, &t1))
 		return (FALSE);
 	if (t0 > t1)
 		SWAP_D(t0, t1);

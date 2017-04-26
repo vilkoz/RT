@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 16:11:37 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/24 20:38:56 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/26 19:15:15 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,13 +107,12 @@ typedef struct		s_material
 typedef struct		s_o3d
 {
 	void			*data;
-	int				(*intersect)(const void * data,
+	int				(*intersect)(const struct s_o3d *data,
 						const t_p3d ray_start,
 						const t_v3d ray,
 						t_p3d *inter_p);
-	int				(*get_color)(struct s_o3d *data,
-								t_p3d inter_p);
-	t_v3d			(*get_norm)(void *data, t_p3d inter_p);
+	int				(*get_color)(struct s_o3d *data, t_p3d inter_p);
+	t_v3d			(*get_norm)(struct s_o3d *data, t_p3d inter_p);
 	t_tex			tex;
 	t_material		material;
 }					t_o3d;
@@ -249,8 +248,6 @@ int					key_press(int key, t_e *e);
 int					key_release(int key, t_e *e);
 int					mouse_hook(int key, int x, int y, t_e *e);
 int					move_hook(int x, int y, t_e *e);
-int					intersect_sphere(const void *data, const t_p3d ray_start,
-						const t_v3d ray, t_p3d *inter_p);
 /*
 ** render.c
 */

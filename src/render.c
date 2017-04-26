@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/15 17:36:47 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/24 00:49:58 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/26 19:04:00 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ int			is_viewable(t_p3d p1, t_p3d p2, t_scene *s, t_o3d *obj1)
 	t_p3d	p_b;
 
 	i = -1;
-	norm = obj1->get_norm(obj1->data, p1);
+	norm = obj1->get_norm(obj1, p1);
 	p_b = new_p3d(p1.x + norm.x * 0.01, p1.y + norm.y * 0.01,
 		p1.z + norm.z * 0.01);
 	while (++i < s->obj_num)
 	{
 		obj = s->objects[i];
-		if (obj->intersect(obj->data, p_b, normalize(new_v3d_p(p2, p_b)),
+		if (obj->intersect(obj, p_b, normalize(new_v3d_p(p2, p_b)),
 			&inter_p))
 		{
 			if (distance(p1, inter_p) > distance(p1, p2))
@@ -53,7 +53,7 @@ int			find_nearest(t_scene *s, t_vec vec, t_p3d *inter_p, t_o3d **obj1)
 	while (++p.z < s->obj_num)
 	{
 		obj = s->objects[(int)p.z];
-		if (obj->intersect(obj->data, vec.p, vec.dir, inter_p))
+		if (obj->intersect(obj, vec.p, vec.dir, inter_p))
 		{
 			p.y = distance(*inter_p, vec.p);
 			(p.x == 0) ? p.x = p.y : 23;

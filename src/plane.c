@@ -6,16 +6,16 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 19:05:49 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/24 18:33:44 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/26 18:58:52 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-t_v3d	get_norm_plane(void *dat, t_p3d inter_p)
+t_v3d	get_norm_plane(t_o3d *dat, t_p3d inter_p)
 {
 	(void)inter_p;
-	return (((t_plane *)dat)->norm);
+	return (((t_plane *)dat->data)->norm);
 }
 
 int		get_plane_color(t_o3d *o, t_p3d inter_p)
@@ -43,14 +43,14 @@ int		get_plane_color(t_o3d *o, t_p3d inter_p)
 		return (pl->color);
 }
 
-int		intersect_plane(const void *data, const t_p3d ray_start,
+int		intersect_plane(const t_o3d *data, const t_p3d ray_start,
 						const t_v3d ray, t_p3d *inter_p)
 {
 	t_plane		*pl;
 	t_v3d		w;
 	double		dot;
 
-	pl = (t_plane *)data;
+	pl = (t_plane *)data->data;
 	if (fabs(dot = dot_product(pl->norm, ray)) < EPSILON)
 		return (FALSE);
 	w = new_v3d(ray_start.x - pl->p.x, ray_start.y - pl->p.y,
