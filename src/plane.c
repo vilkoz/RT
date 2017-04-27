@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 19:05:49 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/28 01:54:11 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/28 02:35:02 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ t_v3d	get_norm_plane(t_o3d *o, t_p3d inter_p)
 	// 	v_axis = cross_product(perp, pl->norm);
 	// 	return (v_add(v_add(v_mul(perp, g.x), pl->norm), v_mul(v_axis, g.y)));
 	// 	}
-		(void)inter_p;
-		return (((t_plane *)o)->norm);
+	(void)inter_p;
+	return (((t_plane *)o->data)->norm);
 }
 
 int		get_plane_color(t_o3d *o, t_p3d inter_p)
@@ -69,15 +69,13 @@ int		get_plane_color(t_o3d *o, t_p3d inter_p)
 		a = v_sub(new_v3d_p(pl->p, new_p3d(0, 0, 0)),
 		new_v3d_p(inter_p, new_p3d(0, 0, 0)));
 		perp = v_sub(a, v_mul(nx, dot_product(a, nx)));
-		// p.y = same_dir(perp, cross_product(pl->norm, nx)) ?
-		// 	(int)v_len(perp) % o->tex.w :
-		// 	o->tex.w - (int)v_len(perp) % o->tex.w;
-		p.y = v_len(perp);
+		p.y = same_dir(perp, cross_product(pl->norm, nx)) ?
+			(int)v_len(perp) % o->tex.w :
+			o->tex.w - (int)v_len(perp) % o->tex.w;
 		x_axis = new_v3d_p(new_p3d(inter_p.x + perp.x, inter_p.y + perp.y,
 			inter_p.z + perp.z), pl->p);
-		// p.x = same_dir(x_axis, nx) ? v_len(x_axis) :
-		// 	o->tex.h - (int)v_len(x_axis) % o->tex.h;
-		p.x = v_len(x_axis);
+		p.x = same_dir(x_axis, nx) ? v_len(x_axis) :
+			o->tex.h - (int)v_len(x_axis) % o->tex.h;
 		return (ft_img_px_get(o->tex, ((int)(p.x) % o->tex.w),
 			((int)(p.y) % o->tex.h)));
 	}
