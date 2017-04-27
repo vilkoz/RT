@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/21 18:50:51 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/21 20:41:50 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/28 01:53:20 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,11 @@
 t_tex	new_tex(char *path)
 {
 	t_tex	t;
-
+	if (!ft_strcmp(path, "NULL"))
+	{
+		t.img = NULL;
+		return (t);
+	}
 	if ((t.img = mlx_xpm_file_to_image(mlx_init(), path, &(t.w), &(t.h)))
 		== NULL)
 		perror(path);

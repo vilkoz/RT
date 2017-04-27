@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 19:05:49 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/26 21:01:02 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/28 01:54:11 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,40 +15,41 @@
 
 t_v3d	get_norm_plane(t_o3d *o, t_p3d inter_p)
 {
-	int	c1;
-	int	c2;
-	int	c3;
-	t_p3d	g;
-	t_v3d	nx;
-	t_v3d	a;
-	t_v3d	perp;
-	t_p2d	p;
-	t_v3d	v_axis;
-
-	(void)inter_p;
-	t_plane	*pl;
-	pl = (t_plane *)o->data;
-	if (o->tex.img)
-	{
-		nx = normalize(cross_product(pl->norm, normalize(new_v3d(0, 0, 1))));
-		a = v_sub(new_v3d_p(pl->p, new_p3d(0, 0, 0)),
-		new_v3d_p(inter_p, new_p3d(0, 0, 0)));
-		perp = v_sub(a, v_mul(nx, dot_product(a, nx)));
-		p.y = v_len(perp);
-		p.x = v_len(new_v3d_p(new_p3d(inter_p.x + perp.x, inter_p.y + perp.y,
-			inter_p.z + perp.z), pl->p));
-		c1 = gray_scale(ft_img_px_get(o->tex, ((int)(p.x) % o->tex.w),
-		((int)(p.y) % o->tex.h)));
-		c2 = gray_scale(ft_img_px_get(o->tex, ((int)(p.x + 1) % o->tex.w),
-		((int)(p.y) % o->tex.h)));
-		c3 = gray_scale(ft_img_px_get(o->tex, ((int)(p.x) % o->tex.w),
-		((int)(p.y + 1) % o->tex.h)));
-		g.x = c1 - c2;
-		g.y = c3 - c2;
-		perp = normalize(perp);
-		v_axis = cross_product(perp, pl->norm);
-		return (v_add(v_add(v_mul(perp, g.x), pl->norm), v_mul(v_axis, g.y)));
-		}
+	// int	c1;
+	// int	c2;
+	// int	c3;
+	// t_p3d	g;
+	// t_v3d	nx;
+	// t_v3d	a;
+	// t_v3d	perp;
+	// t_p2d	p;
+	// t_v3d	v_axis;
+	//
+	// (void)inter_p;
+	// t_plane	*pl;
+	// pl = (t_plane *)o->data;
+	// if (o->tex.img)
+	// {
+	// 	nx = normalize(cross_product(pl->norm, normalize(new_v3d(0, 0, 1))));
+	// 	a = v_sub(new_v3d_p(pl->p, new_p3d(0, 0, 0)),
+	// 	new_v3d_p(inter_p, new_p3d(0, 0, 0)));
+	// 	perp = v_sub(a, v_mul(nx, dot_product(a, nx)));
+	// 	p.y = v_len(perp);
+	// 	p.x = v_len(new_v3d_p(new_p3d(inter_p.x + perp.x, inter_p.y + perp.y,
+	// 		inter_p.z + perp.z), pl->p));
+	// 	c1 = gray_scale(ft_img_px_get(o->tex, ((int)(p.x) % o->tex.w),
+	// 	((int)(p.y) % o->tex.h)));
+	// 	c2 = gray_scale(ft_img_px_get(o->tex, ((int)(p.x + 1) % o->tex.w),
+	// 	((int)(p.y) % o->tex.h)));
+	// 	c3 = gray_scale(ft_img_px_get(o->tex, ((int)(p.x) % o->tex.w),
+	// 	((int)(p.y + 1) % o->tex.h)));
+	// 	g.x = c1 - c2;
+	// 	g.y = c3 - c2;
+	// 	perp = normalize(perp);
+	// 	v_axis = cross_product(perp, pl->norm);
+	// 	return (v_add(v_add(v_mul(perp, g.x), pl->norm), v_mul(v_axis, g.y)));
+	// 	}
+		(void)inter_p;
 		return (((t_plane *)o)->norm);
 }
 
@@ -59,6 +60,7 @@ int		get_plane_color(t_o3d *o, t_p3d inter_p)
 	t_v3d	perp;
 	t_p2d	p;
 	t_plane	*pl;
+	t_v3d	x_axis;
 
 	pl = (t_plane *)o->data;
 	if (o->tex.img)
@@ -67,9 +69,15 @@ int		get_plane_color(t_o3d *o, t_p3d inter_p)
 		a = v_sub(new_v3d_p(pl->p, new_p3d(0, 0, 0)),
 		new_v3d_p(inter_p, new_p3d(0, 0, 0)));
 		perp = v_sub(a, v_mul(nx, dot_product(a, nx)));
+		// p.y = same_dir(perp, cross_product(pl->norm, nx)) ?
+		// 	(int)v_len(perp) % o->tex.w :
+		// 	o->tex.w - (int)v_len(perp) % o->tex.w;
 		p.y = v_len(perp);
-		p.x = v_len(new_v3d_p(new_p3d(inter_p.x + perp.x, inter_p.y + perp.y,
-			inter_p.z + perp.z), pl->p));
+		x_axis = new_v3d_p(new_p3d(inter_p.x + perp.x, inter_p.y + perp.y,
+			inter_p.z + perp.z), pl->p);
+		// p.x = same_dir(x_axis, nx) ? v_len(x_axis) :
+		// 	o->tex.h - (int)v_len(x_axis) % o->tex.h;
+		p.x = v_len(x_axis);
 		return (ft_img_px_get(o->tex, ((int)(p.x) % o->tex.w),
 			((int)(p.y) % o->tex.h)));
 	}
