@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 16:11:37 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/28 02:30:41 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/28 19:09:22 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,6 +261,7 @@ int					is_viewable(t_p3d p1, t_p3d p2, t_scene *s, t_o3d *obj1);
 ** ray_tools.c
 */
 
+t_p2d				plane_coords(t_vec v, t_p3d p);
 int					same_dir(t_v3d v1, t_v3d v2);
 t_v3d				v_inv(t_v3d v);
 double				v_sqr(t_v3d v);

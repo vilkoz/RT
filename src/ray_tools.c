@@ -6,11 +6,38 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 20:16:59 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/24 19:55:44 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/28 19:13:18 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
+
+/*
+** use new_vec(t_v3d plane_normal, t_p3d plane_origin) to create new vec
+** v.p - plane origin
+** v.dir - plane normal
+** p - intersection point
+*/
+
+t_p2d		plane_coords(t_vec v, t_p3d p)
+{
+	t_p2d	r;
+	t_v3d	nx;
+	t_v3d	a;
+	t_v3d	perp;
+	t_v3d	x_axis;
+
+	nx = normalize(cross_product(v.dir, normalize(new_v3d(0, 0, 1))));
+	a = v_sub(new_v3d_p(v.p, new_p3d(0, 0, 0)),
+	new_v3d_p(p, new_p3d(0, 0, 0)));
+	perp = v_sub(a, v_mul(nx, dot_product(a, nx)));
+	r.y = same_dir(perp, cross_product(v.dir, nx)) ?
+		v_len(perp) : -v_len(perp);
+	x_axis = new_v3d_p(new_p3d(p.x + perp.x, p.y + perp.y,
+		p.z + perp.z), v.p);
+	r.x = same_dir(x_axis, nx) ? v_len(x_axis) : -v_len(x_axis);
+	return (r);
+}
 
 int			same_dir(t_v3d v1, t_v3d v2)
 {
@@ -166,5 +193,5 @@ t_v3d		v_mul(t_v3d v, double n)
 double		cos_vectors(t_v3d v1, t_v3d v2)
 {
 	return (dot_product(v1, v2) /
-		/*sqrt*/(sqrt(dot_product(v1, v1)) * sqrt(dot_product(v2, v2))));
+		(sqrt(dot_product(v1, v1)) * sqrt(dot_product(v2, v2))));
 }

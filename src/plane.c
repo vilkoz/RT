@@ -6,12 +6,11 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 19:05:49 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/28 02:35:02 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/28 19:29:22 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
-
 
 t_v3d	get_norm_plane(t_o3d *o, t_p3d inter_p)
 {
@@ -55,29 +54,18 @@ t_v3d	get_norm_plane(t_o3d *o, t_p3d inter_p)
 
 int		get_plane_color(t_o3d *o, t_p3d inter_p)
 {
-	t_v3d	nx;
-	t_v3d	a;
-	t_v3d	perp;
 	t_p2d	p;
 	t_plane	*pl;
-	t_v3d	x_axis;
 
 	pl = (t_plane *)o->data;
 	if (o->tex.img)
 	{
-		nx = normalize(cross_product(pl->norm, normalize(new_v3d(0, 0, 1))));
-		a = v_sub(new_v3d_p(pl->p, new_p3d(0, 0, 0)),
-		new_v3d_p(inter_p, new_p3d(0, 0, 0)));
-		perp = v_sub(a, v_mul(nx, dot_product(a, nx)));
-		p.y = same_dir(perp, cross_product(pl->norm, nx)) ?
-			(int)v_len(perp) % o->tex.w :
-			o->tex.w - (int)v_len(perp) % o->tex.w;
-		x_axis = new_v3d_p(new_p3d(inter_p.x + perp.x, inter_p.y + perp.y,
-			inter_p.z + perp.z), pl->p);
-		p.x = same_dir(x_axis, nx) ? v_len(x_axis) :
-			o->tex.h - (int)v_len(x_axis) % o->tex.h;
-		return (ft_img_px_get(o->tex, ((int)(p.x) % o->tex.w),
-			((int)(p.y) % o->tex.h)));
+		p = plane_coords(new_vec(pl->norm, pl->p), inter_p);
+		p.x = (p.x < 0) ? o->tex.w - (abs((int)(p.x)) % o->tex.w) :
+			(int)p.x % o->tex.w;
+		p.y = (p.y < 0) ? o->tex.h - (abs((int)(p.y)) % o->tex.h) :
+			(int)p.y % o->tex.h;
+		return (ft_img_px_get(o->tex, (int)p.x, (int)p.y));
 	}
 	else
 		return (pl->color);
