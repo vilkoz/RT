@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 16:11:37 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/29 15:22:08 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/29 17:05:27 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -335,7 +335,8 @@ t_o3d				*new_cyl(t_vec v, double radius, double h,
 						t_material material);
 t_o3d				*new_cone(t_vec v, double h, double alpha,
 						t_material material);
-t_o3d				*new_disk(t_vec v, double radius, t_material material);
+t_o3d				*new_disk(t_vec v, double radius, int color,
+						t_material material);
 
 /*
 ** matrix.c

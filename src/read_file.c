@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 18:57:56 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/29 15:50:23 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/29 17:10:15 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,11 +201,13 @@ void		add_cyl_top(t_scene *s)
 
 	c = (t_cyl *)s->objects[s->cur_o - 1]->data;
 	m = s->objects[s->cur_o - 1]->material;
-	bot = v_to_p(v_sub(p_to_v(c->center), v_mul(c->dir, c->h / 2)));
-	top = v_to_p(v_add(p_to_v(c->center), v_mul(c->dir, c->h / 2)));
-	s->objects[s->cur_o] = new_disk(new_vec(c->dir, top), c->radius, m);
+	bot = v_to_p(v_sub(p_to_v(c->center), v_mul(c->dir, c->h)));
+	top = v_to_p(v_add(p_to_v(c->center), v_mul(c->dir, c->h)));
+	s->objects[s->cur_o] = new_disk(new_vec(c->dir, top), c->radius, c->color,
+		m);
 	s->cur_o++;
-	s->objects[s->cur_o] = new_disk(new_vec(c->dir, bot), c->radius, m);
+	s->objects[s->cur_o] = new_disk(new_vec(v_inv(c->dir), bot), c->radius,
+		c->color, m);
 	s->cur_o++;
 }
 
