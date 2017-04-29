@@ -6,11 +6,13 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 18:57:56 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/29 17:10:15 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/29 17:27:51 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
+
+// TODO: read vectors in_double
 
 void		read_error(char *s, int type)
 {
@@ -38,10 +40,10 @@ void		count_obj(t_scene *s, t_list *lst)
 		l = (char *)(tmp->content);
 		if (ft_strlen(l) == 0 || ft_strlen(l) == 1)
 			read_error(NULL, 2);
-		if ((l[0] == 's' || l[0] == 'p' || l[0] == 'o') &&
+		if ((l[0] == 's' || l[0] == 'p') &&
 			l[1] == ' ')
 			num_o++;
-		if (l[0] == 'y')
+		if (l[0] == 'y' || l[0] == 'o')
 			num_o += 3;
 		if (l[0] == 'l' && l[1] == ' ')
 			num_ls++;
@@ -259,6 +261,27 @@ void		init_cone(t_cone *c, t_material *m)
 	m->refl = 0;
 }
 
+void		add_cone_top(t_scene *s)
+{
+	t_cone		*c;
+	t_p3d		top;
+	t_p3d		bot;
+	double		radius;
+	t_material	m;
+
+	c = (t_cone *)s->objects[s->cur_o - 1]->data;
+	m = s->objects[s->cur_o - 1]->material;
+	bot = v_to_p(v_sub(p_to_v(c->center), v_mul(c->dir, c->h)));
+	top = v_to_p(v_add(p_to_v(c->center), v_mul(c->dir, c->h)));
+	radius = (c->sin_a / c->cos_a) * c->h;
+	s->objects[s->cur_o] = new_disk(new_vec(c->dir, top), radius, c->color,
+		m);
+	s->cur_o++;
+	s->objects[s->cur_o] = new_disk(new_vec(v_inv(c->dir), bot), radius,
+		c->color, m);
+	s->cur_o++;
+}
+
 void		read_cone(t_scene *s, char **arr)
 {
 	t_material	m;
@@ -288,6 +311,7 @@ void		read_cone(t_scene *s, char **arr)
 		c.dir.z)), new_p3d(c.center.x, c.center.y, c.center.z)), c.h, c.a,
 			new_material(c.color, m.tex, m.refl));
 	s->cur_o++;
+	add_cone_top(s);
 	free_arr(&arr);
 }
 
