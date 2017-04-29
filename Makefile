@@ -6,7 +6,7 @@
 #    By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/23 14:08:11 by vrybalko          #+#    #+#              #
-#    Updated: 2017/04/23 23:22:01 by vrybalko         ###   ########.fr        #
+#    Updated: 2017/04/29 15:30:03 by vrybalko         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,7 @@ SRCS = main.c						\
 			 sphere.c					\
 			 cylinder.c				\
 			 cone.c						\
+			 disk.c						\
 			 color.c					\
 			 plane.c					\
 			 matrix.c					\

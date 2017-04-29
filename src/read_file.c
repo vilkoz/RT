@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 18:57:56 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/25 23:56:19 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/29 15:50:23 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,11 @@ void		count_obj(t_scene *s, t_list *lst)
 		l = (char *)(tmp->content);
 		if (ft_strlen(l) == 0 || ft_strlen(l) == 1)
 			read_error(NULL, 2);
-		if ((l[0] == 's' || l[0] == 'p' || l[0] == 'y' || l[0] == 'o') &&
+		if ((l[0] == 's' || l[0] == 'p' || l[0] == 'o') &&
 			l[1] == ' ')
 			num_o++;
+		if (l[0] == 'y')
+			num_o += 3;
 		if (l[0] == 'l' && l[1] == ' ')
 			num_ls++;
 		tmp = tmp->next;
@@ -190,6 +192,23 @@ void		init_cyl(t_cyl *c, t_material *m)
 	m->refl = 0;
 }
 
+void		add_cyl_top(t_scene *s)
+{
+	t_cyl		*c;
+	t_p3d		top;
+	t_p3d		bot;
+	t_material	m;
+
+	c = (t_cyl *)s->objects[s->cur_o - 1]->data;
+	m = s->objects[s->cur_o - 1]->material;
+	bot = v_to_p(v_sub(p_to_v(c->center), v_mul(c->dir, c->h / 2)));
+	top = v_to_p(v_add(p_to_v(c->center), v_mul(c->dir, c->h / 2)));
+	s->objects[s->cur_o] = new_disk(new_vec(c->dir, top), c->radius, m);
+	s->cur_o++;
+	s->objects[s->cur_o] = new_disk(new_vec(c->dir, bot), c->radius, m);
+	s->cur_o++;
+}
+
 void		read_cyl(t_scene *s, char **arr)
 {
 	t_cyl		c;
@@ -212,7 +231,6 @@ void		read_cyl(t_scene *s, char **arr)
 			c.color = ft_atoi_base(ft_strchr(arr[i], 'x') + 1, 16);
 		(i == 10) ? m.tex = new_tex(arr[i]) : m.tex;
 		(i == 11) ? m.refl = ft_atod(arr[i]) : m.refl;
-
 	}
 	c.dir = (!c.dir.x && !c.dir.y && !c.dir.z) ? new_v3d(0, 1, 0) :
 		c.dir;
@@ -220,6 +238,7 @@ void		read_cyl(t_scene *s, char **arr)
 		new_p3d(c.center.x, c.center.y, c.center.z)), c.radius, c.h,
 		new_material(c.color, m.tex, m.refl));
 	s->cur_o++;
+	add_cyl_top(s);
 	free_arr(&arr);
 }
 

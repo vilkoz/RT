@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 16:11:37 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/28 19:09:22 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/29 15:22:08 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,6 +240,18 @@ typedef struct		s_cone
 	double			cos_a;
 }					t_cone;
 
+/*
+** disk
+*/
+
+typedef struct		s_disk
+{
+	t_p3d			p;
+	t_v3d			norm;
+	double			radius;
+	int				color;
+}					t_disk;
+
 t_e					*ft_mlx_init(t_scene *s);
 void				ft_img_px_put(t_e *e, int x, int y, int rgb);
 void				ft_mlx_events(t_e *e);
@@ -248,6 +260,7 @@ int					key_press(int key, t_e *e);
 int					key_release(int key, t_e *e);
 int					mouse_hook(int key, int x, int y, t_e *e);
 int					move_hook(int x, int y, t_e *e);
+
 /*
 ** render.c
 */
@@ -281,6 +294,8 @@ t_v3d				normalize(t_v3d v);
 t_v3d				cross_product(t_v3d a, t_v3d b);
 t_v3d				v_mul(t_v3d v, double n);
 t_p3d				rot_p(t_p3d p, t_v3d ang, t_p3d center);
+t_p3d				v_to_p(t_v3d v);
+t_v3d				p_to_v(t_p3d v);
 
 /*
 ** scene.c
@@ -314,10 +329,13 @@ int					solve_quad(t_p3d p, double *t0, double *t1);
 t_o3d				*new_sphere(t_p3d center, double radius,
 						t_material material);
 t_o3d				*new_plane(t_p3d p, t_v3d norm, t_material material);
+int					intersect_plane(const t_o3d *data, const t_p3d ray_start,
+						const t_v3d ray, t_p3d *inter_p);
 t_o3d				*new_cyl(t_vec v, double radius, double h,
 						t_material material);
 t_o3d				*new_cone(t_vec v, double h, double alpha,
 						t_material material);
+t_o3d				*new_disk(t_vec v, double radius, t_material material);
 
 /*
 ** matrix.c
