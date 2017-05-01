@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/14 17:13:21 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/01 21:01:10 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/02 01:03:28 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,9 @@ char	*print_v(t_v3d v)
 int		loop_hook(t_e *e)
 {
 	if (e->k.rot_x == 1)
-		rotate_cam_x(&e->s->cam, (1. * RAD));
-	if (e->k.rot_x == -1)
 		rotate_cam_x(&e->s->cam, (-1. * RAD));
+	if (e->k.rot_x == -1)
+		rotate_cam_x(&e->s->cam, (1. * RAD));
 	if (e->k.rot_y == 1)
 		rotate_cam_z(&e->s->cam, (1. * RAD));
 	if (e->k.rot_y == -1)
