@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 18:57:56 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/29 17:27:51 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/01 14:37:12 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,10 @@ void		read_sphere(t_scene *s, char **arr)
 	m.refl = 0;
 	while (arr[++i] != NULL)
 	{
-		(i == 1) ? sp.center.x = ft_atoi(arr[i]) : 23;
-		(i == 2) ? sp.center.y = ft_atoi(arr[i]) : 23;
-		(i == 3) ? sp.center.z = ft_atoi(arr[i]) : 23;
-		(i == 4) ? sp.radius = (double)ft_atoi(arr[i]) : 23;
+		(i == 1) ? sp.center.x = ft_atod(arr[i]) : 23;
+		(i == 2) ? sp.center.y = ft_atod(arr[i]) : 23;
+		(i == 3) ? sp.center.z = ft_atod(arr[i]) : 23;
+		(i == 4) ? sp.radius = (double)ft_atod(arr[i]) : 23;
 		if (i == 5 && ft_strchr(arr[i], 'x') != NULL)
 			sp.color = ft_atoi_base(ft_strchr(arr[i], 'x') + 1, 16);
 		if (i == 6 && ft_strcmp("NULL", arr[i]))
@@ -108,9 +108,9 @@ void		read_light(t_scene *s, char **arr)
 	i = 0;
 	while (arr[++i] != NULL)
 	{
-		(i == 1) ? p.x = ft_atoi(arr[i]) : 23;
-		(i == 2) ? p.y = ft_atoi(arr[i]) : 23;
-		(i == 3) ? p.z = ft_atoi(arr[i]) : 23;
+		(i == 1) ? p.x = ft_atod(arr[i]) : 23;
+		(i == 2) ? p.y = ft_atod(arr[i]) : 23;
+		(i == 3) ? p.z = ft_atod(arr[i]) : 23;
 	}
 	s->ls[s->cur_ls] = (t_p3d *)malloc(sizeof(t_p3d));
 	*s->ls[s->cur_ls] = new_p3d(p.x, p.y, p.z);
@@ -132,12 +132,12 @@ void		read_plane(t_scene *s, char **arr)
 	i = 0;
 	while (arr[++i] != NULL)
 	{
-		(i == 1) ? p.p.x = ft_atoi(arr[i]) : 23;
-		(i == 2) ? p.p.y = ft_atoi(arr[i]) : 23;
-		(i == 3) ? p.p.z = ft_atoi(arr[i]) : 23;
-		(i == 4) ? p.norm.x = ft_atoi(arr[i]) : 23;
-		(i == 5) ? p.norm.y = ft_atoi(arr[i]) : 23;
-		(i == 6) ? p.norm.z = ft_atoi(arr[i]) : 23;
+		(i == 1) ? p.p.x = ft_atod(arr[i]) : 23;
+		(i == 2) ? p.p.y = ft_atod(arr[i]) : 23;
+		(i == 3) ? p.p.z = ft_atod(arr[i]) : 23;
+		(i == 4) ? p.norm.x = ft_atod(arr[i]) : 23;
+		(i == 5) ? p.norm.y = ft_atod(arr[i]) : 23;
+		(i == 6) ? p.norm.z = ft_atod(arr[i]) : 23;
 		if (i == 7 && ft_strchr(arr[i], 'x') != NULL)
 			p.color = ft_atoi_base(ft_strchr(arr[i], 'x') + 1, 16);
 		(i == 8) ? p.tex = new_tex(arr[i]) : p.tex;
@@ -165,12 +165,12 @@ void		read_cam(t_scene *s, char **arr)
 	cam.dir.z = 0;
 	while (arr[++i] != NULL)
 	{
-		(i == 1) ? cam.pos.x = ft_atoi(arr[i]) : 23;
-		(i == 2) ? cam.pos.y = ft_atoi(arr[i]) : 24;
-		(i == 3) ? cam.pos.z = ft_atoi(arr[i]) : 23;
-		(i == 4) ? cam.dir.x = ft_atoi(arr[i]) : 23;
-		(i == 5) ? cam.dir.y = ft_atoi(arr[i]) : 23;
-		(i == 6) ? cam.dir.z = ft_atoi(arr[i]) : 23;
+		(i == 1) ? cam.pos.x = ft_atod(arr[i]) : 23;
+		(i == 2) ? cam.pos.y = ft_atod(arr[i]) : 24;
+		(i == 3) ? cam.pos.z = ft_atod(arr[i]) : 23;
+		(i == 4) ? cam.dir.x = ft_atod(arr[i]) : 23;
+		(i == 5) ? cam.dir.y = ft_atod(arr[i]) : 23;
+		(i == 6) ? cam.dir.z = ft_atod(arr[i]) : 23;
 	}
 	cam.dir = (!cam.dir.x && !cam.dir.y && !cam.dir.z) ? new_v3d(0, 1, 0) :
 		cam.dir;
@@ -223,14 +223,14 @@ void		read_cyl(t_scene *s, char **arr)
 	init_cyl(&c, &m);
 	while (arr[++i])
 	{
-		(i == 1) ? c.center.x = ft_atoi(arr[i]) : 23;
-		(i == 2) ? c.center.y = ft_atoi(arr[i]) : 23;
-		(i == 3) ? c.center.z = ft_atoi(arr[i]) : 23;
-		(i == 4) ? c.dir.x = ft_atoi(arr[i]) : 23;
-		(i == 5) ? c.dir.y = ft_atoi(arr[i]) : 23;
-		(i == 6) ? c.dir.z = ft_atoi(arr[i]) : 23;
-		(i == 7) ? c.radius = (double)ft_atoi(arr[i]) : 23;
-		(i == 8) ? c.h = (double)ft_atoi(arr[i]) : 23;
+		(i == 1) ? c.center.x = ft_atod(arr[i]) : 23;
+		(i == 2) ? c.center.y = ft_atod(arr[i]) : 23;
+		(i == 3) ? c.center.z = ft_atod(arr[i]) : 23;
+		(i == 4) ? c.dir.x = ft_atod(arr[i]) : 23;
+		(i == 5) ? c.dir.y = ft_atod(arr[i]) : 23;
+		(i == 6) ? c.dir.z = ft_atod(arr[i]) : 23;
+		(i == 7) ? c.radius = (double)ft_atod(arr[i]) : 23;
+		(i == 8) ? c.h = (double)ft_atod(arr[i]) : 23;
 		if (i == 9 && ft_strchr(arr[i], 'x') != NULL)
 			c.color = ft_atoi_base(ft_strchr(arr[i], 'x') + 1, 16);
 		(i == 10) ? m.tex = new_tex(arr[i]) : m.tex;
@@ -292,14 +292,14 @@ void		read_cone(t_scene *s, char **arr)
 	init_cone(&c, &m);
 	while (arr[++i])
 	{
-		(i == 1) ? c.center.x = ft_atoi(arr[i]) : 23;
-		(i == 2) ? c.center.y = ft_atoi(arr[i]) : 23;
-		(i == 3) ? c.center.z = ft_atoi(arr[i]) : 23;
-		(i == 4) ? c.dir.x = ft_atoi(arr[i]) : 23;
-		(i == 5) ? c.dir.y = ft_atoi(arr[i]) : 23;
-		(i == 6) ? c.dir.z = ft_atoi(arr[i]) : 23;
-		(i == 7) ? c.a = (double)ft_atoi(arr[i]) : 23;
-		(i == 8) ? c.h = (double)ft_atoi(arr[i]) : 23;
+		(i == 1) ? c.center.x = ft_atod(arr[i]) : 23;
+		(i == 2) ? c.center.y = ft_atod(arr[i]) : 23;
+		(i == 3) ? c.center.z = ft_atod(arr[i]) : 23;
+		(i == 4) ? c.dir.x = ft_atod(arr[i]) : 23;
+		(i == 5) ? c.dir.y = ft_atod(arr[i]) : 23;
+		(i == 6) ? c.dir.z = ft_atod(arr[i]) : 23;
+		(i == 7) ? c.a = (double)ft_atod(arr[i]) : 23;
+		(i == 8) ? c.h = (double)ft_atod(arr[i]) : 23;
 		if (i == 9 && ft_strchr(arr[i], 'x') != NULL)
 			c.color = ft_atoi_base(ft_strchr(arr[i], 'x') + 1, 16);
 		(i == 10) ? m.tex = new_tex(arr[i]) : m.tex;
