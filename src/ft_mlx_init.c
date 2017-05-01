@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/07 17:25:07 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/24 00:26:49 by tor              ###   ########.fr       */
+/*   Updated: 2017/05/01 18:01:43 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ t_e			*ft_mlx_init(t_scene *s)
 	e->v_x = 0;
 	e->v_y = 0;
 	e->changed = 1;
+	e->fast_mode = 1;
 	e->s = s;
 	init_keys(&e->k);
 	return (e);

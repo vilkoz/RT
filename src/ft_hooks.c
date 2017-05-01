@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/14 17:13:21 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/24 19:48:26 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/01 21:01:10 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,39 +14,51 @@
 
 int		key_press(int key, t_e *e)
 {
-	if (key == 53)
+	if (key == K_ESC)
 		exit(0);
-	(key == 123) ? e->k.rot_x = -1 : 23;
-	(key == 124) ? e->k.rot_x = 1 : 23;
-	(key == 125) ? e->k.rot_y = -1 : 23;
-	(key == 126) ? e->k.rot_y = 1 : 23;
+	(key == K_RA) ? e->k.rot_x = -1 : 23;
+	(key == K_LA) ? e->k.rot_x = 1 : 23;
+	(key == K_DA) ? e->k.rot_y = -1 : 23;
+	(key == K_UA) ? e->k.rot_y = 1 : 23;
 	(key == 116) ? e->k.rot_z = -1 : 23;
 	(key == 121) ? e->k.rot_z = 1 : 23;
 	(key == 24) ? e->k.bias = 1 : 23;
 	(key == 27) ? e->k.bias = -1 : 23;
-//	e->changed = 1;
+	(key == K_ENT) ? e->fast_mode = (e->fast_mode + 1) % 2 : 23;
+	mlx_loop_hook(e->mlx, loop_hook, e);
 	return (0);
 }
 
 int		key_release(int key, t_e *e)
 {
-	if (key == 53)
+	if (key == K_ESC)
 		exit(0);
-	(key == 123 || key == 124) ? e->k.rot_x = 0 : 23;
-	(key == 125 || key == 126) ? e->k.rot_y = 0 : 23;
+	(key == K_LA || key == K_RA) ? e->k.rot_x = 0 : 23;
+	(key == K_DA || key == K_UA) ? e->k.rot_y = 0 : 23;
 	(key == 116 || key == 121) ? e->k.rot_z = 0 : 23;
 	(key == 24 || key == 27) ? e->k.bias = 0 : 23;
 	return (0);
 }
 
+char	*print_v(t_v3d v)
+{
+	char *s;
+	s = malloc(sizeof(char) * 100);
+	sprintf(s, "x = %f, y = %f, z = %f", v.x, v.y, v.z);
+	return s;
+}
+
 int		loop_hook(t_e *e)
 {
-	if (e->changed == 0)
-		return (0);
-	(e->k.rot_x == 1) ? e->ang_x += 1 : 23;
-	(e->k.rot_x == -1) ? e->ang_x -= 1 : 23;
-	(e->k.rot_y == 1) ? e->ang_y += 1 : 23;
-	(e->k.rot_y == -1) ? e->ang_y -= 1 : 23;
+	if (e->k.rot_x == 1)
+		rotate_cam_x(&e->s->cam, (1. * RAD));
+	if (e->k.rot_x == -1)
+		rotate_cam_x(&e->s->cam, (-1. * RAD));
+	if (e->k.rot_y == 1)
+		rotate_cam_z(&e->s->cam, (1. * RAD));
+	if (e->k.rot_y == -1)
+		rotate_cam_z(&e->s->cam, (-1. * RAD));
+	printf("dir = %s, down = %s, up = %s\n", print_v(e->s->cam.dir), print_v(e->s->cam.dir_d), print_v(e->s->cam.dir_r));
 	(e->k.rot_z == 1) ? e->ang_z += 1 : 23;
 	(e->k.rot_z == -1) ? e->ang_z -= 1 : 23;
 	(e->k.bias == -1) ? e->bias -= 0.1 : 23;

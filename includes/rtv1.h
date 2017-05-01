@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 16:11:37 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/29 17:05:27 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/01 19:53:01 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 
 # include "../libft/libft.h"
 # include "mlx.h"
+# include "keys.h"
 # include <math.h>
 # include <stdio.h>
 # include <fcntl.h>
@@ -151,8 +152,8 @@ typedef struct		s_cam
 
 typedef struct		s_scene
 {
-	int				obj_num;
 	t_o3d			**objects;
+	int				obj_num;
 	t_p3d			**ls;
 	int				ls_num;
 	t_cam			cam;
@@ -175,16 +176,18 @@ typedef struct		s_e
 	int				v_y;
 	double			bias;
 	int				changed;
+	int				fast_mode;
 	t_k				k;
 	t_scene			*s;
+	int				thread_c[THREADS];
 }					t_e;
 
 typedef struct		s_thread
 {
 	pthread_t		id;
 	t_e				*e;
-	t_p2d			start;
-	t_p2d			end;
+	t_p2d			y_area;
+	int				i;
 }					t_thread;
 
 /*
@@ -252,6 +255,8 @@ typedef struct		s_disk
 	int				color;
 }					t_disk;
 
+# include "quaternion.h"
+
 t_e					*ft_mlx_init(t_scene *s);
 void				ft_img_px_put(t_e *e, int x, int y, int rgb);
 void				ft_mlx_events(t_e *e);
@@ -304,7 +309,6 @@ t_v3d				p_to_v(t_p3d v);
 t_scene				*new_scene(int obj_num, t_o3d **obj, t_p3d ls, t_cam cam);
 t_cam				new_cam(t_p3d pos, t_v3d dir);
 double				cos_vectors(t_v3d v1, t_v3d v2);
-void				rotate_cam_x(t_cam *cam, double ang);
 t_v3d				pix_vector(t_p2d p, t_scene *s);
 
 /*
@@ -360,6 +364,7 @@ t_scene				*read_file(char *name);
 
 t_tex				new_tex(char *path);
 int					ft_img_px_get(t_tex tex, int x, int y);
+t_tex				new_raw_tex(void *img, int w, int h);
 
 /*
 ** get_color.c
@@ -374,5 +379,13 @@ int					get_color(t_scene *s, t_o3d *obj, t_vec v, int rn);
 */
 
 t_material			new_material(int color, t_tex tex, float refl);
+
+/*
+** camera.c
+*/
+
+void				rotate_cam_x(t_cam *cam, double ang);
+void				rotate_cam_y(t_cam *cam, double ang);
+void				rotate_cam_z(t_cam *cam, double ang);
 
 #endif
