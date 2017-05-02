@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 16:11:37 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/01 19:53:01 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/02 21:04:22 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,12 @@
 # include <time.h>
 # include <pthread.h>
 
+typedef struct		s_p2d
+{
+	double			x;
+	double			y;
+}					t_p2d;
+
 /*
 ** struct for key events
 */
@@ -47,13 +53,8 @@ typedef struct		s_k
 	int				rot_y;
 	int				rot_z;
 	int				bias;
+	t_p2d			move;
 }					t_k;
-
-typedef struct		s_p2d
-{
-	double			x;
-	double			y;
-}					t_p2d;
 
 typedef struct		s_p3d
 {
