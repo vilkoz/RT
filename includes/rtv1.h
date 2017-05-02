@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 16:11:37 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/02 21:04:22 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/03 00:49:40 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ typedef struct		s_k
 	int				rot_y;
 	int				rot_z;
 	int				bias;
-	t_p2d			move;
+	int				move_x;
+	int				move_y;
 }					t_k;
 
 typedef struct		s_p3d
@@ -170,13 +171,8 @@ typedef struct		s_e
 	void			*img;
 	int				h;
 	int				w;
-	int				ang_y;
-	int				ang_x;
-	int				ang_z;
 	int				v_x;
 	int				v_y;
-	double			bias;
-	int				changed;
 	int				fast_mode;
 	t_k				k;
 	t_scene			*s;

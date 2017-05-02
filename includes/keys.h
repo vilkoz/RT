@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/01 17:41:57 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/01 18:22:46 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/03 01:17:02 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@
 #  define K_Q XK_q
 #  define K_SP XK_space
 #  define K_ENT XK_Return
+#  define K_PUP XK_Page_Up
+#  define K_PDN XK_Page_Down
 # else
 #  define K_ESC 53
 #  define K_W 13
@@ -46,4 +48,6 @@
 #  define K_DA 125
 #  define K_SP 49
 #  define K_ENT 36
+#  define K_PUP 116
+#  define K_PDN 121
 # endif
