@@ -6,7 +6,7 @@
 #    By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/23 14:08:11 by vrybalko          #+#    #+#              #
-#    Updated: 2017/04/23 23:22:01 by vrybalko         ###   ########.fr        #
+#    Updated: 2017/05/01 19:54:14 by vrybalko         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,13 +37,16 @@ SRCS = main.c						\
 			 sphere.c					\
 			 cylinder.c				\
 			 cone.c						\
+			 disk.c						\
 			 color.c					\
 			 plane.c					\
 			 matrix.c					\
 			 read_file.c			\
 			 textures.c				\
 			 get_color.c			\
-			 material.c
+			 material.c				\
+			 camera.c					\
+			 quaternion.c
 
 BINS = $(addprefix $(BIN_DIR), $(SRCS:.c=.o))
 
@@ -51,7 +54,7 @@ all: $(NAME)
 
 $(NAME): $(BINS)
 	make -C libft/
-	gcc -o $(NAME) $(BINS) $(FLAGS) $(FLAGS_MLX) $(LIB)
+	gcc -o $(NAME) $(BINS) $(FLAGS) $(FLAGS_X11) $(LIB)
 
 $(BIN_DIR)%.o: %.c
 	gcc $(FLAGS) -c -o $@ $<

@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 16:11:37 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/26 20:47:50 by kshcherb         ###   ########.fr       */
+/*   Updated: 2017/05/03 00:49:40 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,18 @@
 
 # include "../libft/libft.h"
 # include "mlx.h"
+# include "keys.h"
 # include <math.h>
 # include <stdio.h>
 # include <fcntl.h>
 # include <time.h>
 # include <pthread.h>
+
+typedef struct		s_p2d
+{
+	double			x;
+	double			y;
+}					t_p2d;
 
 /*
 ** struct for key events
@@ -46,13 +53,9 @@ typedef struct		s_k
 	int				rot_y;
 	int				rot_z;
 	int				bias;
+	int				move_x;
+	int				move_y;
 }					t_k;
-
-typedef struct		s_p2d
-{
-	double			x;
-	double			y;
-}					t_p2d;
 
 typedef struct		s_p3d
 {
@@ -151,8 +154,8 @@ typedef struct		s_cam
 
 typedef struct		s_scene
 {
-	int				obj_num;
 	t_o3d			**objects;
+	int				obj_num;
 	t_p3d			**ls;
 	int				ls_num;
 	t_cam			cam;
@@ -168,23 +171,20 @@ typedef struct		s_e
 	void			*img;
 	int				h;
 	int				w;
-	int				ang_y;
-	int				ang_x;
-	int				ang_z;
 	int				v_x;
 	int				v_y;
-	double			bias;
-	int				changed;
+	int				fast_mode;
 	t_k				k;
 	t_scene			*s;
+	int				thread_c[THREADS];
 }					t_e;
 
 typedef struct		s_thread
 {
 	pthread_t		id;
 	t_e				*e;
-	t_p2d			start;
-	t_p2d			end;
+	t_p2d			y_area;
+	int				i;
 }					t_thread;
 
 /*
@@ -240,6 +240,20 @@ typedef struct		s_cone
 	double			cos_a;
 }					t_cone;
 
+/*
+** disk
+*/
+
+typedef struct		s_disk
+{
+	t_p3d			p;
+	t_v3d			norm;
+	double			radius;
+	int				color;
+}					t_disk;
+
+# include "quaternion.h"
+
 t_e					*ft_mlx_init(t_scene *s);
 void				ft_img_px_put(t_e *e, int x, int y, int rgb);
 void				ft_mlx_events(t_e *e);
@@ -248,6 +262,7 @@ int					key_press(int key, t_e *e);
 int					key_release(int key, t_e *e);
 int					mouse_hook(int key, int x, int y, t_e *e);
 int					move_hook(int x, int y, t_e *e);
+
 /*
 ** render.c
 */
@@ -261,6 +276,7 @@ int					is_viewable(t_p3d p1, t_p3d p2, t_scene *s, t_o3d *obj1);
 ** ray_tools.c
 */
 
+t_p2d				plane_coords(t_vec v, t_p3d p);
 int					same_dir(t_v3d v1, t_v3d v2);
 t_v3d				v_inv(t_v3d v);
 double				v_sqr(t_v3d v);
@@ -280,6 +296,8 @@ t_v3d				normalize(t_v3d v);
 t_v3d				cross_product(t_v3d a, t_v3d b);
 t_v3d				v_mul(t_v3d v, double n);
 t_p3d				rot_p(t_p3d p, t_v3d ang, t_p3d center);
+t_p3d				v_to_p(t_v3d v);
+t_v3d				p_to_v(t_p3d v);
 
 /*
 ** scene.c
@@ -288,7 +306,6 @@ t_p3d				rot_p(t_p3d p, t_v3d ang, t_p3d center);
 t_scene				*new_scene(int obj_num, t_o3d **obj, t_p3d ls, t_cam cam);
 t_cam				new_cam(t_p3d pos, t_v3d dir);
 double				cos_vectors(t_v3d v1, t_v3d v2);
-void				rotate_cam_x(t_cam *cam, double ang);
 t_v3d				pix_vector(t_p2d p, t_scene *s);
 
 /*
@@ -313,9 +330,13 @@ int					solve_quad(t_p3d p, double *t0, double *t1);
 t_o3d				*new_sphere(t_p3d center, double radius,
 						t_material material);
 t_o3d				*new_plane(t_p3d p, t_v3d norm, t_material material);
+int					intersect_plane(const t_o3d *data, const t_p3d ray_start,
+						const t_v3d ray, t_p3d *inter_p);
 t_o3d				*new_cyl(t_vec v, double radius, double h,
 						t_material material);
 t_o3d				*new_cone(t_vec v, double h, double alpha,
+						t_material material);
+t_o3d				*new_disk(t_vec v, double radius, int color,
 						t_material material);
 
 /*
@@ -340,6 +361,7 @@ t_scene				*read_file(char *name);
 
 t_tex				new_tex(char *path);
 int					ft_img_px_get(t_tex tex, int x, int y);
+t_tex				new_raw_tex(void *img, int w, int h);
 
 /*
 ** get_color.c
@@ -354,5 +376,13 @@ int					get_color(t_scene *s, t_o3d *obj, t_vec v, int rn);
 */
 
 t_material			new_material(int color, t_tex tex, float refl);
+
+/*
+** camera.c
+*/
+
+void				rotate_cam_x(t_cam *cam, double ang);
+void				rotate_cam_y(t_cam *cam, double ang);
+void				rotate_cam_z(t_cam *cam, double ang);
 
 #endif
