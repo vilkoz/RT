@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 16:11:37 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/03 00:49:40 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/03 20:12:55 by kshcherb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ typedef struct		s_material
 	int				color;
 	t_tex			tex;
 	float			refl;
+	float			bamp;
 }					t_material;
 
 /*
