@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 19:05:49 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/26 20:48:27 by kshcherb         ###   ########.fr       */
+/*   Updated: 2017/05/03 17:12:42 by kshcherb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ t_v3d	get_norm_plane(t_o3d *o, t_p3d inter_p)
 		t_p2d	p;
 		t_v3d	v_axis;
 
+
 		(void)inter_p;
 		t_plane	*pl;
 		pl = (t_plane *)o->data;
@@ -39,15 +40,19 @@ t_v3d	get_norm_plane(t_o3d *o, t_p3d inter_p)
 			p.y = v_len(perp);
 			p.x = v_len(new_v3d_p(new_p3d(inter_p.x + perp.x, inter_p.y + perp.y,
 				inter_p.z + perp.z), pl->p));
-
 			c1 = gray_scale(ft_img_px_get(o->tex, ((int)(p.x) % o->tex.w),
 				((int)(p.y) % o->tex.h)));
 			c2 = gray_scale(ft_img_px_get(o->tex, ((int)(p.x + 1) % o->tex.w),
 				((int)(p.y) % o->tex.h)));
 			c3 = gray_scale(ft_img_px_get(o->tex, ((int)(p.x) % o->tex.w),
 				((int)(p.y + 1) % o->tex.h)));
-			g.x = c1 - c2;
-			g.y = c3 - c2;
+			g.x = c2 - c1;
+			g.y = c3 - c1;
+			//if (g.x < 0)
+				//g.x *= -1;
+			//if (g.y < 0)
+				//g.y *= -1;
+			//printf("|| g.x = %f g.y = %f \n", g.x, g.y);
 			perp = normalize(perp);
 			v_axis = cross_product(perp, pl->norm);
 			return (v_add(v_add(v_mul(perp, g.x), pl->norm), v_mul(v_axis, g.y)));
