@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 16:11:37 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/24 00:45:50 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/03 17:29:56 by aosobliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,6 +241,18 @@ typedef struct		s_cone
 	double			cos_a;
 }					t_cone;
 
+/*
+** polygon
+*/
+
+typedef struct		s_poly
+{
+	t_v3d 			*P;
+	t_v3d			norm;
+	int 			count;
+	int				color;
+}					t_poly;
+
 t_e					*ft_mlx_init(t_scene *s);
 void				ft_img_px_put(t_e *e, int x, int y, int rgb);
 void				ft_mlx_events(t_e *e);
@@ -319,6 +331,7 @@ t_o3d				*new_cyl(t_vec v, double radius, double h,
 						t_material material);
 t_o3d				*new_cone(t_vec v, double h, double alpha,
 						t_material material);
+t_o3d				*new_poly(t_poly poly, t_material material);
 
 /*
 ** matrix.c
@@ -356,5 +369,11 @@ int					get_color(t_scene *s, t_o3d *obj, t_vec v, int rn);
 */
 
 t_material			new_material(int color, t_tex tex, float refl);
+
+/*
+** read_poligon.c
+*/
+
+void				read_poligon(char *file);
 
 #endif
