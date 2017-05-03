@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 16:11:37 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/03 17:29:56 by aosobliv         ###   ########.fr       */
+/*   Updated: 2017/05/03 20:51:05 by aosobliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,7 +247,7 @@ typedef struct		s_cone
 
 typedef struct		s_poly
 {
-	t_v3d 			*P;
+	t_p3d 			*P;
 	t_v3d			norm;
 	int 			count;
 	int				color;
@@ -276,6 +276,7 @@ int					is_viewable(t_p3d p1, t_p3d p2, t_scene *s, t_o3d *obj1);
 ** ray_tools.c
 */
 
+t_p2d				plane_coords(t_vec v, t_p3d p);
 int					same_dir(t_v3d v1, t_v3d v2);
 t_v3d				v_inv(t_v3d v);
 double				v_sqr(t_v3d v);
@@ -331,8 +332,7 @@ t_o3d				*new_cyl(t_vec v, double radius, double h,
 						t_material material);
 t_o3d				*new_cone(t_vec v, double h, double alpha,
 						t_material material);
-t_o3d				*new_poly(t_poly poly, t_material material);
-
+t_o3d				*new_poly(t_p3d *P, int count, t_material material);
 /*
 ** matrix.c
 */
