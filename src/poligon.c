@@ -6,16 +6,16 @@
 /*   By: aosobliv <aosobliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 18:51:48 by aosobliv          #+#    #+#             */
-/*   Updated: 2017/05/03 20:55:25 by aosobliv         ###   ########.fr       */
+/*   Updated: 2017/05/03 21:23:30 by aosobliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-t_v3d	get_norm_poly(void *dat, t_p3d inter_p)
+t_v3d	get_norm_poly(t_o3d *dat, t_p3d inter_p)
 {
 	(void)inter_p;
-	return (((t_poly *)dat)->norm);
+	return (((t_poly *)dat->data)->norm);
 }
 
 int		get_poly_color(t_o3d *obj, t_p3d inter_p)
@@ -59,10 +59,12 @@ int		in_poligon(t_poly *poly, t_p3d inter_p)
 	return (0);
 }
 
-int		intersect_poly(const void *data, t_p3d *inter_p)
+int		intersect_poly(const t_o3d *data, const t_p3d ray_start,
+	const t_v3d ray, t_p3d *inter_p)
 {
 	t_poly	poly;
-	poly = *(t_poly *)data;
+
+	poly = *(t_poly *)data->data;
 	if (in_poligon(&poly, *inter_p) == 0)
 		return (FALSE);
 	return (1);
@@ -83,8 +85,7 @@ t_o3d	*new_poly(t_p3d *P, int count, t_material material)
 	obj->data = (void *)poly;
 	obj->get_color = get_poly_color;
 	obj->get_norm = get_norm_poly;
-	obj->intersect = (int (*)(const void *, const t_p3d, const t_v3d, t_p3d *))
-		intersect_poly;
+	obj->intersect = intersect_poly;
 	obj->tex = material.tex;
 	obj->material = material;
 	return (obj);
