@@ -6,7 +6,7 @@
 #    By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/23 14:08:11 by vrybalko          #+#    #+#              #
-#    Updated: 2017/04/26 20:18:43 by aosobliv         ###   ########.fr        #
+#    Updated: 2017/05/03 21:10:06 by vrybalko         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,7 @@ SRCS = main.c						\
 			 sphere.c					\
 			 cylinder.c				\
 			 cone.c						\
+			 disk.c						\
 			 color.c					\
 			 plane.c					\
 			 matrix.c					\
@@ -46,6 +47,8 @@ SRCS = main.c						\
 			 material.c				\
 			 read_poligon.c			\
 			 poligon.c				\
+			 camera.c					\
+			 quaternion.c
 
 BINS = $(addprefix $(BIN_DIR), $(SRCS:.c=.o))
 

@@ -6,16 +6,31 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/21 18:50:51 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/21 20:41:50 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/01 18:52:04 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
+t_tex	new_raw_tex(void *img, int w, int h)
+{
+	t_tex	t;
+
+	t.img = img;
+	t.w = w;
+	t.h = h;
+	return (t);
+}
+
 t_tex	new_tex(char *path)
 {
 	t_tex	t;
 
+	if (!ft_strcmp(path, "NULL"))
+	{
+		t.img = NULL;
+		return (t);
+	}
 	if ((t.img = mlx_xpm_file_to_image(mlx_init(), path, &(t.w), &(t.h)))
 		== NULL)
 		perror(path);

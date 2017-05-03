@@ -6,18 +6,18 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 19:05:49 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/24 18:09:00 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/04/26 19:00:32 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-t_v3d	get_norm_sphere(void *dat, t_p3d inter_p)
+t_v3d	get_norm_sphere(t_o3d *dat, t_p3d inter_p)
 {
 	t_sphere	*sp;
 	t_v3d		res;
 
-	sp = (t_sphere *)dat;
+	sp = (t_sphere *)dat->data;
 	res = new_v3d(inter_p.x - sp->center.x, inter_p.y - sp->center.y,
 		inter_p.z - sp->center.z);
 	return (normalize(res));
@@ -25,16 +25,24 @@ t_v3d	get_norm_sphere(void *dat, t_p3d inter_p)
 
 int		get_sphere_color(t_o3d *obj, t_p3d inter_p)
 {
-	t_v3d		norm;
+	// t_v3d		norm;
 	t_p2d		p;
+	t_sphere	*s;
 
 	if (obj->tex.img)
 	{
-		norm = obj->get_norm(obj->data, inter_p);
-		p.x = norm.x / 2 + 0.5;
-		p.y = norm.y / 2 + 0.5;
-		return (ft_img_px_get(obj->tex, (int)(p.x * obj->tex.w) * 3 %
-			obj->tex.w, (int)(p.y * obj->tex.h) * 3 % obj->tex.h));
+		s = (t_sphere *)obj->data;
+		p.x = (acos((inter_p.z - s->center.z) /
+			v_len(new_v3d_p(inter_p, s->center))) / M_PI) * obj->tex.w;
+		p.y = ((atan2(inter_p.y - s->center.y, inter_p.x - s->center.x) + M_PI)
+			/ (2. * M_PI)) * obj->tex.h;
+		return (ft_img_px_get(obj->tex, (int)p.x * 2 % obj->tex.w,
+			(int)p.y * 2 % obj->tex.h));
+		// norm = obj->get_norm(obj->data, inter_p);
+		// p.x = norm.x / 2 + 0.5;
+		// p.y = norm.y / 2 + 0.5;
+		// return (ft_img_px_get(obj->tex, (int)(p.x * obj->tex.w * 3) %
+		// 	obj->tex.w, (int)(p.y * obj->tex.h * 3) % obj->tex.h));
 	}
 	else
 		return (((t_sphere *)obj->data)->color);
@@ -63,7 +71,7 @@ int		solve_quad(t_p3d p, double *t0, double *t1)
 	return (TRUE);
 }
 
-int		intersect_sphere(const void *data, const t_p3d ray_start,
+int		intersect_sphere(const t_o3d *data, const t_p3d ray_start,
 						const t_v3d ray, t_p3d *inter_p)
 {
 	double		t0;
@@ -71,7 +79,7 @@ int		intersect_sphere(const void *data, const t_p3d ray_start,
 	double		t;
 	t_sphere	*sp;
 
-	sp = (t_sphere *)data;
+	sp = (t_sphere *)data->data;
 	if (!solve_quad(new_p3d(1., 2 * (ray.x * (ray_start.x - sp->center.x) +
 					ray.y * (ray_start.y - sp->center.y) +
 					ray.z * (ray_start.z - sp->center.z)),

@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/15 17:36:47 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/24 00:49:58 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/03 00:48:03 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ int			is_viewable(t_p3d p1, t_p3d p2, t_scene *s, t_o3d *obj1)
 	t_p3d	p_b;
 
 	i = -1;
-	norm = obj1->get_norm(obj1->data, p1);
+	norm = obj1->get_norm(obj1, p1);
 	p_b = new_p3d(p1.x + norm.x * 0.01, p1.y + norm.y * 0.01,
 		p1.z + norm.z * 0.01);
 	while (++i < s->obj_num)
 	{
 		obj = s->objects[i];
-		if (obj->intersect(obj->data, p_b, normalize(new_v3d_p(p2, p_b)),
+		if (obj->intersect(obj, p_b, normalize(new_v3d_p(p2, p_b)),
 			&inter_p))
 		{
 			if (distance(p1, inter_p) > distance(p1, p2))
@@ -53,7 +53,7 @@ int			find_nearest(t_scene *s, t_vec vec, t_p3d *inter_p, t_o3d **obj1)
 	while (++p.z < s->obj_num)
 	{
 		obj = s->objects[(int)p.z];
-		if (obj->intersect(obj->data, vec.p, vec.dir, inter_p))
+		if (obj->intersect(obj, vec.p, vec.dir, inter_p))
 		{
 			p.y = distance(*inter_p, vec.p);
 			(p.x == 0) ? p.x = p.y : 23;
@@ -108,20 +108,46 @@ int			anti_alias(t_p2d p, t_scene *s)
 		((SAMPLES * 2 - 1) * (SAMPLES * 2 - 1)))));
 }
 
-void		find_intersect(t_e *e, t_scene *s, t_p2d start, t_p2d end)
+int			fast_render(t_p2d p1, t_p2d p, t_e *e, int t_num)
+{
+	t_p3d				inter_p;
+	t_o3d				*obj;
+	int					res;
+	t_p2d				i;
+
+	res = 0;
+	(void)t_num;
+	if ((int)(p1.x) % 10 == 0 && (int)p1.y % 10 == 0)
+	{
+		if (find_nearest(e->s, new_vec(pix_vector(p, e->s), e->s->cam.pos),
+			&inter_p, &obj))
+			res = get_light_color(e->s, obj, inter_p);
+		i.x = -1;
+		while (++i.x < 10)
+		{
+			i.y = -1;
+			while (++i.y < 10)
+				ft_img_px_put(e, p1.x + i.x, p1.y + i.y, res);
+		}
+	}
+	return (ft_img_px_get(new_raw_tex(e->img, e->w, e->h), p1.x, p1.y));
+}
+
+void		find_intersect(t_e *e, t_scene *s, t_p2d y_area, int i)
 {
 	t_p2d		p;
 	t_p2d		p1;
 
-	p1.y = start.y - 1;
-	while (++p1.y < end.y)
+	p1.y = y_area.x - 1;
+	while (++p1.y < y_area.y)
 	{
-		p1.x = start.x - 1;
-		while (++p1.x < end.x)
+		p1.x = 0 - 1;
+		while (++p1.x < e->w)
 		{
 			p.x = ((p1.x - e->w / 2.0) / e->w) * ASP;
 			p.y = (p1.y - e->h / 2.0) / e->h;
-			ft_img_px_put(e, p1.x, p1.y, anti_alias(p, s));
+			ft_img_px_put(e, p1.x, p1.y,
+				(e->fast_mode) ? fast_render(p1, p, e, i) : anti_alias(p, s));
 		}
 	}
 }
@@ -131,7 +157,7 @@ void		*thread_start(void *t)
 	t_thread	*t1;
 
 	t1 = (t_thread *)t;
-	find_intersect(t1->e, t1->e->s, t1->start, t1->end);
+	find_intersect(t1->e, t1->e->s, t1->y_area, t1->i);
 	return (NULL);
 }
 
@@ -148,13 +174,12 @@ void		render(t_e *e)
 	while (++i < THREADS)
 	{
 		t[i].e = e;
-		t[i].start = new_p2d(0, (int)starty);
-		t[i].end = new_p2d(e->w, (int)(starty + dy));
+		t[i].y_area = new_p2d((int)starty, (int)(starty + dy));
+		t[i].i = i;
 		pthread_create(&(t[i].id), NULL, thread_start, &(t[i]));
 		starty += dy;
 	}
 	i = -1;
 	while (++i < THREADS)
 		pthread_join(t[i].id, NULL);
-	e->changed = 0;
 }

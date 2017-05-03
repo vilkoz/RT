@@ -6,11 +6,13 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 18:57:56 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/24 00:22:59 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/01 14:37:12 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
+
+// TODO: read vectors in_double
 
 void		read_error(char *s, int type)
 {
@@ -38,9 +40,11 @@ void		count_obj(t_scene *s, t_list *lst)
 		l = (char *)(tmp->content);
 		if (ft_strlen(l) == 0 || ft_strlen(l) == 1)
 			read_error(NULL, 2);
-		if ((l[0] == 's' || l[0] == 'p' || l[0] == 'y' || l[0] == 'o') &&
+		if ((l[0] == 's' || l[0] == 'p') &&
 			l[1] == ' ')
 			num_o++;
+		if (l[0] == 'y' || l[0] == 'o')
+			num_o += 3;
 		if (l[0] == 'l' && l[1] == ' ')
 			num_ls++;
 		tmp = tmp->next;
@@ -77,10 +81,10 @@ void		read_sphere(t_scene *s, char **arr)
 	m.refl = 0;
 	while (arr[++i] != NULL)
 	{
-		(i == 1) ? sp.center.x = ft_atoi(arr[i]) : 23;
-		(i == 2) ? sp.center.y = ft_atoi(arr[i]) : 23;
-		(i == 3) ? sp.center.z = ft_atoi(arr[i]) : 23;
-		(i == 4) ? sp.radius = (double)ft_atoi(arr[i]) : 23;
+		(i == 1) ? sp.center.x = ft_atod(arr[i]) : 23;
+		(i == 2) ? sp.center.y = ft_atod(arr[i]) : 23;
+		(i == 3) ? sp.center.z = ft_atod(arr[i]) : 23;
+		(i == 4) ? sp.radius = (double)ft_atod(arr[i]) : 23;
 		if (i == 5 && ft_strchr(arr[i], 'x') != NULL)
 			sp.color = ft_atoi_base(ft_strchr(arr[i], 'x') + 1, 16);
 		if (i == 6 && ft_strcmp("NULL", arr[i]))
@@ -104,9 +108,9 @@ void		read_light(t_scene *s, char **arr)
 	i = 0;
 	while (arr[++i] != NULL)
 	{
-		(i == 1) ? p.x = ft_atoi(arr[i]) : 23;
-		(i == 2) ? p.y = ft_atoi(arr[i]) : 23;
-		(i == 3) ? p.z = ft_atoi(arr[i]) : 23;
+		(i == 1) ? p.x = ft_atod(arr[i]) : 23;
+		(i == 2) ? p.y = ft_atod(arr[i]) : 23;
+		(i == 3) ? p.z = ft_atod(arr[i]) : 23;
 	}
 	s->ls[s->cur_ls] = (t_p3d *)malloc(sizeof(t_p3d));
 	*s->ls[s->cur_ls] = new_p3d(p.x, p.y, p.z);
@@ -128,15 +132,16 @@ void		read_plane(t_scene *s, char **arr)
 	i = 0;
 	while (arr[++i] != NULL)
 	{
-		(i == 1) ? p.p.x = ft_atoi(arr[i]) : 23;
-		(i == 2) ? p.p.y = ft_atoi(arr[i]) : 23;
-		(i == 3) ? p.p.z = ft_atoi(arr[i]) : 23;
-		(i == 4) ? p.norm.x = ft_atoi(arr[i]) : 23;
-		(i == 5) ? p.norm.y = ft_atoi(arr[i]) : 23;
-		(i == 6) ? p.norm.z = ft_atoi(arr[i]) : 23;
+		(i == 1) ? p.p.x = ft_atod(arr[i]) : 23;
+		(i == 2) ? p.p.y = ft_atod(arr[i]) : 23;
+		(i == 3) ? p.p.z = ft_atod(arr[i]) : 23;
+		(i == 4) ? p.norm.x = ft_atod(arr[i]) : 23;
+		(i == 5) ? p.norm.y = ft_atod(arr[i]) : 23;
+		(i == 6) ? p.norm.z = ft_atod(arr[i]) : 23;
 		if (i == 7 && ft_strchr(arr[i], 'x') != NULL)
 			p.color = ft_atoi_base(ft_strchr(arr[i], 'x') + 1, 16);
 		(i == 8) ? p.tex = new_tex(arr[i]) : p.tex;
+		(i == 9) ? m.refl = ft_atod(arr[i]) : m.refl;
 	}
 	p.norm = (!p.norm.x && !p.norm.y && !p.norm.z) ? new_v3d(0, 1, 0) : p.norm;
 	s->objects[s->cur_o] = new_plane(new_p3d(p.p.x, p.p.y, p.p.z),
@@ -160,12 +165,12 @@ void		read_cam(t_scene *s, char **arr)
 	cam.dir.z = 0;
 	while (arr[++i] != NULL)
 	{
-		(i == 1) ? cam.pos.x = ft_atoi(arr[i]) : 23;
-		(i == 2) ? cam.pos.y = ft_atoi(arr[i]) : 24;
-		(i == 3) ? cam.pos.z = ft_atoi(arr[i]) : 23;
-		(i == 4) ? cam.dir.x = ft_atoi(arr[i]) : 23;
-		(i == 5) ? cam.dir.y = ft_atoi(arr[i]) : 23;
-		(i == 6) ? cam.dir.z = ft_atoi(arr[i]) : 23;
+		(i == 1) ? cam.pos.x = ft_atod(arr[i]) : 23;
+		(i == 2) ? cam.pos.y = ft_atod(arr[i]) : 24;
+		(i == 3) ? cam.pos.z = ft_atod(arr[i]) : 23;
+		(i == 4) ? cam.dir.x = ft_atod(arr[i]) : 23;
+		(i == 5) ? cam.dir.y = ft_atod(arr[i]) : 23;
+		(i == 6) ? cam.dir.z = ft_atod(arr[i]) : 23;
 	}
 	cam.dir = (!cam.dir.x && !cam.dir.y && !cam.dir.z) ? new_v3d(0, 1, 0) :
 		cam.dir;
@@ -189,6 +194,25 @@ void		init_cyl(t_cyl *c, t_material *m)
 	m->refl = 0;
 }
 
+void		add_cyl_top(t_scene *s)
+{
+	t_cyl		*c;
+	t_p3d		top;
+	t_p3d		bot;
+	t_material	m;
+
+	c = (t_cyl *)s->objects[s->cur_o - 1]->data;
+	m = s->objects[s->cur_o - 1]->material;
+	bot = v_to_p(v_sub(p_to_v(c->center), v_mul(c->dir, c->h)));
+	top = v_to_p(v_add(p_to_v(c->center), v_mul(c->dir, c->h)));
+	s->objects[s->cur_o] = new_disk(new_vec(c->dir, top), c->radius, c->color,
+		m);
+	s->cur_o++;
+	s->objects[s->cur_o] = new_disk(new_vec(v_inv(c->dir), bot), c->radius,
+		c->color, m);
+	s->cur_o++;
+}
+
 void		read_cyl(t_scene *s, char **arr)
 {
 	t_cyl		c;
@@ -199,16 +223,18 @@ void		read_cyl(t_scene *s, char **arr)
 	init_cyl(&c, &m);
 	while (arr[++i])
 	{
-		(i == 1) ? c.center.x = ft_atoi(arr[i]) : 23;
-		(i == 2) ? c.center.y = ft_atoi(arr[i]) : 23;
-		(i == 3) ? c.center.z = ft_atoi(arr[i]) : 23;
-		(i == 4) ? c.dir.x = ft_atoi(arr[i]) : 23;
-		(i == 5) ? c.dir.y = ft_atoi(arr[i]) : 23;
-		(i == 6) ? c.dir.z = ft_atoi(arr[i]) : 23;
-		(i == 7) ? c.radius = (double)ft_atoi(arr[i]) : 23;
-		(i == 8) ? c.h = (double)ft_atoi(arr[i]) : 23;
+		(i == 1) ? c.center.x = ft_atod(arr[i]) : 23;
+		(i == 2) ? c.center.y = ft_atod(arr[i]) : 23;
+		(i == 3) ? c.center.z = ft_atod(arr[i]) : 23;
+		(i == 4) ? c.dir.x = ft_atod(arr[i]) : 23;
+		(i == 5) ? c.dir.y = ft_atod(arr[i]) : 23;
+		(i == 6) ? c.dir.z = ft_atod(arr[i]) : 23;
+		(i == 7) ? c.radius = (double)ft_atod(arr[i]) : 23;
+		(i == 8) ? c.h = (double)ft_atod(arr[i]) : 23;
 		if (i == 9 && ft_strchr(arr[i], 'x') != NULL)
 			c.color = ft_atoi_base(ft_strchr(arr[i], 'x') + 1, 16);
+		(i == 10) ? m.tex = new_tex(arr[i]) : m.tex;
+		(i == 11) ? m.refl = ft_atod(arr[i]) : m.refl;
 	}
 	c.dir = (!c.dir.x && !c.dir.y && !c.dir.z) ? new_v3d(0, 1, 0) :
 		c.dir;
@@ -216,6 +242,7 @@ void		read_cyl(t_scene *s, char **arr)
 		new_p3d(c.center.x, c.center.y, c.center.z)), c.radius, c.h,
 		new_material(c.color, m.tex, m.refl));
 	s->cur_o++;
+	add_cyl_top(s);
 	free_arr(&arr);
 }
 
@@ -234,6 +261,27 @@ void		init_cone(t_cone *c, t_material *m)
 	m->refl = 0;
 }
 
+void		add_cone_top(t_scene *s)
+{
+	t_cone		*c;
+	t_p3d		top;
+	t_p3d		bot;
+	double		radius;
+	t_material	m;
+
+	c = (t_cone *)s->objects[s->cur_o - 1]->data;
+	m = s->objects[s->cur_o - 1]->material;
+	bot = v_to_p(v_sub(p_to_v(c->center), v_mul(c->dir, c->h)));
+	top = v_to_p(v_add(p_to_v(c->center), v_mul(c->dir, c->h)));
+	radius = (c->sin_a / c->cos_a) * c->h;
+	s->objects[s->cur_o] = new_disk(new_vec(c->dir, top), radius, c->color,
+		m);
+	s->cur_o++;
+	s->objects[s->cur_o] = new_disk(new_vec(v_inv(c->dir), bot), radius,
+		c->color, m);
+	s->cur_o++;
+}
+
 void		read_cone(t_scene *s, char **arr)
 {
 	t_material	m;
@@ -244,16 +292,18 @@ void		read_cone(t_scene *s, char **arr)
 	init_cone(&c, &m);
 	while (arr[++i])
 	{
-		(i == 1) ? c.center.x = ft_atoi(arr[i]) : 23;
-		(i == 2) ? c.center.y = ft_atoi(arr[i]) : 23;
-		(i == 3) ? c.center.z = ft_atoi(arr[i]) : 23;
-		(i == 4) ? c.dir.x = ft_atoi(arr[i]) : 23;
-		(i == 5) ? c.dir.y = ft_atoi(arr[i]) : 23;
-		(i == 6) ? c.dir.z = ft_atoi(arr[i]) : 23;
-		(i == 7) ? c.a = (double)ft_atoi(arr[i]) : 23;
-		(i == 8) ? c.h = (double)ft_atoi(arr[i]) : 23;
+		(i == 1) ? c.center.x = ft_atod(arr[i]) : 23;
+		(i == 2) ? c.center.y = ft_atod(arr[i]) : 23;
+		(i == 3) ? c.center.z = ft_atod(arr[i]) : 23;
+		(i == 4) ? c.dir.x = ft_atod(arr[i]) : 23;
+		(i == 5) ? c.dir.y = ft_atod(arr[i]) : 23;
+		(i == 6) ? c.dir.z = ft_atod(arr[i]) : 23;
+		(i == 7) ? c.a = (double)ft_atod(arr[i]) : 23;
+		(i == 8) ? c.h = (double)ft_atod(arr[i]) : 23;
 		if (i == 9 && ft_strchr(arr[i], 'x') != NULL)
 			c.color = ft_atoi_base(ft_strchr(arr[i], 'x') + 1, 16);
+		(i == 10) ? m.tex = new_tex(arr[i]) : m.tex;
+		(i == 11) ? m.refl = ft_atod(arr[i]) : m.refl;
 	}
 	c.dir = (!c.dir.x && !c.dir.y && !c.dir.z) ? new_v3d(0, 1, 0) :
 		c.dir;
@@ -261,6 +311,7 @@ void		read_cone(t_scene *s, char **arr)
 		c.dir.z)), new_p3d(c.center.x, c.center.y, c.center.z)), c.h, c.a,
 			new_material(c.color, m.tex, m.refl));
 	s->cur_o++;
+	add_cone_top(s);
 	free_arr(&arr);
 }
 
