@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 19:05:49 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/03 20:45:33 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/04 00:53:56 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,21 +30,23 @@ int		get_sphere_color(t_o3d *obj, t_p3d inter_p)
 	t_v3d		proj;
 	t_v3d		tmp;
 
-	if (obj->tex.img)
-	{
-		s = (t_sphere *)obj->data;
-		tmp = v_mul(obj->get_norm(obj, inter_p), s->radius);
-		proj = v_mul(new_v3d(1, 0, 0), dot_product(tmp, new_v3d(1, 0, 0)));
-		proj = v_sub(tmp, proj);
-		p.x = (acos(cos_vectors(proj, new_v3d(0, 0, 1))) / M_PI) * obj->tex.w;
-		proj = v_mul(new_v3d(0, 0, 1), dot_product(tmp, new_v3d(0, 0, 1)));
-		proj = v_sub(tmp, proj);
-		p.y = (acos(cos_vectors(proj, new_v3d(1, 0, 0))) / M_PI) * obj->tex.h;
-		return (ft_img_px_get(obj->tex, (int)p.x * 2 % obj->tex.w,
-			(int)p.y * 2 % obj->tex.h));
-	}
+	if (!obj->tex.img)
+	return (((t_sphere *)obj->data)->color);
+	s = (t_sphere *)obj->data;
+	tmp = v_mul(obj->get_norm(obj, inter_p), s->radius);
+	proj = v_mul(new_v3d(1, 0, 0), dot_product(tmp, new_v3d(1, 0, 0)));
+	proj = v_sub(tmp, proj);
+	p.x = (acos(cos_vectors(proj, new_v3d(0, 0, 1))) / M_PI) *
+		(double)(obj->tex.w / 2);
+	p.x += (same_dir(new_v3d(0, 0, 1), proj)) ? (double)obj->tex.w / 2. : 0.;
+	proj = v_mul(new_v3d(1, 0, 0), dot_product(tmp, new_v3d(1, 0, 0)));
+	if (same_dir(proj, new_v3d(1, 0, 0)))
+		p.y = obj->tex.h / 2 - (v_len(proj) / s->radius) * (obj->tex.h / 2);
 	else
-		return (((t_sphere *)obj->data)->color);
+		p.y = (v_len(proj) / (double)s->radius) * (double)obj->tex.h / 2 +
+			(double)obj->tex.h / 2;
+	return (ft_img_px_get(obj->tex, (int)(p.x * 2.) % obj->tex.w,
+		(int)(p.y) % obj->tex.h));
 }
 
 int		solve_quad(t_p3d p, double *t0, double *t1)
