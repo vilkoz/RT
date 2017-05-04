@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/14 17:13:21 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/03 01:31:13 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/03 20:41:26 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,15 +63,15 @@ int		key_release(int key, t_e *e)
 int		loop_hook(t_e *e)
 {
 	if (e->k.rot_x == 1)
-		rotate_cam_x(&e->s->cam, (-1. * RAD));
+		rotate_cam_x(&e->s->cam, (-10. * RAD));
 	if (e->k.rot_x == -1)
-		rotate_cam_x(&e->s->cam, (1. * RAD));
+		rotate_cam_x(&e->s->cam, (10. * RAD));
 	if (e->k.rot_y == 1)
-		rotate_cam_z(&e->s->cam, (1. * RAD));
+		rotate_cam_z(&e->s->cam, (10. * RAD));
 	if (e->k.rot_y == -1)
-		rotate_cam_z(&e->s->cam, (-1. * RAD));
-	(e->k.rot_z == 1) ? rotate_cam_y(&e->s->cam, (1. * RAD)) : 23;
-	(e->k.rot_z == -1) ? rotate_cam_y(&e->s->cam, (-1. * RAD)) : 23;
+		rotate_cam_z(&e->s->cam, (-10. * RAD));
+	(e->k.rot_z == 1) ? rotate_cam_y(&e->s->cam, (10. * RAD)) : 23;
+	(e->k.rot_z == -1) ? rotate_cam_y(&e->s->cam, (-10. * RAD)) : 23;
 	if (e->k.move_x)
 		e->s->cam.pos = v_to_p(v_add(p_to_v(e->s->cam.pos), v_mul(
 		(e->k.move_x == 1) ? e->s->cam.dir_r : v_inv(e->s->cam.dir_r), 10.)));
