@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/15 17:36:47 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/03 00:48:03 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/04 21:30:58 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,22 +72,13 @@ int			find_nearest(t_scene *s, t_vec vec, t_p3d *inter_p, t_o3d **obj1)
 		return (TRUE);
 }
 
-t_p2d		new_p2d(double x, double y)
-{
-	t_p2d	p;
-
-	p.x = x;
-	p.y = y;
-	return (p);
-}
-
-int			anti_alias(t_p2d p, t_scene *s)
+int			anti_alias(t_p2d p, t_e *e)
 {
 	t_p3d	p2;
 	t_p2d	p3;
 	t_rgb	res;
-	t_p3d	inter_p;
 	t_o3d	*obj;
+	t_p3d	inter_p;
 
 	p2 = new_p3d(-SAMPLES, -SAMPLES, 0);
 	res = int_to_rgb(0);
@@ -96,12 +87,12 @@ int			anti_alias(t_p2d p, t_scene *s)
 		p2.y = -SAMPLES;
 		while (++p2.y < SAMPLES)
 		{
-			p3 = new_p2d(p.x + (p2.x / (1300. * SAMPLES)) * (1300. / 700.),
-				p.y + p2.y / (700. * SAMPLES));
-			if (find_nearest(s, new_vec(pix_vector(p3, s), s->cam.pos),
+			p3 = new_p2d(p.x + (p2.x / (double)(e->w * SAMPLES)) *
+			(double)(e->w / e->h), p.y + p2.y / (double)(e->h * SAMPLES));
+			if (find_nearest(e->s, new_vec(pix_vector(p3, e->s), e->s->cam.pos),
 				&inter_p, &obj))
-				res = add_rgb_col(res, int_to_rgb(get_color(s, obj,
-					new_vec(pix_vector(p3, s), inter_p), 3)));
+				res = add_rgb_col(res, int_to_rgb(get_color(e->s, obj,
+					new_vec(pix_vector(p3, e->s), inter_p), 3)));
 		}
 	}
 	return (new_color(mul_rgb_col(res, 1. /
@@ -139,6 +130,7 @@ void		find_intersect(t_e *e, t_scene *s, t_p2d y_area, int i)
 	t_p2d		p1;
 
 	p1.y = y_area.x - 1;
+	(void)s;
 	while (++p1.y < y_area.y)
 	{
 		p1.x = 0 - 1;
@@ -147,7 +139,7 @@ void		find_intersect(t_e *e, t_scene *s, t_p2d y_area, int i)
 			p.x = ((p1.x - e->w / 2.0) / e->w) * ASP;
 			p.y = (p1.y - e->h / 2.0) / e->h;
 			ft_img_px_put(e, p1.x, p1.y,
-				(e->fast_mode) ? fast_render(p1, p, e, i) : anti_alias(p, s));
+				(e->fast_mode) ? fast_render(p1, p, e, i) : anti_alias(p, e));
 		}
 	}
 }

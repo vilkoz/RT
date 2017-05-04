@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/14 17:13:21 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/03 20:41:26 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/04 21:53:40 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,10 +86,25 @@ int		loop_hook(t_e *e)
 	return (0);
 }
 
+void	set_selected_obj(t_e *e, int x, int y)
+{
+	t_p3d	inter_p;
+	t_o3d	*obj;
+
+	x = ((x - e->w / 2.0) / e->w) * ASP;
+	y = (y - e->h / 2.0) / e->h;
+	if (find_nearest(e->s, new_vec(pix_vector(new_p2d(x, y), e->s),
+		e->s->cam.pos), &inter_p, &obj))
+		e->s_o = obj;
+	else
+		e->s_o = NULL;
+}
+
 int		mouse_hook(int key, int x, int y, t_e *e)
 {
 	e->v_y = y;
 	e->v_x = x;
+	set_selected_obj(e, x, y);
 	(void)key;
 	return (0);
 }
