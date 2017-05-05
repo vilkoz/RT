@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/15 17:36:47 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/04 21:30:58 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/05 21:39:54 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,10 @@ int			is_viewable(t_p3d p1, t_p3d p2, t_scene *s, t_o3d *obj1)
 	while (++i < s->obj_num)
 	{
 		obj = s->objects[i];
-		if (obj->intersect(obj, p_b, normalize(new_v3d_p(p2, p_b)),
-			&inter_p))
+		// if (obj->intersect(obj, p_b, normalize(new_v3d_p(p2, p_b)),
+		// 	&inter_p))
+		if (obj->intersect(obj, p1, normalize(new_v3d_p(p2, p1)),
+			&inter_p) && distance(inter_p, p1) > EPSILON)
 		{
 			if (distance(p1, inter_p) > distance(p1, p2))
 				continue ;
