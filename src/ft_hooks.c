@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/14 17:13:21 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/04 21:53:40 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/05 20:26:43 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,18 @@ int		key_press(int key, t_e *e)
 	(key == K_S) ? e->k.move_y = -1 : 23;
 	(key == K_D) ? e->k.move_x = 1 : 23;
 	(key == K_A) ? e->k.move_x = -1 : 23;
-	(key == K_ENT) ? e->fast_mode = (e->fast_mode + 1) % 2 : 23;
+	if (key == K_ENT)
+	{
+		e->fast_mode = (e->fast_mode + 1) % 2;
+		if (is_key_pressed(e) || !e->fast_mode)
+			mlx_loop_hook(e->mlx, loop_hook, e);
+		return (0);
+	}
 	if (is_key_pressed(e) || !e->fast_mode)
+	{
+		e->fast_mode = 1;
 		mlx_loop_hook(e->mlx, loop_hook, e);
+	}
 	return (0);
 }
 
