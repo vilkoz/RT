@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/19 15:28:14 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/26 18:58:43 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/05 21:48:23 by kshcherb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,44 @@
 
 t_v3d	get_norm_cyl(t_o3d *dat, t_p3d inter_p)
 {
+	int		c[3];
 	t_cyl	*sp;
 	t_v3d	res;
 	t_v3d	dp;
+	t_v3d	x_axis;
+	t_p2d	t;
+	t_v3d	zero;
 
 	sp = (t_cyl *)dat->data;
 	dp = new_v3d_p(inter_p, sp->center);
-	res = v_sub(dp, v_mul(sp->dir, dot_product(sp->dir, dp)));
-	return (normalize(res));
+	res = normalize(v_sub(dp, v_mul(sp->dir, dot_product(sp->dir, dp))));
+
+
+	if (dat->tex.img)
+	{
+		zero = normalize(cross_product(sp->dir, new_v3d(0, 0, 1)));
+		x_axis = cross_product(sp->dir, res);
+		t.y = v_len(v_mul(sp->dir, dot_product(dp, sp->dir)));
+		dp = v_sub(v_mul(sp->dir, dot_product(dp, sp->dir)), dp);
+		t.x = fabs(acos(cos_vectors(dp, zero)) / M_PI) * 2 * (double)sp->radius /
+			(double)dat->material.tex.w;
+		t.x = (t.x < 0) ? 1 - fabs(t.x) : t.x;
+		c[0] = gray_scale(ft_img_px_get(dat->material.tex,
+			(int)(t.x * (double)dat->material.tex.w) % dat->material.tex.w,
+			(int)t.y % dat->material.tex.h));
+		c[1] = gray_scale(ft_img_px_get(dat->material.tex,
+			(int)((t.x + 1) * (double)dat->material.tex.w) % dat->material.tex.w,
+			(int)t.y % dat->material.tex.h));
+		c[2] = gray_scale(ft_img_px_get(dat->material.tex,
+			(int)(t.x * (double)dat->material.tex.w) % dat->material.tex.w,
+			(int)(t.y + 1) % dat->material.tex.h));
+		t.x = ((double)(c[0] - c[1]) / 12000);
+		t.y = ((double)(c[0] - c[2]) / 12000);
+		res = v_add(v_add(v_mul(normalize(x_axis), t.x), res), v_mul(sp->dir, t.y));
+		// res = (v_add(v_add(v_mul(sp->dir, t.y), res),
+		// 	v_mul(normalize((cross_product(x_axis, res))), t.x)));
+	}
+	return (res);
 }
 
 int		get_cyl_color(t_o3d *obj, t_p3d inter_p)
