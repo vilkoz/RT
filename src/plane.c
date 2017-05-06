@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 19:05:49 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/28 19:29:22 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/06 21:09:01 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,9 @@ int		get_plane_color(t_o3d *o, t_p3d inter_p)
 	if (o->tex.img)
 	{
 		p = plane_coords(new_vec(pl->norm, pl->p), inter_p);
-		p.x = (p.x < 0) ? o->tex.w - (abs((int)(p.x)) % o->tex.w) :
+		p.x = (p.x < 0) ? o->tex.w - 1 - (abs((int)(p.x)) % o->tex.w) :
 			(int)p.x % o->tex.w;
-		p.y = (p.y < 0) ? o->tex.h - (abs((int)(p.y)) % o->tex.h) :
+		p.y = (p.y < 0) ? o->tex.h - 1 - (abs((int)(p.y)) % o->tex.h) :
 			(int)p.y % o->tex.h;
 		return (ft_img_px_get(o->tex, (int)p.x, (int)p.y));
 	}

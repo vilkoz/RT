@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/22 23:57:04 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/06 14:33:37 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/06 19:57:19 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ int			get_light_color(t_scene *s, t_o3d *obj, t_p3d inter_p)
 		{
 			light_c = add_colors(obj->get_color(obj, inter_p),
 				mul_colors(0xffffff, 0.4));
-			cosv = (dot_product(normalize(norm), normalize(new_v3d_p(*s->ls[i],
-				inter_p))) - 0.95) * 20;
+			cosv = (fabs(dot_product(normalize(norm),
+			normalize(new_v3d_p(*s->ls[i], inter_p)))) - 0.95) * 20;
 			if ((cosv) < 0.1)
 				light_c = shade_colors(light_c, (1 - cosv) / 21);
 			else

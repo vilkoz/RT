@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/19 15:28:14 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/26 18:58:43 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/06 20:16:16 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,14 +79,12 @@ int		intersect_cyl(const t_o3d *data, const t_p3d ray_start,
 		return (FALSE);
 	if ((t0 < 0) && ((t0 = t1) < 0))
 		return (FALSE);
-	*inter_p = new_p3d(ray_start.x + t0 * ray.x, ray_start.y + t0 * ray.y,
-					ray_start.z + t0 * ray.z);
+	*inter_p = v_to_p(v_add(p_to_v(ray_start), v_mul(ray, t0)));
 	norm = get_norm_cyl((t_o3d *)data, *inter_p);
 	if (sp->h - v_len(v_sub(new_v3d_p(*inter_p, sp->center),
-		v_mul(norm, sp->radius))) < 0)
+	v_mul(norm, sp->radius))) < 0 || distance(*inter_p, ray_start) < EPSILON)
 	{
-		*inter_p = new_p3d(ray_start.x + t1 * ray.x, ray_start.y + t1 * ray.y,
-						ray_start.z + t1 * ray.z);
+		*inter_p = v_to_p(v_add(p_to_v(ray_start), v_mul(ray, t1)));
 		norm = get_norm_cyl((t_o3d *)data, *inter_p);
 		if (sp->h - v_len(v_sub(new_v3d_p(*inter_p, sp->center),
 			v_mul(norm, sp->radius))) < 0)

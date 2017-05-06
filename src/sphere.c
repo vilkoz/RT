@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 19:05:49 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/06 14:32:18 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/06 19:46:33 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,6 @@ int		intersect_sphere(const t_o3d *data, const t_p3d ray_start,
 			return (FALSE);
 	t = t0;
 	*inter_p = v_to_p(v_add(p_to_v(ray_start), v_mul(ray, t)));
-	// *inter_p = new_p3d(ray_start.x + t * ray.x, ray_start.y + t * ray.y,
-	// 				ray_start.z + t * ray.z);
 	if (distance(*inter_p, ray_start) < EPSILON)
 		*inter_p = v_to_p(v_add(p_to_v(ray_start), v_mul(ray, t1)));
 	return (1);
