@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 16:11:37 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/04 21:17:56 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/06 14:19:54 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -296,6 +296,7 @@ t_v3d				rotate_v_z(t_v3d v, double sin_al, double cos_al);
 t_v3d				normalize(t_v3d v);
 t_v3d				cross_product(t_v3d a, t_v3d b);
 t_v3d				v_mul(t_v3d v, double n);
+t_v3d				v_mul_v(t_v3d v1, t_v3d v2);
 t_p3d				rot_p(t_p3d p, t_v3d ang, t_p3d center);
 t_p3d				v_to_p(t_v3d v);
 t_v3d				p_to_v(t_p3d v);

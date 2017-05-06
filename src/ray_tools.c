@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 20:16:59 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/04 20:56:26 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/06 14:19:31 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,6 +196,16 @@ t_v3d		v_mul(t_v3d v, double n)
 	v.x *= n;
 	v.y *= n;
 	v.z *= n;
+	return (v);
+}
+
+t_v3d		v_mul_v(t_v3d v1, t_v3d v2)
+{
+	t_v3d	v;
+
+	v.x = v1.x * v2.x;
+	v.y = v1.y * v2.y;
+	v.z = v1.z * v2.z;
 	return (v);
 }
 
