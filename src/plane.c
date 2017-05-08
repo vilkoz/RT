@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 19:05:49 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/04 21:59:28 by kshcherb         ###   ########.fr       */
+/*   Updated: 2017/05/06 21:03:07 by kshcherb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ t_v3d	get_norm_plane(t_o3d *o, t_p3d inter_p)
 		c[0] = gray_scale(ft_img_px_get(o->tex, (int)p.x, (int)p.y));
 		c[1] = gray_scale(ft_img_px_get(o->tex, (int)p.x + 1, (int)p.y));
 		c[2] = gray_scale(ft_img_px_get(o->tex, (int)p.x, (int)p.y + 1));
-		g.x = ((double)(c[0] - c[1]) / o->material.bamp);
-		g.y = ((double)(c[0] - c[2]) / o->material.bamp);
+		g.x = ((double)(c[0] - c[1]) * o->material.bamp);
+		g.y = ((double)(c[0] - c[2]) * o->material.bamp);
 		axis = normalize((cross_product(pl->norm,
 			normalize(new_v3d(0, 0, 1)))));
 		return (v_add(v_add(v_mul(axis, g.x), pl->norm),

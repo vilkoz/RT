@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 20:16:59 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/29 15:21:49 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/08 17:54:14 by kshcherb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,26 @@
 ** v.dir - plane normal
 ** p - intersection point
 */
+
+t_p2d		cylinder_coords(t_o3d *dat, t_p3d inter_p)
+{
+	t_v3d	zero;
+	t_cyl	*sp;
+	t_v3d	res;
+	t_v3d	dp;
+	t_p2d	r;
+
+	sp = (t_cyl *)dat->data;
+	dp = new_v3d_p(inter_p, sp->center);
+	res = normalize(v_sub(dp, v_mul(sp->dir, dot_product(sp->dir, dp))));
+	zero = normalize(cross_product(sp->dir, new_v3d(0, 0, 1)));
+	r.y = v_len(v_mul(sp->dir, dot_product(dp, sp->dir)));
+	dp = v_sub(v_mul(sp->dir, dot_product(dp, sp->dir)), dp);
+	r.x = fabs(acos(cos_vectors(dp, zero)) / M_PI) * 2 *
+		(double)sp->radius / (double)dat->material.tex.w;
+	r.x = (r.x < 0) ? 1 - fabs(r.x) : r.x;
+	return (r);
+}
 
 t_p2d		plane_coords(t_vec v, t_p3d p)
 {
