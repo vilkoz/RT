@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/29 14:01:38 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/06 21:07:35 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/08 17:43:17 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,25 @@ int			intersect_disk(const t_o3d *o, const t_p3d ray_start,
 	return (TRUE);
 }
 
+float	*disk_to_float(const void *data)
+{
+	t_disk		*s;
+	float		*out;
+
+	s = (t_disk*)data;
+	out = (float*)malloc(sizeof(float) * 9);
+	out[0] = 9;
+	out[1] = 5;
+	out[2] = (float)s->p.x;
+	out[3] = (float)s->p.y;
+	out[4] = (float)s->p.z;
+	out[5] = (float)s->norm.x;
+	out[6] = (float)s->norm.y;
+	out[7] = (float)s->norm.z;
+	out[8] = (float)s->radius;
+	return (out);
+}
+
 t_o3d		*new_disk(t_vec v, double radius, int color, t_material material)
 {
 	t_disk		*d;
@@ -76,6 +95,7 @@ t_o3d		*new_disk(t_vec v, double radius, int color, t_material material)
 	obj->get_color = get_color_disk;
 	obj->intersect = intersect_disk;
 	obj->get_norm = get_norm_disk;
+	obj->to_float = disk_to_float;
 	obj->tex = material.tex;
 	obj->material = material;
 	return (obj);

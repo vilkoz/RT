@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/19 15:28:14 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/06 20:16:16 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/08 17:23:48 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,26 @@ int		intersect_cyl(const t_o3d *data, const t_p3d ray_start,
 	return (TRUE);
 }
 
+float	*cylinder_to_float(const void *data)
+{
+	t_cyl		*s;
+	float		*out;
+
+	s = (t_cyl*)data;
+	out = (float*)malloc(sizeof(float) * 10);
+	out[0] = 10;
+	out[1] = 3;
+	out[2] = (float)s->center.x;
+	out[3] = (float)s->center.y;
+	out[4] = (float)s->center.z;
+	out[5] = (float)s->dir.x;
+	out[6] = (float)s->dir.y;
+	out[7] = (float)s->dir.z;
+	out[8] = (float)s->radius;
+	out[9] = (float)s->h;
+	return (out);
+}
+
 t_o3d	*new_cyl(t_vec v, double radius, double h, t_material material)
 {
 	t_cyl		*sp;
@@ -109,6 +129,7 @@ t_o3d	*new_cyl(t_vec v, double radius, double h, t_material material)
 	obj->get_color = get_cyl_color;
 	obj->intersect = intersect_cyl;
 	obj->get_norm = get_norm_cyl;
+	obj->to_float = cylinder_to_float;
 	obj->tex = material.tex;
 	obj->material = material;
 	return (obj);

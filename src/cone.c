@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/19 19:12:32 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/06 20:34:47 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/08 17:23:53 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int		intersect_cone(const t_o3d *data, const t_p3d ray_start,
 	if (!same_dir(dp, sp->dir))
 		return (FALSE);
 	if (sp->h - v_len(v_sub(dp, v_sub(dp, v_mul(sp->dir,
-		dot_product(sp->dir, dp))))) < 0 || distance(*inter_p, ray_start) < EPSILON)
+		dot_product(sp->dir, dp))))) < 0 || distance(*inter_p, ray_start) < EPS)
 	{
 		*inter_p = v_to_p(v_add(p_to_v(ray_start), v_mul(ray, t1)));
 		dp = new_v3d_p(*inter_p, sp->center);
@@ -102,6 +102,26 @@ int		intersect_cone(const t_o3d *data, const t_p3d ray_start,
 			return (FALSE);
 	}
 	return (TRUE);
+}
+
+float	*cone_to_float(const void *data)
+{
+	t_cone		*s;
+	float		*out;
+
+	s = (t_cone*)data;
+	out = (float*)malloc(sizeof(float) * 10);
+	out[0] = 10;
+	out[1] = 4;
+	out[2] = (float)s->center.x;
+	out[3] = (float)s->center.y;
+	out[4] = (float)s->center.z;
+	out[5] = (float)s->dir.x;
+	out[6] = (float)s->dir.y;
+	out[7] = (float)s->dir.z;
+	out[8] = (float)s->h;
+	out[9] = (float)s->a;
+	return (out);
 }
 
 t_o3d	*new_cone(t_vec v, double h, double alpha, t_material material)
@@ -122,6 +142,7 @@ t_o3d	*new_cone(t_vec v, double h, double alpha, t_material material)
 	obj->get_color = get_cone_color;
 	obj->intersect = intersect_cone;
 	obj->get_norm = get_norm_cone;
+	obj->to_float = cone_to_float;
 	obj->tex = material.tex;
 	obj->material = material;
 	return (obj);

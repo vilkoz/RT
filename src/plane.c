@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 19:05:49 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/08 14:44:15 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/08 17:17:45 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,24 @@ int		intersect_plane(const t_o3d *data, const t_p3d ray_start,
 	return (TRUE);
 }
 
+float	*plane_to_float(const void *data)
+{
+	t_plane		*s;
+	float		*out;
+
+	s = (t_plane*)data;
+	out = (float*)malloc(sizeof(float) * 8);
+	out[0] = 8;
+	out[1] = 2;
+	out[2] = (float)s->p.x;
+	out[3] = (float)s->p.y;
+	out[4] = (float)s->p.z;
+	out[5] = (float)s->norm.x;
+	out[6] = (float)s->norm.y;
+	out[7] = (float)s->norm.z;
+	return (out);
+}
+
 t_o3d	*new_plane(t_p3d p, t_v3d norm, t_material material)
 {
 	t_plane		*sp;
@@ -73,6 +91,7 @@ t_o3d	*new_plane(t_p3d p, t_v3d norm, t_material material)
 	obj->get_color = get_plane_color;
 	obj->intersect = intersect_plane;
 	obj->get_norm = get_norm_plane;
+	obj->to_float = plane_to_float;
 	obj->tex = material.tex;
 	obj->material = material;
 	return (obj);

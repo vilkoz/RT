@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 19:05:49 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/06 19:46:33 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/08 16:56:59 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,22 @@ int		intersect_sphere(const t_o3d *data, const t_p3d ray_start,
 	return (1);
 }
 
+float	*sphere_to_float(const void *data)
+{
+	t_sphere	*s;
+	float		*out;
+
+	s = (t_sphere*)data;
+	out = (float*)malloc(sizeof(float) * 6);
+	out[0] = 6;
+	out[1] = 1;
+	out[2] = (float)s->center.x;
+	out[3] = (float)s->center.y;
+	out[4] = (float)s->center.z;
+	out[5] = (float)s->radius;
+	return (out);
+}
+
 t_o3d	*new_sphere(t_p3d center, double radius, t_material material)
 {
 	t_sphere	*sp;
@@ -114,6 +130,7 @@ t_o3d	*new_sphere(t_p3d center, double radius, t_material material)
 	obj->get_color = get_sphere_color;
 	obj->intersect = intersect_sphere;
 	obj->get_norm = get_norm_sphere;
+	obj->to_float = sphere_to_float;
 	obj->tex = material.tex;
 	obj->material = material;
 	return (obj);

@@ -6,7 +6,7 @@
 #    By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/23 14:08:11 by vrybalko          #+#    #+#              #
-#    Updated: 2017/05/01 19:54:14 by vrybalko         ###   ########.fr        #
+#    Updated: 2017/05/08 16:53:40 by vrybalko         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,8 @@ SRCS = main.c						\
 			 get_color.c			\
 			 material.c				\
 			 camera.c					\
-			 quaternion.c
+			 quaternion.c			\
+			 scene_to_array.c
 
 BINS = $(addprefix $(BIN_DIR), $(SRCS:.c=.o))
 

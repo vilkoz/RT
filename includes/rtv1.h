@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 16:11:37 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/08 14:47:28 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/08 16:53:27 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ typedef struct		s_o3d
 						t_p3d *inter_p);
 	int				(*get_color)(struct s_o3d *data, t_p3d inter_p);
 	t_v3d			(*get_norm)(struct s_o3d *data, t_p3d inter_p);
+	float			*(*to_float)(const void *data);
 	t_tex			tex;
 	t_material		material;
 }					t_o3d;
@@ -387,5 +388,11 @@ t_material			new_material(int color, t_tex tex, float refl);
 void				rotate_cam_x(t_cam *cam, double ang);
 void				rotate_cam_y(t_cam *cam, double ang);
 void				rotate_cam_z(t_cam *cam, double ang);
+
+/*
+** scene_to_array.c
+*/
+
+float				*scene_to_array(t_scene *s);
 
 #endif
