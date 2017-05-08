@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/29 14:01:38 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/29 17:05:37 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/06 21:07:35 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ int			get_color_disk(t_o3d *o, t_p3d inter_p)
 	if (o->tex.img)
 	{
 		p = plane_coords(new_vec(pl->norm, pl->p), inter_p);
-		p.x = (p.x < 0) ? o->tex.w - (abs((int)(p.x)) % o->tex.w) :
+		p.x = (p.x < 0) ? o->tex.w - 1 - (abs((int)(p.x)) % o->tex.w) :
 			(int)p.x % o->tex.w;
-		p.y = (p.y < 0) ? o->tex.h - (abs((int)(p.y)) % o->tex.h) :
+		p.y = (p.y < 0) ? o->tex.h - 1 - (abs((int)(p.y)) % o->tex.h) :
 			(int)p.y % o->tex.h;
 		return (ft_img_px_get(o->tex, (int)p.x, (int)p.y));
 	}
@@ -55,7 +55,8 @@ int			intersect_disk(const t_o3d *o, const t_p3d ray_start,
 		ray_start.z + ray.z * dot);
 	if (dot_product(new_v3d_p(*inter_p, ray_start), ray) < 0)
 		return (FALSE);
-	if (v_len(new_v3d_p(*inter_p, pl->p)) > pl->radius)
+	if (v_len(new_v3d_p(*inter_p, pl->p)) > pl->radius
+	|| distance(*inter_p, ray_start) < EPSILON)
 		return (FALSE);
 	return (TRUE);
 }

@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 19:05:49 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/04 00:53:56 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/06 19:46:33 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,13 +81,12 @@ int		intersect_sphere(const t_o3d *data, const t_p3d ray_start,
 	t_sphere	*sp;
 
 	sp = (t_sphere *)data->data;
-	if (!solve_quad(new_p3d(1., 2 * (ray.x * (ray_start.x - sp->center.x) +
-					ray.y * (ray_start.y - sp->center.y) +
-					ray.z * (ray_start.z - sp->center.z)),
-					dot_product(*(t_v3d *)&sp->center, *(t_v3d *)&sp->center) +
-					dot_product(*(t_v3d *)&ray_start, *(t_v3d *)&ray_start) -
-					2 * dot_product(*(t_v3d *)&ray_start, *(t_v3d *)&sp->center)
-					- sp->radius * sp->radius), &t0, &t1))
+	if (!solve_quad(new_p3d(1., 2 * dot_product(ray, v_sub(p_to_v(ray_start),
+		p_to_v(sp->center))),
+		dot_product(*(t_v3d *)&sp->center, *(t_v3d *)&sp->center) +
+		dot_product(*(t_v3d *)&ray_start, *(t_v3d *)&ray_start) -
+		2 * dot_product(*(t_v3d *)&ray_start, *(t_v3d *)&sp->center)
+		- sp->radius * sp->radius), &t0, &t1))
 		return (FALSE);
 	if (t0 > t1)
 		SWAP_D(t0, t1);
@@ -95,8 +94,9 @@ int		intersect_sphere(const t_o3d *data, const t_p3d ray_start,
 		if ((t0 = t1) < 0)
 			return (FALSE);
 	t = t0;
-	*inter_p = new_p3d(ray_start.x + t * ray.x, ray_start.y + t * ray.y,
-					ray_start.z + t * ray.z);
+	*inter_p = v_to_p(v_add(p_to_v(ray_start), v_mul(ray, t)));
+	if (distance(*inter_p, ray_start) < EPSILON)
+		*inter_p = v_to_p(v_add(p_to_v(ray_start), v_mul(ray, t1)));
 	return (1);
 }
 

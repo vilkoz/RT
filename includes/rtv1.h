@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 16:11:37 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/08 17:39:11 by kshcherb         ###   ########.fr       */
+/*   Updated: 2017/05/08 18:28:42 by kshcherb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,7 @@ typedef struct		s_e
 	int				fast_mode;
 	t_k				k;
 	t_scene			*s;
-	int				thread_c[THREADS];
+	t_o3d			*s_o;
 }					t_e;
 
 typedef struct		s_thread
@@ -289,6 +289,7 @@ double				distance(t_p3d p1, t_p3d p2);
 t_v3d				new_v3d(double x, double y, double z);
 t_v3d				new_v3d_p(t_p3d p1, t_p3d p2);
 t_p3d				new_p3d(double x, double y, double z);
+t_p2d				new_p2d(double x, double y);
 t_vec				new_vec(t_v3d v, t_p3d p);
 double				dot_product(t_v3d v1, t_v3d v2);
 t_v3d				rotate_v_x(t_v3d v, double sin_al, double cos_al);
@@ -297,6 +298,7 @@ t_v3d				rotate_v_z(t_v3d v, double sin_al, double cos_al);
 t_v3d				normalize(t_v3d v);
 t_v3d				cross_product(t_v3d a, t_v3d b);
 t_v3d				v_mul(t_v3d v, double n);
+t_v3d				v_mul_v(t_v3d v1, t_v3d v2);
 t_p3d				rot_p(t_p3d p, t_v3d ang, t_p3d center);
 t_p3d				v_to_p(t_v3d v);
 t_v3d				p_to_v(t_p3d v);

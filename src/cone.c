@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/19 19:12:32 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/04/26 19:14:48 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/06 20:34:47 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,14 +88,14 @@ int		intersect_cone(const t_o3d *data, const t_p3d ray_start,
 		SWAP_D(t0, t1);
 	if ((t0 < 0) && ((t0 = t1) < 0))
 		return (FALSE);
-	*inter_p = new_p3d(ray_start.x + t0 * ray.x, ray_start.y + t0 * ray.y,
-		ray_start.z + t0 * ray.z);
+	*inter_p = v_to_p(v_add(p_to_v(ray_start), v_mul(ray, t0)));
 	dp = new_v3d_p(*inter_p, sp->center);
+	if (!same_dir(dp, sp->dir))
+		return (FALSE);
 	if (sp->h - v_len(v_sub(dp, v_sub(dp, v_mul(sp->dir,
-		dot_product(sp->dir, dp))))) < 0)
+		dot_product(sp->dir, dp))))) < 0 || distance(*inter_p, ray_start) < EPSILON)
 	{
-		*inter_p = new_p3d(ray_start.x + t1 * ray.x, ray_start.y + t1 * ray.y,
-			ray_start.z + t1 * ray.z);
+		*inter_p = v_to_p(v_add(p_to_v(ray_start), v_mul(ray, t1)));
 		dp = new_v3d_p(*inter_p, sp->center);
 		if (sp->h - v_len(v_sub(dp, v_sub(dp, v_mul(sp->dir,
 			dot_product(sp->dir, dp))))) < 0)
