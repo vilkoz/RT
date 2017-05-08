@@ -6,13 +6,14 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 16:11:37 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/06 14:19:54 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/08 14:47:28 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef _RTV1_H
 # define _RTV1_H
 # define EPSILON 0.00000001
+# define EPS EPSILON
 # define RAD (0.0175433)
 # define SIGN(x) ((x < 0) ? -1 : 1)
 # define FALSE 0
