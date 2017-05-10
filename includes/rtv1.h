@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 16:11:37 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/08 16:53:27 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/10 21:20:58 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,6 +176,8 @@ typedef struct		s_e
 	int				v_x;
 	int				v_y;
 	int				fast_mode;
+	t_list			*vectors;
+	float			*scene;
 	t_k				k;
 	t_scene			*s;
 	t_o3d			*s_o;
