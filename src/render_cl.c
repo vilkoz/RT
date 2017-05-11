@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/10 18:14:52 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/11 16:49:22 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/11 17:24:49 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,12 @@ t_vec		*new_vec_mal(t_v3d v, t_p3d p)
 	t_vec	*new;
 
 	new = (t_vec*)malloc(sizeof(t_vec));
-	ft_memcpy((void*)&new->dir, (void*)&v, sizeof(t_v3d));
-	ft_memcpy((void*)&new->p, (void*)&p, sizeof(t_p3d));
+	new->dir.x = v.x;
+	new->dir.y = v.y;
+	new->dir.z = v.z;
+	new->p.x = p.x;
+	new->p.y = p.y;
+	new->p.z = p.z;
 	return (new);
 }
 
