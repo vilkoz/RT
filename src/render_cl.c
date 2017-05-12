@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/10 18:14:52 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/11 17:24:49 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/12 20:03:02 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,9 @@ void		fill_anti_alias(t_p2d p, t_e *e)
 		{
 			p3 = new_p2d(p.x + (p2.x / (double)(e->w * SAMPLES)) *
 			(double)(e->w / e->h), p.y + p2.y / (double)(e->h * SAMPLES));
+			profiler_start(e);
 			v = new_vec_mal(pix_vector(p3, e->s), e->s->cam.pos);
+			profiler_print(e, "new vec malloc");
 			ft_lstadd(&e->vectors, ft_lstnew((void*)v, sizeof(t_vec)));
 			free(v);
 		}
@@ -83,7 +85,7 @@ size_t		count_list(t_list *lst)
 	return (i);
 }
 
-void		del(void *data, size_t size)
+static void		del(void *data, size_t size)
 {
 	(void)size;
 	ft_memdel(&data);
@@ -103,12 +105,12 @@ float		*return_vec_array(t_e *e)
 	i = 1;
 	while (tmp)
 	{
-		arr[i + 0] = ((t_vec*)tmp->content)->dir.x;
-		arr[i + 1] = ((t_vec*)tmp->content)->dir.y;
-		arr[i + 2] = ((t_vec*)tmp->content)->dir.z;
-		arr[i + 3] = ((t_vec*)tmp->content)->p.x;
-		arr[i + 4] = ((t_vec*)tmp->content)->p.y;
-		arr[i + 5] = ((t_vec*)tmp->content)->p.z;
+		arr[i + 0] = (float)((t_vec*)tmp->content)->dir.x;
+		arr[i + 1] = (float)((t_vec*)tmp->content)->dir.y;
+		arr[i + 2] = (float)((t_vec*)tmp->content)->dir.z;
+		arr[i + 3] = (float)((t_vec*)tmp->content)->p.x;
+		arr[i + 4] = (float)((t_vec*)tmp->content)->p.y;
+		arr[i + 5] = (float)((t_vec*)tmp->content)->p.z;
 		tmp = tmp->next;
 		i += 6;
 	}
@@ -168,14 +170,27 @@ void		draw_intersected(t_e *e)
 	}
 }
 
-float		*blackbox(float *vectors, float *scene);
+float		*blackbox(float *vectors, float *scene)
+{
+	(void)scene;
+	return (vectors);
+}
+
+/*
+** find_intersect_cl works for 2.6 sec
+** so arch of this shit shoud be redone
+*/
 
 void		render_cl(t_e *e)
 {
 	float		*vectors;
 
+	// profiler_start(e);
+	exit(0);
+	e->vectors = NULL;
 	find_intersect_cl(e, e->s);
+	// profiler_print(e, "inter vectors");
 	vectors = return_vec_array(e);
-	e->int_vec = blackbox(vectors, e->scene);
-	draw_intersected(e);
+	// e->int_vec = blackbox(vectors, e->scene);
+	// draw_intersected(e);
 }

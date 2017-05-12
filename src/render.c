@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/15 17:36:47 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/10 21:27:02 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/12 18:13:55 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,5 +172,7 @@ void		render(t_e *e)
 	i = -1;
 	while (++i < THREADS)
 		pthread_join(t[i].id, NULL);
+	profiler_start(e);
 	arr = scene_to_array(e->s);
+	profiler_print(e, "scene_to_array");
 }

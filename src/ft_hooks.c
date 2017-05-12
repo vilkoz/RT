@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/14 17:13:21 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/05 20:26:43 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/12 18:33:58 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ int		loop_hook(t_e *e)
 		e->s->cam.pos = v_to_p(v_add(p_to_v(e->s->cam.pos), v_mul(
 		(e->k.move_y == 1) ? e->s->cam.dir : v_inv(e->s->cam.dir), 10.)));
 	render(e);
+	render_cl(e);
 	mlx_clear_window(e->mlx, e->win);
 	mlx_put_image_to_window(e->mlx, e->win, e->img, 0, 0);
 	if (e->fast_mode == 0 || !is_key_pressed(e))

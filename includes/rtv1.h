@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 16:11:37 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/11 16:07:27 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/12 18:32:37 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,9 @@
 # include <fcntl.h>
 # include <time.h>
 # include <pthread.h>
+# include <sys/time.h>
 
+typedef struct timeval	t_st;
 typedef struct		s_p2d
 {
 	double			x;
@@ -179,6 +181,7 @@ typedef struct		s_e
 	t_list			*vectors;
 	float			*int_vec;
 	float			*scene;
+	double			time;
 	t_k				k;
 	t_scene			*s;
 	t_o3d			*s_o;
@@ -397,5 +400,18 @@ void				rotate_cam_z(t_cam *cam, double ang);
 */
 
 float				*scene_to_array(t_scene *s);
+
+/*
+** profiler.c
+*/
+
+void				profiler_start(t_e *e);
+void				profiler_print(t_e *e, const char *s);
+
+/*
+** render_cl.c
+*/
+
+void				render_cl(t_e *e);
 
 #endif

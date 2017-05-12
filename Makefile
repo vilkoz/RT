@@ -6,7 +6,7 @@
 #    By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/23 14:08:11 by vrybalko          #+#    #+#              #
-#    Updated: 2017/05/08 16:53:40 by vrybalko         ###   ########.fr        #
+#    Updated: 2017/05/12 18:30:42 by vrybalko         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,9 @@ SRCS = main.c						\
 			 material.c				\
 			 camera.c					\
 			 quaternion.c			\
-			 scene_to_array.c
+			 scene_to_array.c \
+			 render_cl.c			\
+			 profiler.c
 
 BINS = $(addprefix $(BIN_DIR), $(SRCS:.c=.o))
 
@@ -74,3 +76,9 @@ f: all
 	./$(NAME) res/test.map
 
 r: re f
+
+fast_clean:
+	/bin/rm -f $(BINS)
+	/bin/rm -f $(NAME)
+
+fre: fast_clean all
