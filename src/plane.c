@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 19:05:49 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/08 18:27:52 by kshcherb         ###   ########.fr       */
+/*   Updated: 2017/05/16 16:42:26 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_v3d	get_norm_plane(t_o3d *o, t_p3d inter_p)
 		p = plane_coords(new_vec(pl->norm, pl->p), inter_p);
 		p.x = (p.x < 0) ? (o->tex.w - 1) - (abs((int)(p.x)) % o->tex.w) :
 			(int)p.x % o->tex.w;
-		p.y = (p.y < 0) ? (o->tex.h - 1) - (abs((int)(p.y)) % o->tex.h) :
+		p.y = (p.y < 0) ? (o->tex.h - 2) - (abs((int)(p.y)) % o->tex.h) :
 			(int)p.y % o->tex.h;
 		c[0] = gray_scale(ft_img_px_get(o->tex, (int)p.x, (int)p.y));
 		c[1] = gray_scale(ft_img_px_get(o->tex, (int)p.x + 1, (int)p.y));
@@ -52,7 +52,7 @@ int		get_plane_color(t_o3d *o, t_p3d inter_p)
 		p = plane_coords(new_vec(pl->norm, pl->p), inter_p);
 		p.x = (p.x < 0) ? (o->tex.w - 1) - (abs((int)(p.x)) % o->tex.w) :
 			(int)p.x % o->tex.w;
-		p.y = (p.y < 0) ? (o->tex.h - 1) - (abs((int)(p.y)) % o->tex.h) :
+		p.y = (p.y < 0) ? (o->tex.h - 2) - (abs((int)(p.y)) % o->tex.h) :
 			(int)p.y % o->tex.h;
 		return (ft_img_px_get(o->tex, (int)p.x, (int)p.y));
 	}
