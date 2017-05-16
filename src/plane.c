@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 19:05:49 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/06 21:09:01 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/16 17:50:45 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,14 @@ int		intersect_plane(const t_o3d *data, const t_p3d ray_start,
 	return (TRUE);
 }
 
+void	rotate_plane(const t_o3d *obj, double angle, t_v3d axis)
+{
+	t_plane		*pl;
+
+	pl = (t_plane *)obj->data;
+	pl->norm = rotate_v_q(pl->norm, axis, angle);
+}
+
 t_o3d	*new_plane(t_p3d p, t_v3d norm, t_material material)
 {
 	t_plane		*sp;
@@ -109,5 +117,6 @@ t_o3d	*new_plane(t_p3d p, t_v3d norm, t_material material)
 	obj->get_norm = get_norm_plane;
 	obj->tex = material.tex;
 	obj->material = material;
+	obj->rotate = rotate_plane;
 	return (obj);
 }

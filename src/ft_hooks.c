@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/14 17:13:21 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/05 20:26:43 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/16 20:29:02 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,12 @@ int		key_press(int key, t_e *e)
 	(key == K_UA) ? e->k.rot_y = 1 : 23;
 	(key == K_PUP) ? e->k.rot_z = -1 : 23;
 	(key == K_PDN) ? e->k.rot_z = 1 : 23;
+	(key == K_J) ? e->k.rot_so_x = -1 : 23;
+	(key == K_L) ? e->k.rot_so_x = 1 : 23;
+	(key == K_K) ? e->k.rot_so_y = -1 : 23;
+	(key == K_I) ? e->k.rot_so_y = 1 : 23;
+	(key == K_U) ? e->k.rot_so_z = -1 : 23;
+	(key == K_O) ? e->k.rot_so_z = 1 : 23;
 	(key == K_W) ? e->k.move_y = 1 : 23;
 	(key == K_S) ? e->k.move_y = -1 : 23;
 	(key == K_D) ? e->k.move_x = 1 : 23;
@@ -66,6 +72,9 @@ int		key_release(int key, t_e *e)
 	(key == K_W || key == K_S) ? e->k.move_y = 0 : 23;
 	(key == K_A || key == K_D) ? e->k.move_x = 0 : 23;
 	(key == K_PDN || key == K_PUP) ? e->k.rot_z = 0 : 23;
+	(key == K_J || key == K_L) ? e->k.rot_so_x = 0 : 23;
+	(key == K_K || key == K_I) ? e->k.rot_so_y = 0 : 23;
+	(key == K_U || key == K_O) ? e->k.rot_so_z = 0 : 23;
 	return (0);
 }
 
@@ -87,6 +96,18 @@ int		loop_hook(t_e *e)
 	if (e->k.move_y)
 		e->s->cam.pos = v_to_p(v_add(p_to_v(e->s->cam.pos), v_mul(
 		(e->k.move_y == 1) ? e->s->cam.dir : v_inv(e->s->cam.dir), 10.)));
+	if (e->k.rot_so_x == 1 && e->s_o)
+		e->s_o->rotate(e->s_o, 10 * RAD, new_v3d(1, 0, 0));
+	if (e->k.rot_so_x == -1 && e->s_o)
+		e->s_o->rotate(e->s_o, -10 * RAD, new_v3d(1, 0, 0));
+	if (e->k.rot_so_y == 1 && e->s_o)
+		e->s_o->rotate(e->s_o, 10 * RAD, new_v3d(0, 1, 0));
+	if (e->k.rot_so_y == -1 && e->s_o)
+		e->s_o->rotate(e->s_o, -10 * RAD, new_v3d(0, 1, 0));
+	if (e->k.rot_so_z == 1 && e->s_o)
+		e->s_o->rotate(e->s_o, 10 * RAD, new_v3d(0, 0, 1));
+	if (e->k.rot_so_z == -1 && e->s_o)
+		e->s_o->rotate(e->s_o, -10 * RAD, new_v3d(0, 0, 1));
 	render(e);
 	mlx_clear_window(e->mlx, e->win);
 	mlx_put_image_to_window(e->mlx, e->win, e->img, 0, 0);
@@ -99,10 +120,11 @@ void	set_selected_obj(t_e *e, int x, int y)
 {
 	t_p3d	inter_p;
 	t_o3d	*obj;
+	t_p2d	p;
 
-	x = ((x - e->w / 2.0) / e->w) * ASP;
-	y = (y - e->h / 2.0) / e->h;
-	if (find_nearest(e->s, new_vec(pix_vector(new_p2d(x, y), e->s),
+	p.x = (((double)x - (double)e->w / 2.0) / (double)e->w) * (double)ASP;
+	p.y = ((double)y - (double)e->h / 2.0) / (double)e->h;
+	if (find_nearest(e->s, new_vec(pix_vector(new_p2d(p.x, p.y), e->s),
 		e->s->cam.pos), &inter_p, &obj))
 		e->s_o = obj;
 	else

@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 16:11:37 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/06 14:19:54 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/16 20:22:31 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # define COSA2 (sp->cos_a) * (sp->cos_a)
 # define SINA2 (sp->sin_a) * (sp->sin_a)
 # define ASP ((double)((double)e->w / (double)e->h))
-# define SAMPLES 2
+# define SAMPLES 1
 # define THREADS 1
 
 # include "../libft/libft.h"
@@ -52,6 +52,9 @@ typedef struct		s_k
 	int				rot_x;
 	int				rot_y;
 	int				rot_z;
+	int				rot_so_x;
+	int				rot_so_y;
+	int				rot_so_z;
 	int				bias;
 	int				move_x;
 	int				move_y;
@@ -116,6 +119,8 @@ typedef struct		s_o3d
 						t_p3d *inter_p);
 	int				(*get_color)(struct s_o3d *data, t_p3d inter_p);
 	t_v3d			(*get_norm)(struct s_o3d *data, t_p3d inter_p);
+	void			(*rotate)(const struct s_o3d *data, double angle,
+						t_v3d axis);
 	t_tex			tex;
 	t_material		material;
 }					t_o3d;

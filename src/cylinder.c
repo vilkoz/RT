@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/19 15:28:14 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/06 20:16:16 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/16 18:03:30 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,15 @@ int		intersect_cyl(const t_o3d *data, const t_p3d ray_start,
 	return (TRUE);
 }
 
+void	rotate_cyl(const t_o3d *obj, double angle, t_v3d axis)
+{
+	t_cyl		*pl;
+
+	pl = (t_cyl *)obj->data;
+	pl->dir = rotate_v_q(pl->dir, axis, angle);
+}
+
+
 t_o3d	*new_cyl(t_vec v, double radius, double h, t_material material)
 {
 	t_cyl		*sp;
@@ -111,5 +120,6 @@ t_o3d	*new_cyl(t_vec v, double radius, double h, t_material material)
 	obj->get_norm = get_norm_cyl;
 	obj->tex = material.tex;
 	obj->material = material;
+	obj->rotate = rotate_cyl;
 	return (obj);
 }

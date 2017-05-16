@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/07 17:25:07 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/03 00:57:15 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/16 20:25:48 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ t_e			*ft_mlx_init(t_scene *s)
 	e->v_y = 0;
 	e->fast_mode = 1;
 	e->s = s;
+	e->s_o = NULL;
 	init_keys(&e->k);
 	return (e);
 }

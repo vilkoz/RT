@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/29 14:01:38 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/06 21:07:35 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/16 20:56:42 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,14 @@ int			intersect_disk(const t_o3d *o, const t_p3d ray_start,
 	return (TRUE);
 }
 
+void		rotate_disk(const t_o3d *o, double angle, t_v3d axis)
+{
+	t_disk		*pl;
+
+	pl = (t_disk *)o->data;
+	pl->norm = rotate_v_q(pl->norm, axis, angle);
+}
+
 t_o3d		*new_disk(t_vec v, double radius, int color, t_material material)
 {
 	t_disk		*d;
@@ -78,5 +86,6 @@ t_o3d		*new_disk(t_vec v, double radius, int color, t_material material)
 	obj->get_norm = get_norm_disk;
 	obj->tex = material.tex;
 	obj->material = material;
+	obj->rotate = rotate_disk;
 	return (obj);
 }

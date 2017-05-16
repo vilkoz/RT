@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 18:57:56 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/01 14:37:12 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/16 21:22:21 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,10 @@ void		count_obj(t_scene *s, t_list *lst)
 		if ((l[0] == 's' || l[0] == 'p') &&
 			l[1] == ' ')
 			num_o++;
-		if (l[0] == 'y' || l[0] == 'o')
+		if (l[0] == 'y')
 			num_o += 3;
+		if (l[0] == 'o')
+			num_o += 2;
 		if (l[0] == 'l' && l[1] == ' ')
 			num_ls++;
 		tmp = tmp->next;
@@ -265,21 +267,21 @@ void		add_cone_top(t_scene *s)
 {
 	t_cone		*c;
 	t_p3d		top;
-	t_p3d		bot;
+	// t_p3d		bot;
 	double		radius;
 	t_material	m;
 
 	c = (t_cone *)s->objects[s->cur_o - 1]->data;
 	m = s->objects[s->cur_o - 1]->material;
-	bot = v_to_p(v_sub(p_to_v(c->center), v_mul(c->dir, c->h)));
+	// bot = v_to_p(v_sub(p_to_v(c->center), v_mul(c->dir, c->h)));
 	top = v_to_p(v_add(p_to_v(c->center), v_mul(c->dir, c->h)));
 	radius = (c->sin_a / c->cos_a) * c->h;
 	s->objects[s->cur_o] = new_disk(new_vec(c->dir, top), radius, c->color,
 		m);
 	s->cur_o++;
-	s->objects[s->cur_o] = new_disk(new_vec(v_inv(c->dir), bot), radius,
-		c->color, m);
-	s->cur_o++;
+	// s->objects[s->cur_o] = new_disk(new_vec(v_inv(c->dir), bot), radius,
+	// 	c->color, m);
+	// s->cur_o++;
 }
 
 void		read_cone(t_scene *s, char **arr)
