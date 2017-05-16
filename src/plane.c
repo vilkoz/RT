@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 19:05:49 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/16 16:42:26 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/16 17:57:39 by kshcherb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_v3d	get_norm_plane(t_o3d *o, t_p3d inter_p)
 	t_p2d	p;
 	t_plane	*pl;
 	t_v3d	axis;
-
+	
 	if (o->tex.img)
 	{
 		pl = (t_plane *)o->data;
@@ -78,6 +78,8 @@ int		intersect_plane(const t_o3d *data, const t_p3d ray_start,
 		ray_start.z + ray.z * dot);
 	if (dot_product(new_v3d(inter_p->x - ray_start.x, inter_p->y - ray_start.y,
 		inter_p->z - ray_start.z), ray) < 0)
+		return (FALSE);
+	if (distance(ray_start, *inter_p) < EPSILON)
 		return (FALSE);
 	return (TRUE);
 }

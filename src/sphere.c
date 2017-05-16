@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 19:05:49 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/06 19:46:33 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/16 21:21:42 by kshcherb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,53 @@ t_v3d	get_norm_sphere(t_o3d *dat, t_p3d inter_p)
 	sp = (t_sphere *)dat->data;
 	res = new_v3d(inter_p.x - sp->center.x, inter_p.y - sp->center.y,
 		inter_p.z - sp->center.z);
+	return(normalize(res));
+}
+
+t_v3d	get_norm_bump_sphere(t_o3d *dat, t_p3d inter_p)
+{
+	t_sphere	*sp;
+	t_v3d		res;
+
+	int			c[3];
+	t_v3d		tmp;
+	t_p2d		t;
+
+	t_v3d		proj;
+
+	sp = (t_sphere *)dat->data;
+	res = new_v3d(inter_p.x - sp->center.x, inter_p.y - sp->center.y,
+		inter_p.z - sp->center.z);
+	if (dat->tex.img)
+	{
+		tmp = v_mul(res, sp->radius);
+		proj = v_mul(new_v3d(1, 0, 0), dot_product(tmp, new_v3d(1, 0, 0)));
+		proj = v_sub(tmp, proj);
+		t.x = (acos(cos_vectors(proj, new_v3d(0, 0, 1))) / M_PI) *
+			(double)(dat->tex.w / 2);
+		t.x += (same_dir(new_v3d(0, 0, 1), proj)) ? (double)dat->tex.w / 2. : 0.;
+		proj = v_mul(new_v3d(1, 0, 0), dot_product(tmp, new_v3d(1, 0, 0)));
+		if (same_dir(proj, new_v3d(1, 0, 0)))
+			t.y = dat->tex.h / 2 - (v_len(proj) / sp->radius) * (dat->tex.h / 2);
+		else
+			t.y = (v_len(proj) / (double)sp->radius) * (double)dat->tex.h / 2 +
+				(double)dat->tex.h / 2;
+		t.x = (int)(t.x * 2.) % dat->tex.w;
+		t.y = (int)t.y % dat->tex.h;
+		// c[0] = get_tex_color_bnw(dat, t.x, t.y);
+		// c[1] = get_tex_color_bnw(dat, (t.x + 1), t.y);
+		// c[2] = get_tex_color_bnw(dat, t.x, (t.y + 1));
+		c[0] = gray_scale(ft_img_px_get(dat->tex, (int)(t.x * 2.) % dat->tex.w,
+			(int)(t.y) % dat->tex.h));
+		c[1] = gray_scale(ft_img_px_get(dat->tex, (int)(t.x + 1 * 2.) % dat->tex.w,
+			(int)(t.y) % dat->tex.h));
+		c[2] = gray_scale(ft_img_px_get(dat->tex, (int)(t.x * 2.) % dat->tex.w,
+			(int)(t.y + 1) % dat->tex.h));
+		t.x = ((double)(c[0] - c[1]) * dat->material.bamp);
+		t.y = ((double)(c[0] - c[2]) * dat->material.bamp);
+		res = v_add(v_add(v_mul(normalize(new_v3d(1, 0, 0)), t.x), res),
+			v_mul(new_v3d(0, 0, 1), t.y));
+	}
 	return (normalize(res));
 }
 
@@ -33,7 +80,7 @@ int		get_sphere_color(t_o3d *obj, t_p3d inter_p)
 	if (!obj->tex.img)
 	return (((t_sphere *)obj->data)->color);
 	s = (t_sphere *)obj->data;
-	tmp = v_mul(obj->get_norm(obj, inter_p), s->radius);
+	tmp = v_mul(get_norm_sphere(obj, inter_p), s->radius);
 	proj = v_mul(new_v3d(1, 0, 0), dot_product(tmp, new_v3d(1, 0, 0)));
 	proj = v_sub(tmp, proj);
 	p.x = (acos(cos_vectors(proj, new_v3d(0, 0, 1))) / M_PI) *
@@ -113,7 +160,7 @@ t_o3d	*new_sphere(t_p3d center, double radius, t_material material)
 	obj->data = (void *)sp;
 	obj->get_color = get_sphere_color;
 	obj->intersect = intersect_sphere;
-	obj->get_norm = get_norm_sphere;
+	obj->get_norm = get_norm_bump_sphere;
 	obj->tex = material.tex;
 	obj->material = material;
 	return (obj);
