@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 18:57:56 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/16 21:22:21 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/17 16:29:15 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,6 +245,8 @@ void		read_cyl(t_scene *s, char **arr)
 		new_material(c.color, m.tex, m.refl));
 	s->cur_o++;
 	add_cyl_top(s);
+	((t_cyl *)(s->objects[s->cur_o - 3]->data))->top = (t_disk*)s->objects[s->cur_o - 2]->data;
+	((t_cyl *)(s->objects[s->cur_o - 3]->data))->bot = (t_disk*)s->objects[s->cur_o - 1]->data;
 	free_arr(&arr);
 }
 
@@ -314,6 +316,7 @@ void		read_cone(t_scene *s, char **arr)
 			new_material(c.color, m.tex, m.refl));
 	s->cur_o++;
 	add_cone_top(s);
+	((t_cone *)(s->objects[s->cur_o - 2]->data))->top = (t_disk*)s->objects[s->cur_o - 1]->data;
 	free_arr(&arr);
 }
 

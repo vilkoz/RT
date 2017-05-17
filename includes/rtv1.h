@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 16:11:37 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/16 20:22:31 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/17 15:35:43 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,6 +228,8 @@ typedef struct		s_cyl
 	double			radius;
 	double			h;
 	int				color;
+	struct s_disk	*top;
+	struct s_disk	*bot;
 }					t_cyl;
 
 /*
@@ -243,6 +245,7 @@ typedef struct		s_cone
 	double			a;
 	double			sin_a;
 	double			cos_a;
+	struct s_disk	*top;
 }					t_cone;
 
 /*

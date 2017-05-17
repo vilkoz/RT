@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/19 19:12:32 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/16 18:03:04 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/17 15:31:19 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,8 @@ void	rotate_cone(const t_o3d *obj, double angle, t_v3d axis)
 
 	pl = (t_cone *)obj->data;
 	pl->dir = rotate_v_q(pl->dir, axis, angle);
+	pl->top->p = v_to_p(v_add(v_mul(pl->dir, pl->h), p_to_v(pl->center)));
+	pl->top->norm = pl->dir;
 }
 
 t_o3d	*new_cone(t_vec v, double h, double alpha, t_material material)

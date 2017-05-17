@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/19 15:28:14 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/16 18:03:30 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/17 15:38:37 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,11 @@ void	rotate_cyl(const t_o3d *obj, double angle, t_v3d axis)
 
 	pl = (t_cyl *)obj->data;
 	pl->dir = rotate_v_q(pl->dir, axis, angle);
+	pl->top->p = v_to_p(v_add(v_mul(pl->dir, pl->h), p_to_v(pl->center)));
+	pl->top->norm = pl->dir;
+	pl->bot->p = v_to_p(v_add(v_mul(v_inv(pl->dir), pl->h), p_to_v(pl->center)));
+	pl->bot->norm = v_inv(pl->dir);
 }
-
 
 t_o3d	*new_cyl(t_vec v, double radius, double h, t_material material)
 {
