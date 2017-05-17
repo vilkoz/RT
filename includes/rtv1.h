@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 16:11:37 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/17 15:35:43 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/17 17:14:07 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ typedef struct		s_k
 	int				bias;
 	int				move_x;
 	int				move_y;
+	int				m_key;
 }					t_k;
 
 typedef struct		s_p3d
