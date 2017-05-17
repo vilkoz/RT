@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/14 17:13:21 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/17 17:52:54 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/17 21:46:38 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,16 @@ int		move_hook(int x, int y, t_e *e)
 	(void)x;
 	(void)e;
 	if (e->k.m_key == 1)
-		printf("%d %d %d\n", x, y, e->k.m_key);
+	{
+		if (e->s_o)
+		{
+			e->s_o->move(e->s_o, new_p2d((double)(x - e->v_x) / (double)e->w,
+				(double)(y - e->v_y) / (double)e->h), &e->s->cam);
+			e->v_x = x;
+			e->v_y = y;
+			printf("moving %d %d %d\n", x, y, e->k.m_key);
+		}
+		mlx_loop_hook(e->mlx, loop_hook, e);
+	}
 	return (0);
 }

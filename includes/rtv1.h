@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 16:11:37 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/17 17:14:07 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/17 19:47:29 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,16 @@ typedef struct		s_material
 	float			refl;
 }					t_material;
 
+typedef struct		s_cam
+{
+	t_p3d			pos;
+	t_v3d			dir;
+	t_v3d			dir_d;
+	t_v3d			dir_r;
+	t_p3d			sin;
+	t_p3d			cos;
+}					t_cam;
+
 /*
 ** Object3D
 */
@@ -122,6 +132,8 @@ typedef struct		s_o3d
 	t_v3d			(*get_norm)(struct s_o3d *data, t_p3d inter_p);
 	void			(*rotate)(const struct s_o3d *data, double angle,
 						t_v3d axis);
+	void			(*move)(const struct s_o3d *obj, t_p2d move,
+						t_cam *cam);
 	t_tex			tex;
 	t_material		material;
 }					t_o3d;
@@ -147,16 +159,6 @@ typedef struct		s_lst
 	char			*line;
 	struct s_lst	*next;
 }					t_lst;
-
-typedef struct		s_cam
-{
-	t_p3d			pos;
-	t_v3d			dir;
-	t_v3d			dir_d;
-	t_v3d			dir_r;
-	t_p3d			sin;
-	t_p3d			cos;
-}					t_cam;
 
 typedef struct		s_scene
 {

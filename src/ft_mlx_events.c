@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/08 15:26:45 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/17 17:49:57 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/17 21:25:07 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,13 @@ int		move_button_rel(int key, int x, int y, t_e *e)
 	if (e->k.m_key == 1)
 	{
 		printf("release %d %d %d\n", key, x, y);
+		// if (e->s_o)
+		// {
+		// 	e->s_o->move(e->s_o, new_p2d((double)(x - e->v_x),
+		// 		(double)(y - e->v_y)), &e->s->cam);
+		// 	printf("moving %d %d %d\n", x - e->v_x, y - e->v_y, e->k.m_key);
+		// 	mlx_loop_hook(e->mlx, loop_hook, e);
+		// }
 		e->k.m_key = 0;
 	}
 	return (0);
