@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 19:05:49 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/16 17:57:39 by kshcherb         ###   ########.fr       */
+/*   Updated: 2017/05/17 18:24:19 by kshcherb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_v3d	get_norm_plane(t_o3d *o, t_p3d inter_p)
 	t_p2d	p;
 	t_plane	*pl;
 	t_v3d	axis;
-	
+
 	if (o->tex.img)
 	{
 		pl = (t_plane *)o->data;

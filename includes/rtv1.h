@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 16:11:37 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/16 21:04:00 by kshcherb         ###   ########.fr       */
+/*   Updated: 2017/05/17 18:20:24 by kshcherb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -279,6 +279,7 @@ int					is_viewable(t_p3d p1, t_p3d p2, t_scene *s, t_o3d *obj1);
 
 t_p2d				plane_coords(t_vec v, t_p3d p);
 t_p2d				cylinder_coords(t_o3d *dat, t_p3d inter_p);
+t_p2d				sphere_coords(t_o3d *dat, t_p3d inter_p);
 int					same_dir(t_v3d v1, t_v3d v2);
 t_v3d				v_inv(t_v3d v);
 double				v_sqr(t_v3d v);
@@ -364,7 +365,8 @@ t_scene				*read_file(char *name);
 */
 
 t_tex				new_tex(char *path);
-int					get_tex_color_bnw(t_o3d *dat, double x, double y);
+int					get_tex_color_bnw_cylinder(t_o3d *dat, double x, double y);
+int					get_tex_color_bnw_sphere(t_o3d *dat, double x, double y);
 int					ft_img_px_get(t_tex tex, int x, int y);
 t_tex				new_raw_tex(void *img, int w, int h);
 

@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 20:16:59 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/08 18:26:57 by kshcherb         ###   ########.fr       */
+/*   Updated: 2017/05/17 18:23:33 by kshcherb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,34 @@
 ** v.dir - plane normal
 ** p - intersection point
 */
+
+t_p2d		sphere_coords(t_o3d *dat, t_p3d inter_p)
+{
+	t_p2d		t;
+	t_v3d		tmp;
+	t_v3d		proj;
+	t_sphere	*sp;
+	t_v3d		res;
+
+	sp = (t_sphere *)dat->data;
+	res = normalize(new_v3d(inter_p.x - sp->center.x, inter_p.y - sp->center.y,
+	inter_p.z - sp->center.z));
+	tmp = v_mul(res, sp->radius);
+	proj = v_mul(new_v3d(1, 0, 0), dot_product(tmp, new_v3d(1, 0, 0)));
+	proj = v_sub(tmp, proj);
+	t.x = (acos(cos_vectors(proj, new_v3d(0, 0, 1))) / M_PI) *
+		(double)(dat->tex.w / 2);
+	t.x += (same_dir(new_v3d(0, 0, 1), proj)) ? (double)dat->tex.w / 2. : 0.;
+	proj = v_mul(new_v3d(1, 0, 0), dot_product(tmp, new_v3d(1, 0, 0)));
+	if (same_dir(proj, new_v3d(1, 0, 0)))
+		t.y = dat->tex.h / 2 - (v_len(proj) / sp->radius) * (dat->tex.h / 2);
+	else
+		t.y = (v_len(proj) / (double)sp->radius) * (double)dat->tex.h / 2 +
+			(double)dat->tex.h / 2;
+	t.x = (int)(t.x * 2.) % dat->tex.w;
+	t.y = (int)t.y % dat->tex.h;
+	return (t);
+}
 
 t_p2d		cylinder_coords(t_o3d *dat, t_p3d inter_p)
 {

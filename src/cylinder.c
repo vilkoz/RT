@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/19 15:28:14 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/08 18:28:08 by kshcherb         ###   ########.fr       */
+/*   Updated: 2017/05/17 18:25:18 by kshcherb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ t_v3d	get_norm_cyl(t_o3d *dat, t_p3d inter_p)
 	t_cyl	*sp;
 	t_v3d	dp;
 	t_v3d	res;
-
 
 	sp = (t_cyl *)dat->data;
 	dp = new_v3d_p(inter_p, sp->center);
@@ -39,9 +38,9 @@ t_v3d	get_norm_bump_cyl(t_o3d *dat, t_p3d inter_p)
 	{
 		x_axis = cross_product(sp->dir, res);
 		t = cylinder_coords(dat, inter_p);
-		c[0] = get_tex_color_bnw(dat, t.x, t.y);
-		c[1] = get_tex_color_bnw(dat, (t.x + 1), t.y);
-		c[2] = get_tex_color_bnw(dat, t.x, (t.y + 1));
+		c[0] = get_tex_color_bnw_cylinder(dat, t.x, t.y);
+		c[1] = get_tex_color_bnw_cylinder(dat, (t.x + 1), t.y);
+		c[2] = get_tex_color_bnw_cylinder(dat, t.x, (t.y + 1));
 		t.x = ((double)(c[0] - c[1]) * dat->material.bamp);
 		t.y = ((double)(c[0] - c[2]) * dat->material.bamp);
 		res = v_add(v_add(v_mul(normalize(x_axis), t.x), res),

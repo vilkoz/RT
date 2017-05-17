@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/21 18:50:51 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/08 17:41:27 by kshcherb         ###   ########.fr       */
+/*   Updated: 2017/05/17 18:26:30 by kshcherb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,22 @@ t_tex	new_tex(char *path)
 	return (t);
 }
 
-int		get_tex_color_bnw(t_o3d *dat, double x, double y)
+int		get_tex_color_bnw_cylinder(t_o3d *dat, double x, double y)
 {
 	int	color;
 
 	color = gray_scale(ft_img_px_get(dat->material.tex,
 		(int)(x * (double)dat->material.tex.w) % dat->material.tex.w,
 		(int)y % dat->material.tex.h));
+	return (color);
+}
+
+int		get_tex_color_bnw_sphere(t_o3d *dat, double x, double y)
+{
+	int	color;
+
+	color = gray_scale(ft_img_px_get(dat->tex, (int)(x) % dat->tex.w,
+		(int)(y) % dat->tex.h));
 	return (color);
 }
 
