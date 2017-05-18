@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/29 14:01:38 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/16 20:56:42 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/18 17:52:18 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,62 @@ void		rotate_disk(const t_o3d *o, double angle, t_v3d axis)
 	pl->norm = rotate_v_q(pl->norm, axis, angle);
 }
 
+void		move_disk_cone(t_cone *cone, t_p2d move, t_cam *cam)
+{
+	cone->center = v_to_p(v_add(v_mul(cam->dir_r, move.x),
+		p_to_v(cone->center)));
+	cone->center = v_to_p(v_add(v_mul(cam->dir_d, move.y),
+		p_to_v(cone->center)));
+	cone->top->p = v_to_p(v_add(v_mul(cam->dir_r, move.x),
+		p_to_v(cone->top->p)));
+	cone->top->p = v_to_p(v_add(v_mul(cam->dir_d, move.y),
+		p_to_v(cone->top->p)));
+}
+
+void		move_disk_cyl(t_cyl *cyl, t_p2d move, t_cam *cam)
+{
+	cyl->center = v_to_p(v_add(v_mul(cam->dir_r, move.x),
+		p_to_v(cyl->center)));
+	cyl->center = v_to_p(v_add(v_mul(cam->dir_d, move.y),
+		p_to_v(cyl->center)));
+	cyl->top->p = v_to_p(v_add(v_mul(cam->dir_r, move.x),
+		p_to_v(cyl->top->p)));
+	cyl->top->p = v_to_p(v_add(v_mul(cam->dir_d, move.y),
+		p_to_v(cyl->top->p)));
+	cyl->bot->p = v_to_p(v_add(v_mul(cam->dir_r, move.x),
+		p_to_v(cyl->bot->p)));
+	cyl->bot->p = v_to_p(v_add(v_mul(cam->dir_d, move.y),
+		p_to_v(cyl->bot->p)));
+}
+
+void		move_disk(const t_o3d *obj, t_p2d move, t_cam *cam)
+{
+	t_disk		*c;
+	double		alpha;
+	double		beta;
+	double		dist;
+
+	c = (t_disk *)obj->data;
+	dist = distance(cam->pos, c->p);
+	alpha = acos(cos_vectors(cam->dir,
+		pix_vector_cam(new_p2d(move.x, 0), cam)));
+	beta = acos(cos_vectors(cam->dir,
+		pix_vector_cam(new_p2d(0, move.y), cam)));
+	move.x = dist * tan(alpha) * (move.x < 0 ? -1. : 1.);
+	move.y = dist * tan(beta) * (move.y < 0 ? -1. : 1.);
+	if (c->cyl)
+		move_disk_cyl(c->cyl, move, cam);
+	else if (c->cone)
+		move_disk_cone(c->cone, move, cam);
+	else
+	{
+		c->p = v_to_p(v_add(v_mul(cam->dir_r, move.x),
+			p_to_v(c->p)));
+		c->p = v_to_p(v_add(v_mul(cam->dir_d, move.y),
+			p_to_v(c->p)));
+	}
+}
+
 t_o3d		*new_disk(t_vec v, double radius, int color, t_material material)
 {
 	t_disk		*d;
@@ -87,5 +143,6 @@ t_o3d		*new_disk(t_vec v, double radius, int color, t_material material)
 	obj->tex = material.tex;
 	obj->material = material;
 	obj->rotate = rotate_disk;
+	obj->move = move_disk;
 	return (obj);
 }

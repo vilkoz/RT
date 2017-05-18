@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/19 15:28:14 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/17 21:46:09 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/18 17:11:52 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,14 +109,22 @@ void	rotate_cyl(const t_o3d *obj, double angle, t_v3d axis)
 void	move_cyl(const t_o3d *obj, t_p2d move, t_cam *cam)
 {
 	t_cyl		*c;
+	double		alpha;
+	double		beta;
 	double		dist;
 
 	c = (t_cyl *)obj->data;
 	dist = distance(cam->pos, c->center);
-	move.x *= dist;
-	move.y *= dist;
+	alpha = acos(cos_vectors(cam->dir, pix_vector_cam(new_p2d(move.x, 0), cam)));
+	beta = acos(cos_vectors(cam->dir, pix_vector_cam(new_p2d(0, move.y), cam)));
+	move.x = dist * tan(alpha) * (move.x < 0 ? -1. : 1.);
+	move.y = dist * tan(beta) * (move.y < 0 ? -1. : 1.);
 	c->center = v_to_p(v_add(v_mul(cam->dir_r, move.x), p_to_v(c->center)));
 	c->center = v_to_p(v_add(v_mul(cam->dir_d, move.y), p_to_v(c->center)));
+	c->top->p = v_to_p(v_add(v_mul(cam->dir_r, move.x), p_to_v(c->top->p)));
+	c->top->p = v_to_p(v_add(v_mul(cam->dir_d, move.y), p_to_v(c->top->p)));
+	c->bot->p = v_to_p(v_add(v_mul(cam->dir_r, move.x), p_to_v(c->bot->p)));
+	c->bot->p = v_to_p(v_add(v_mul(cam->dir_d, move.y), p_to_v(c->bot->p)));
 }
 
 t_o3d	*new_cyl(t_vec v, double radius, double h, t_material material)

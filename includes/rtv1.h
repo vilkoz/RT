@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 16:11:37 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/17 19:47:29 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/18 17:52:05 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,6 +261,8 @@ typedef struct		s_disk
 	t_v3d			norm;
 	double			radius;
 	int				color;
+	t_cone			*cone;
+	t_cyl			*cyl;
 }					t_disk;
 
 # include "quaternion.h"
@@ -320,6 +322,7 @@ t_scene				*new_scene(int obj_num, t_o3d **obj, t_p3d ls, t_cam cam);
 t_cam				new_cam(t_p3d pos, t_v3d dir);
 double				cos_vectors(t_v3d v1, t_v3d v2);
 t_v3d				pix_vector(t_p2d p, t_scene *s);
+t_v3d				pix_vector_cam(t_p2d p, t_cam *s);
 
 /*
 ** color.c
@@ -397,5 +400,17 @@ t_material			new_material(int color, t_tex tex, float refl);
 void				rotate_cam_x(t_cam *cam, double ang);
 void				rotate_cam_y(t_cam *cam, double ang);
 void				rotate_cam_z(t_cam *cam, double ang);
+
+/*
+** cylinder.c
+*/
+
+void				move_cyl(const t_o3d *obj, t_p2d move, t_cam *cam);
+
+/*
+** cone.c
+*/
+
+void				rotate_cone(const t_o3d *obj, double angle, t_v3d axis);
 
 #endif

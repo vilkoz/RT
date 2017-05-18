@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/15 16:27:17 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/01 18:20:04 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/18 16:50:35 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,24 @@ t_cam		new_cam(t_p3d pos, t_v3d dir)
 	cam.sin.y = sin(cam.dir.y);
 	cam.sin.z = sin(cam.dir.z);
 	return (cam);
+}
+
+t_v3d		pix_vector_cam(t_p2d p, t_cam *s)
+{
+	t_v3d		dir;
+
+	dir = new_v3d(s->pos.x + 1. * s->dir.x,
+		s->pos.y + 1. * s->dir.y,
+		s->pos.z + 1. * s->dir.z);
+	dir = new_v3d(dir.x + p.x * s->dir_r.x,
+		dir.y + p.x * s->dir_r.y,
+		dir.z + p.x * s->dir_r.z);
+	dir = new_v3d(dir.x + p.y * s->dir_d.x,
+		dir.y + p.y * s->dir_d.y,
+		dir.z + p.y * s->dir_d.z);
+	dir = new_v3d(dir.x - s->pos.x, dir.y - s->pos.y,
+		dir.z - s->pos.z);
+	return (normalize(dir));
 }
 
 t_v3d		pix_vector(t_p2d p, t_scene *s)

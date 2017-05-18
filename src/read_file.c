@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 18:57:56 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/17 16:41:33 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/18 17:18:40 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,8 +245,14 @@ void		read_cyl(t_scene *s, char **arr)
 	add_cyl_top(s);
 	((t_cyl *)(s->objects[s->cur_o - 3]->data))->top =
 		(t_disk*)s->objects[s->cur_o - 2]->data;
+	((t_disk*)(s->objects[s->cur_o - 2]->data))->cyl =
+		(t_cyl *)(s->objects[s->cur_o - 3]->data);
+	((t_disk*)(s->objects[s->cur_o - 2]->data))->cone = NULL;
 	((t_cyl *)(s->objects[s->cur_o - 3]->data))->bot =
 		(t_disk*)s->objects[s->cur_o - 1]->data;
+	((t_disk*)(s->objects[s->cur_o - 1]->data))->cyl =
+		(t_cyl *)(s->objects[s->cur_o - 3]->data);
+	((t_disk*)(s->objects[s->cur_o - 1]->data))->cone = NULL;
 	free_arr(&arr);
 }
 
@@ -312,6 +318,9 @@ void		read_cone(t_scene *s, char **arr)
 	add_cone_top(s);
 	((t_cone *)(s->objects[s->cur_o - 2]->data))->top =
 		(t_disk*)s->objects[s->cur_o - 1]->data;
+	((t_disk*)(s->objects[s->cur_o - 1]->data))->cone =
+		(t_cone *)(s->objects[s->cur_o - 2]->data);
+	((t_disk*)(s->objects[s->cur_o - 1]->data))->cyl = NULL;
 	free_arr(&arr);
 }
 

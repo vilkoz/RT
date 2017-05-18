@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/15 17:36:47 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/16 20:24:53 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/18 17:13:26 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,11 +126,6 @@ int			fast_render(t_p2d p1, t_p2d p, t_e *e, int t_num)
 	return (ft_img_px_get(new_raw_tex(e->img, e->w, e->h), p1.x, p1.y));
 }
 
-void		ereak(void)
-{
-
-}
-
 void		find_intersect(t_e *e, t_scene *s, t_p2d y_area, int i)
 {
 	t_p2d		p;
@@ -145,8 +140,6 @@ void		find_intersect(t_e *e, t_scene *s, t_p2d y_area, int i)
 		{
 			p.x = ((p1.x - e->w / 2.0) / e->w) * ASP;
 			p.y = (p1.y - e->h / 2.0) / e->h;
-			if (p1.x == e->v_x && p1.y == e->v_y)
-				ereak();
 			ft_img_px_put(e, p1.x, p1.y,
 				(e->fast_mode) ? fast_render(p1, p, e, i) : anti_alias(p, e));
 		}
