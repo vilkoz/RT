@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/29 14:01:38 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/21 22:20:48 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/21 23:30:10 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,31 @@
 
 t_v3d		get_norm_disk(t_o3d *o, t_p3d inter_p)
 {
-	(void)inter_p;
+	int		c[3];
+	t_p3d	g;
+	t_p2d	p;
+	t_disk	*pl;
+	t_v3d	axis;
+
+	pl = (t_disk *)o->data;
+	if (o->tex.img)
+	{
+		p = plane_coords(new_vec(pl->norm, pl->p), inter_p);
+		p.x = (p.x < 0) ? o->tex.w - 1 - (abs((int)(p.x)) % o->tex.w) :
+			(int)p.x % o->tex.w;
+		p.y = (p.y < 0) ? o->tex.h - 2 - (abs((int)(p.y)) % o->tex.h) :
+			(int)p.y % o->tex.h;
+		c[0] = gray_scale(ft_img_px_get(o->tex, (int)p.x, (int)p.y));
+		c[1] = gray_scale(ft_img_px_get(o->tex, (int)p.x + 1, (int)p.y));
+		c[2] = gray_scale(ft_img_px_get(o->tex, (int)p.x, (int)p.y + 1));
+		g.x = ((double)(c[0] - c[1]) * o->material.bamp);
+		g.y = ((double)(c[0] - c[2]) * o->material.bamp);
+		axis = normalize((cross_product(pl->norm,
+			normalize(new_v3d(0, 0, 1)))));
+		return (v_add(v_add(v_mul(axis, g.x), pl->norm),
+			v_mul(normalize((cross_product(axis, pl->norm))), g.y)));
+
+	}
 	return (((t_disk*)(o->data))->norm);
 }
 
@@ -29,7 +53,7 @@ int			get_color_disk(t_o3d *o, t_p3d inter_p)
 		p = plane_coords(new_vec(pl->norm, pl->p), inter_p);
 		p.x = (p.x < 0) ? o->tex.w - 1 - (abs((int)(p.x)) % o->tex.w) :
 			(int)p.x % o->tex.w;
-		p.y = (p.y < 0) ? o->tex.h - 1 - (abs((int)(p.y)) % o->tex.h) :
+		p.y = (p.y < 0) ? o->tex.h - 2 - (abs((int)(p.y)) % o->tex.h) :
 			(int)p.y % o->tex.h;
 		return (ft_img_px_get(o->tex, (int)p.x, (int)p.y));
 	}
@@ -56,7 +80,7 @@ int			intersect_disk(const t_o3d *o, const t_p3d ray_start,
 	if (dot_product(new_v3d_p(*inter_p, ray_start), ray) < 0)
 		return (FALSE);
 	if (v_len(new_v3d_p(*inter_p, pl->p)) > pl->radius
-	|| distance(*inter_p, ray_start) < EPSILON)
+	|| distance(ray_start, *inter_p) < EPSILON)
 		return (FALSE);
 	return (TRUE);
 }
