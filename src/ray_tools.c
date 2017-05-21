@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 20:16:59 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/21 22:59:01 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/21 23:24:30 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 ** v.dir - plane normal
 ** p - intersection point
 */
+
+//TODO: FIX texture pidorasing
 
 t_p2d		plane_coords(t_vec v, t_p3d p)
 {
