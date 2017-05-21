@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 19:05:49 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/06 19:46:33 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/21 23:01:36 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,35 @@ int		intersect_sphere(const t_o3d *data, const t_p3d ray_start,
 	return (1);
 }
 
-t_o3d	*new_sphere(t_p3d center, double radius, t_material material)
+void		move_sphere(const t_o3d *obj, t_p2d move, t_cam *cam)
+{
+	t_sphere		*c;
+	double		alpha;
+	double		beta;
+	double		dist;
+
+	c = (t_sphere *)obj->data;
+	dist = distance(cam->pos, c->center);
+	alpha = acos(cos_vectors(cam->dir,
+		pix_vector_cam(new_p2d(move.x, 0), cam)));
+	beta = acos(cos_vectors(cam->dir,
+		pix_vector_cam(new_p2d(0, move.y), cam)));
+	move.x = dist * tan(alpha) * (move.x < 0 ? -1. : 1.);
+	move.y = dist * tan(beta) * (move.y < 0 ? -1. : 1.);
+	c->center = v_to_p(v_add(v_mul(cam->dir_r, move.x),
+		p_to_v(c->center)));
+	c->center = v_to_p(v_add(v_mul(cam->dir_d, move.y),
+		p_to_v(c->center)));
+}
+
+void		rotate_sphere(const t_o3d *o, double angle, t_v3d axis)
+{
+	(void)o;
+	(void)angle;
+	(void)axis;
+}
+
+t_o3d		*new_sphere(t_p3d center, double radius, t_material material)
 {
 	t_sphere	*sp;
 	t_o3d		*obj;
@@ -116,5 +144,7 @@ t_o3d	*new_sphere(t_p3d center, double radius, t_material material)
 	obj->get_norm = get_norm_sphere;
 	obj->tex = material.tex;
 	obj->material = material;
+	obj->rotate = rotate_sphere;
+	obj->move = move_sphere;
 	return (obj);
 }
