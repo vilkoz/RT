@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/29 14:01:38 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/18 17:52:18 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/21 22:20:48 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,25 @@ void		rotate_disk(const t_o3d *o, double angle, t_v3d axis)
 	t_disk		*pl;
 
 	pl = (t_disk *)o->data;
-	pl->norm = rotate_v_q(pl->norm, axis, angle);
+	if (pl->cyl)
+	{
+		pl->cyl->dir = rotate_v_q(pl->cyl->dir, axis, angle);
+		pl->cyl->top->p = v_to_p(v_add(v_mul(pl->cyl->dir, pl->cyl->h),
+			p_to_v(pl->cyl->center)));
+		pl->cyl->top->norm = pl->cyl->dir;
+		pl->cyl->bot->p = v_to_p(v_add(v_mul(v_inv(pl->cyl->dir), pl->cyl->h),
+			p_to_v(pl->cyl->center)));
+		pl->cyl->bot->norm = v_inv(pl->cyl->dir);
+	}
+	else if (pl->cone)
+	{
+		pl->cone->dir = rotate_v_q(pl->cone->dir, axis, angle);
+		pl->cone->top->p = v_to_p(v_add(v_mul(pl->cone->dir, pl->cone->h),
+			p_to_v(pl->cone->center)));
+		pl->cone->top->norm = pl->cone->dir;
+	}
+	else
+		pl->norm = rotate_v_q(pl->norm, axis, angle);
 }
 
 void		move_disk_cone(t_cone *cone, t_p2d move, t_cam *cam)

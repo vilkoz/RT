@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/15 17:36:47 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/18 17:13:26 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/21 22:06:18 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,15 @@ int			is_viewable(t_p3d p1, t_p3d p2, t_scene *s, t_o3d *obj1)
 {
 	int		i;
 	t_o3d	*obj;
-	t_v3d	norm;
 	t_p3d	inter_p;
-	t_p3d	p_b;
+	// t_v3d	norm;
+	// t_p3d	p_b;
 
 	i = -1;
-	norm = obj1->get_norm(obj1, p1);
-	p_b = new_p3d(p1.x + norm.x * 0.01, p1.y + norm.y * 0.01,
-		p1.z + norm.z * 0.01);
+	(void)obj1;
+	// norm = obj1->get_norm(obj1, p1);
+	// p_b = new_p3d(p1.x + norm.x * 0.01, p1.y + norm.y * 0.01,
+	// 	p1.z + norm.z * 0.01);
 	while (++i < s->obj_num)
 	{
 		obj = s->objects[i];
