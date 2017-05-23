@@ -6,13 +6,14 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 16:11:37 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/21 23:30:59 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/22 19:04:19 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef _RTV1_H
 # define _RTV1_H
 # define EPSILON 0.00000001
+# define EPS EPSILON
 # define RAD (0.0175433)
 # define SIGN(x) ((x < 0) ? -1 : 1)
 # define FALSE 0
@@ -294,6 +295,7 @@ t_p2d				plane_coords(t_vec v, t_p3d p);
 t_p2d				cylinder_coords(t_o3d *dat, t_p3d inter_p);
 t_p2d				sphere_coords(t_o3d *dat, t_p3d inter_p);
 int					same_dir(t_v3d v1, t_v3d v2);
+int					same_dir2(t_v3d v1, t_v3d v2);
 t_v3d				v_inv(t_v3d v);
 double				v_sqr(t_v3d v);
 t_v3d				v_add(t_v3d v1, t_v3d v2);

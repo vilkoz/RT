@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/19 19:12:32 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/21 23:30:35 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/22 19:08:23 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,6 @@ int		intersect_cone(const t_o3d *data, const t_p3d ray_start,
 	sp = (t_cone *)data->data;
 	if (!solve_quad_rot(data->data, new_vec(ray, ray_start), &t0, &t1))
 		return (FALSE);
-	if (t0 > t1)
-		SWAP_D(t0, t1);
 	if ((t0 < 0) && ((t0 = t1) < 0))
 		return (FALSE);
 	*inter_p = v_to_p(v_add(p_to_v(ray_start), v_mul(ray, t0)));
@@ -93,14 +91,20 @@ int		intersect_cone(const t_o3d *data, const t_p3d ray_start,
 	if (!same_dir(dp, sp->dir))
 		return (FALSE);
 	if (sp->h - v_len(v_sub(dp, v_sub(dp, v_mul(sp->dir,
-		dot_product(sp->dir, dp))))) < 0 || distance(*inter_p, ray_start) < EPSILON)
+		dot_product(sp->dir, dp))))) < 0 || distance(*inter_p, ray_start) < EPS)
 	{
 		*inter_p = v_to_p(v_add(p_to_v(ray_start), v_mul(ray, t1)));
 		dp = new_v3d_p(*inter_p, sp->center);
 		if (sp->h - v_len(v_sub(dp, v_sub(dp, v_mul(sp->dir,
-			dot_product(sp->dir, dp))))) < 0)
+			dot_product(sp->dir, dp))))) < 0 || !same_dir(dp, sp->dir))
 			return (FALSE);
 	}
+	// dp = new_v3d_p(ray_start, sp->center);
+	// if (v_len(v_sub(dp, v_mul(sp->dir, dot_product(dp, sp->dir)))) <
+	// 	sp->top->radius && same_dir(ray, sp->dir))
+	// {
+	// 	return (TRUE);
+	// }
 	return (TRUE);
 }
 

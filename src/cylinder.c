@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/19 15:28:14 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/21 23:30:22 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/22 16:02:21 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,8 @@ void	move_cyl(const t_o3d *obj, t_p2d move, t_cam *cam)
 
 	c = (t_cyl *)obj->data;
 	dist = distance(cam->pos, c->center);
-	alpha = acos(cos_vectors(cam->dir, pix_vector_cam(new_p2d(move.x, 0), cam)));
+	alpha = acos(cos_vectors(cam->dir, pix_vector_cam(new_p2d(move.x, 0),
+		cam)));
 	beta = acos(cos_vectors(cam->dir, pix_vector_cam(new_p2d(0, move.y), cam)));
 	move.x = dist * tan(alpha) * (move.x < 0 ? -1. : 1.);
 	move.y = dist * tan(beta) * (move.y < 0 ? -1. : 1.);
