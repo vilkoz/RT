@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 18:57:56 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/24 00:24:46 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/24 00:26:53 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void		free_arr(char ***arr)
 		*arr = NULL;
 }
 
-void		init_sphere(t_sphere *s, t_material *m)
+void		init_sphere(t_sphere *sp, t_material *m)
 {
 	sp->center.x = 0;
 	sp->center.y = 0;
@@ -83,7 +83,7 @@ void		read_sphere(t_scene *s, char **arr)
 	t_material	m;
 
 	i = 0;
-	init_sphere(&s, &m);
+	init_sphere(&sp, &m);
 	while (arr[++i] != NULL)
 	{
 		(i == 1) ? sp.center.x = ft_atod(arr[i]): 23;
