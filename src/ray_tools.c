@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 20:16:59 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/23 22:38:23 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/24 00:54:07 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,11 +79,13 @@ t_p2d		plane_coords(t_vec v, t_p3d p)
 	a = v_sub(new_v3d_p(v.p, new_p3d(0, 0, 0)),
 	new_v3d_p(p, new_p3d(0, 0, 0)));
 	perp = v_sub(a, v_mul(nx, dot_product(a, nx)));
-	r.y = same_dir(perp, cross_product(v.dir, nx)) ?
-		v_len(perp) : -v_len(perp);
+	// r.y = same_dir(perp, cross_product(v.dir, nx)) ?
+	// 	v_len(perp) : -v_len(perp);
+	r.y = v_len(perp);
 	x_axis = new_v3d_p(new_p3d(p.x + perp.x, p.y + perp.y,
 		p.z + perp.z), v.p);
-	r.x = same_dir(x_axis, nx) ? v_len(x_axis) : -v_len(x_axis);
+	// r.x = same_dir(x_axis, nx) ? v_len(x_axis) : -v_len(x_axis);
+	r.x = v_len(x_axis);
 	return (r);
 }
 
