@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 18:57:56 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/23 23:53:28 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/24 00:24:46 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,18 @@ void		free_arr(char ***arr)
 		*arr = NULL;
 }
 
+void		init_sphere(t_sphere *s, t_material *m)
+{
+	sp->center.x = 0;
+	sp->center.y = 0;
+	sp->center.z = 0;
+	sp->radius = 10;
+	sp->color = 0xff50ff;
+	sp->tex.img = NULL;
+	m->refl = 0;
+	m->bamp = 0;
+}
+
 void		read_sphere(t_scene *s, char **arr)
 {
 	int			i;
@@ -71,14 +83,7 @@ void		read_sphere(t_scene *s, char **arr)
 	t_material	m;
 
 	i = 0;
-	sp.center.x = 0;
-	sp.center.y = 0;
-	sp.center.z = 0;
-	sp.radius = 10;
-	sp.color = 0xff50ff;
-	sp.tex.img = NULL;
-	m.refl = 0;
-	m.bamp = 0;
+	init_sphere(&s, &m);
 	while (arr[++i] != NULL)
 	{
 		(i == 1) ? sp.center.x = ft_atod(arr[i]): 23;
@@ -119,19 +124,24 @@ void		read_light(t_scene *s, char **arr)
 	free_arr(&arr);
 }
 
+void		init_plane(t_plane *p, t_material *m)
+{
+	p->p = new_p3d(0, 1, 2);
+	p->norm = new_v3d(0, 1, 0);
+	p->color = 0xff50ff;
+	p->tex.img = NULL;
+	m->refl = 0;
+	m->bamp = 0;
+}
+
 void		read_plane(t_scene *s, char **arr)
 {
 	t_plane		p;
 	t_material	m;
 	int			i;
 
-	p.p = new_p3d(0, 1, 2);
-	p.norm = new_v3d(0, 1, 0);
-	p.color = 0xff50ff;
-	p.tex.img = NULL;
-	m.refl = 0;
-	m.bamp = 0;
 	i = 0;
+	init_plane(&p, &m);
 	while (arr[++i] != NULL)
 	{
 		(i == 1) ? p.p.x = ft_atod(arr[i]) : 23;
@@ -226,30 +236,36 @@ void		add_cyl_top(t_scene *s)
 	((t_disk*)(s->objects[s->cur_o - 1]->data))->cone = NULL;
 }
 
+void		fill_cyl(char **arr, t_cyl *c, t_material *m)
+{
+	int			i;
+
+	i = 0;
+	while (arr[++i])
+	{
+		(i == 1) ? c->center.x = ft_atod(arr[i]) : 23;
+		(i == 2) ? c->center.y = ft_atod(arr[i]) : 23;
+		(i == 3) ? c->center.z = ft_atod(arr[i]) : 23;
+		(i == 4) ? c->dir.x = ft_atod(arr[i]) : 23;
+		(i == 5) ? c->dir.y = ft_atod(arr[i]) : 23;
+		(i == 6) ? c->dir.z = ft_atod(arr[i]) : 23;
+		(i == 7) ? c->radius = (double)ft_atod(arr[i]) : 23;
+		(i == 8) ? c->h = (double)ft_atod(arr[i]) : 23;
+		if (i == 9 && ft_strchr(arr[i], 'x') != NULL)
+			c->color = ft_atoi_base(ft_strchr(arr[i], 'x') + 1, 16);
+		(i == 10) ? m->tex = new_tex(arr[i]) : m->tex;
+		(i == 11) ? m->refl = ft_atod(arr[i]) : m->refl;
+		(i == 12) ? m->bamp = ft_atod(arr[i]) : m->bamp;
+	}
+}
+
 void		read_cyl(t_scene *s, char **arr)
 {
 	t_cyl		c;
 	t_material	m;
-	int			i;
 
-	i = 0;
 	init_cyl(&c, &m);
-	while (arr[++i])
-	{
-		(i == 1) ? c.center.x = ft_atod(arr[i]) : 23;
-		(i == 2) ? c.center.y = ft_atod(arr[i]) : 23;
-		(i == 3) ? c.center.z = ft_atod(arr[i]) : 23;
-		(i == 4) ? c.dir.x = ft_atod(arr[i]) : 23;
-		(i == 5) ? c.dir.y = ft_atod(arr[i]) : 23;
-		(i == 6) ? c.dir.z = ft_atod(arr[i]) : 23;
-		(i == 7) ? c.radius = (double)ft_atod(arr[i]) : 23;
-		(i == 8) ? c.h = (double)ft_atod(arr[i]) : 23;
-		if (i == 9 && ft_strchr(arr[i], 'x') != NULL)
-			c.color = ft_atoi_base(ft_strchr(arr[i], 'x') + 1, 16);
-		(i == 10) ? m.tex = new_tex(arr[i]) : m.tex;
-		(i == 11) ? m.refl = ft_atod(arr[i]) : m.refl;
-		(i == 12) ? m.bamp = ft_atod(arr[i]) : m.bamp;
-	}
+	fill_cyl(arr, &c, &m);
 	c.dir = (!c.dir.x && !c.dir.y && !c.dir.z) ? new_v3d(0, 1, 0) :
 		c.dir;
 	s->objects[s->cur_o] = new_cyl(new_vec(new_v3d(c.dir.x, c.dir.y, c.dir.z),
@@ -288,43 +304,49 @@ void		add_cone_top(t_scene *s)
 	radius = (c->sin_a / c->cos_a) * c->h;
 	s->objects[s->cur_o] = new_disk(new_vec(c->dir, top), radius, c->color, m);
 	s->cur_o++;
+	((t_cone *)(s->objects[s->cur_o - 2]->data))->top =
+		(t_disk*)s->objects[s->cur_o - 1]->data;
+	((t_disk*)(s->objects[s->cur_o - 1]->data))->cone =
+		(t_cone *)(s->objects[s->cur_o - 2]->data);
+	((t_disk*)(s->objects[s->cur_o - 1]->data))->cyl = NULL;
+}
+
+void		fill_cone(char **arr, t_cone *c, t_material *m)
+{
+	int			i;
+
+	i = 0;
+	while (arr[++i])
+	{
+		(i == 1) ? c->center.x = ft_atod(arr[i]) : 23;
+		(i == 2) ? c->center.y = ft_atod(arr[i]) : 23;
+		(i == 3) ? c->center.z = ft_atod(arr[i]) : 23;
+		(i == 4) ? c->dir.x = ft_atod(arr[i]) : 23;
+		(i == 5) ? c->dir.y = ft_atod(arr[i]) : 23;
+		(i == 6) ? c->dir.z = ft_atod(arr[i]) : 23;
+		(i == 7) ? c->a = (double)ft_atod(arr[i]) : 23;
+		(i == 8) ? c->h = (double)ft_atod(arr[i]) : 23;
+		if (i == 9 && ft_strchr(arr[i], 'x') != NULL)
+			c->color = ft_atoi_base(ft_strchr(arr[i], 'x') + 1, 16);
+		(i == 10) ? m->tex = new_tex(arr[i]) : m->tex;
+		(i == 11) ? m->refl = ft_atod(arr[i]) : m->refl;
+	}
 }
 
 void		read_cone(t_scene *s, char **arr)
 {
 	t_material	m;
 	t_cone		c;
-	int			i;
 
-	i = 0;
 	init_cone(&c, &m);
-	while (arr[++i])
-	{
-		(i == 1) ? c.center.x = ft_atod(arr[i]) : 23;
-		(i == 2) ? c.center.y = ft_atod(arr[i]) : 23;
-		(i == 3) ? c.center.z = ft_atod(arr[i]) : 23;
-		(i == 4) ? c.dir.x = ft_atod(arr[i]) : 23;
-		(i == 5) ? c.dir.y = ft_atod(arr[i]) : 23;
-		(i == 6) ? c.dir.z = ft_atod(arr[i]) : 23;
-		(i == 7) ? c.a = (double)ft_atod(arr[i]) : 23;
-		(i == 8) ? c.h = (double)ft_atod(arr[i]) : 23;
-		if (i == 9 && ft_strchr(arr[i], 'x') != NULL)
-			c.color = ft_atoi_base(ft_strchr(arr[i], 'x') + 1, 16);
-		(i == 10) ? m.tex = new_tex(arr[i]) : m.tex;
-		(i == 11) ? m.refl = ft_atod(arr[i]) : m.refl;
-	}
+	fill_cone(arr, &c, &m);
 	c.dir = (!c.dir.x && !c.dir.y && !c.dir.z) ? new_v3d(0, 1, 0) :
 		c.dir;
 	s->objects[s->cur_o] = new_cone(new_vec(normalize(new_v3d(c.dir.x, c.dir.y,
 		c.dir.z)), new_p3d(c.center.x, c.center.y, c.center.z)), c.h, c.a,
-			new_material(c.color, m.tex, m.refl, 0));
+		new_material(c.color, m.tex, m.refl, 0));
 	s->cur_o++;
 	add_cone_top(s);
-	((t_cone *)(s->objects[s->cur_o - 2]->data))->top =
-		(t_disk*)s->objects[s->cur_o - 1]->data;
-	((t_disk*)(s->objects[s->cur_o - 1]->data))->cone =
-		(t_cone *)(s->objects[s->cur_o - 2]->data);
-	((t_disk*)(s->objects[s->cur_o - 1]->data))->cyl = NULL;
 	free_arr(&arr);
 }
 
