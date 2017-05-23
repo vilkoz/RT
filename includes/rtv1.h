@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 16:11:37 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/22 19:04:19 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/23 16:18:30 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -398,7 +398,7 @@ int					get_color(t_scene *s, t_o3d *obj, t_vec v, int rn);
 ** material.c
 */
 
-t_material			new_material(int color, t_tex tex, float refl);
+t_material			new_material(int color, t_tex tex, float refl, float bump);
 
 /*
 ** camera.c

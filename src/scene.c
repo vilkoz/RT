@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/15 16:27:17 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/18 16:50:35 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/23 16:19:48 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,31 +65,6 @@ t_v3d		pix_vector(t_p2d p, t_scene *s)
 		dir.z - s->cam.pos.z);
 	return (normalize(dir));
 }
-
-// void		rotate_cam_x(t_cam *cam, double ang)
-// {
-// 	// t_v3d		new_x;
-// 	// t_v3d		new_y;
-// 	// t_v3d		new_z;
-// 	// t_mat		res;
-// 	// t_mat		inv;
-// 	//
-// 	// new_x = cam->dir;
-// 	// new_z = cross_product(new_x, normalize(new_v3d(1, 1, 1)));
-// 	// new_y = cross_product(new_z, new_x);
-// 	// res = new_mat(new_x, new_y, new_z);
-// 	// inv = mat_inverse(res);
-// 	// res = mat_mul(mat_mul(inv, new_mat_ang_x(ang)),
-// 	// 	new_mat(new_x, new_y, new_z));
-// 	// inv = new_mat1(new_v3d(cam->dir.x, cam->dir.y, cam->dir.z));
-// 	// res = mat_mul(res, inv);
-// 	// cam->dir.x = res.m[0][0];
-// 	// cam->dir.y = res.m[1][0];
-// 	// cam->dir.z = res.m[2][0];
-// 	cam->dir = rotate_v_x(cam->dir, sin(ang), cos(ang));
-// 	cam->dir_d = rotate_v_x(cam->dir_d, sin(ang), cos(ang));
-// 	cam->dir_r = rotate_v_x(cam->dir_r, sin(ang), cos(ang));
-// }
 
 t_scene		*new_scene(int obj_num, t_o3d **obj, t_p3d ls, t_cam cam)
 {

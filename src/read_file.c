@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 18:57:56 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/18 17:18:40 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/23 17:26:13 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,7 @@ void		count_obj(t_scene *s, t_list *lst)
 		l = (char *)(tmp->content);
 		if (ft_strlen(l) == 0 || ft_strlen(l) == 1)
 			read_error(NULL, 2);
-		if ((l[0] == 's' || l[0] == 'p') &&
-			l[1] == ' ')
+		if ((l[0] == 's' || l[0] == 'p') && l[1] == ' ')
 			num_o++;
 		if (l[0] == 'y')
 			num_o += 3;
@@ -79,20 +78,26 @@ void		read_sphere(t_scene *s, char **arr)
 	sp.color = 0xff50ff;
 	sp.tex.img = NULL;
 	m.refl = 0;
+	m.bamp = 0;
+	printf("sphere\n");
+	printf("x %p\n", arr[1]);
+	printf("y %p\n", arr[2]);
+	printf("z %p\n", arr[3]);
 	while (arr[++i] != NULL)
 	{
-		(i == 1) ? sp.center.x = ft_atod(arr[i]) : 23;
-		(i == 2) ? sp.center.y = ft_atod(arr[i]) : 23;
-		(i == 3) ? sp.center.z = ft_atod(arr[i]) : 23;
+		(i == 1) ? sp.center.x = ft_atod(arr[i]): 23;
+		(i == 2) ? sp.center.y = ft_atod(arr[i]): 23;
+		(i == 3) ? sp.center.z = ft_atod(arr[i]): 23;
 		(i == 4) ? sp.radius = (double)ft_atod(arr[i]) : 23;
 		if (i == 5 && ft_strchr(arr[i], 'x') != NULL)
 			sp.color = ft_atoi_base(ft_strchr(arr[i], 'x') + 1, 16);
 		if (i == 6 && ft_strcmp("NULL", arr[i]))
 			sp.tex = new_tex(arr[i]);
 		(i == 7) ? m.refl = ft_atod(arr[i]) : m.refl;
+		(i == 8) ? m.bamp = ft_atod(arr[i]) : m.bamp;
 	}
 	s->objects[s->cur_o] = new_sphere(new_p3d(sp.center.x, sp.center.y,
-		sp.center.z), sp.radius, new_material(sp.color, sp.tex, m.refl));
+	sp.center.z), sp.radius, new_material(sp.color, sp.tex, m.refl, m.bamp));
 	s->cur_o++;
 	free_arr(&arr);
 }
@@ -105,6 +110,10 @@ void		read_light(t_scene *s, char **arr)
 	p.x = 1000;
 	p.y = 1000;
 	p.z = 1000;
+	printf("cam\n");
+	printf("x %p\n", arr[1]);
+	printf("y %p\n", arr[2]);
+	printf("z %p\n", arr[3]);
 	i = 0;
 	while (arr[++i] != NULL)
 	{
@@ -129,6 +138,7 @@ void		read_plane(t_scene *s, char **arr)
 	p.color = 0xff50ff;
 	p.tex.img = NULL;
 	m.refl = 0;
+	m.bamp = 0;
 	i = 0;
 	while (arr[++i] != NULL)
 	{
@@ -142,11 +152,11 @@ void		read_plane(t_scene *s, char **arr)
 			p.color = ft_atoi_base(ft_strchr(arr[i], 'x') + 1, 16);
 		(i == 8) ? p.tex = new_tex(arr[i]) : p.tex;
 		(i == 9) ? m.refl = ft_atod(arr[i]) : m.refl;
+		(i == 10) ? m.bamp = ft_atod(arr[i]) : m.bamp;
 	}
 	p.norm = (!p.norm.x && !p.norm.y && !p.norm.z) ? new_v3d(0, 1, 0) : p.norm;
-	s->objects[s->cur_o] = new_plane(new_p3d(p.p.x, p.p.y, p.p.z),
-		new_v3d(p.norm.x, p.norm.y, p.norm.z),
-		new_material(p.color, p.tex, m.refl));
+	s->objects[s->cur_o] = new_plane(new_p3d(p.p.x, p.p.y, p.p.z), new_v3d(
+p.norm.x, p.norm.y, p.norm.z), new_material(p.color, p.tex, m.refl, m.bamp));
 	s->cur_o++;
 	free_arr(&arr);
 }
@@ -192,6 +202,7 @@ void		init_cyl(t_cyl *c, t_material *m)
 	c->color = 0xffa0;
 	m->tex.img = NULL;
 	m->refl = 0;
+	m->bamp = 0;
 }
 
 void		add_cyl_top(t_scene *s)
@@ -211,6 +222,16 @@ void		add_cyl_top(t_scene *s)
 	s->objects[s->cur_o] = new_disk(new_vec(v_inv(c->dir), bot), c->radius,
 		c->color, m);
 	s->cur_o++;
+	((t_cyl *)(s->objects[s->cur_o - 3]->data))->top =
+		(t_disk*)s->objects[s->cur_o - 2]->data;
+	((t_disk*)(s->objects[s->cur_o - 2]->data))->cyl =
+		(t_cyl *)(s->objects[s->cur_o - 3]->data);
+	((t_disk*)(s->objects[s->cur_o - 2]->data))->cone = NULL;
+	((t_cyl *)(s->objects[s->cur_o - 3]->data))->bot =
+		(t_disk*)s->objects[s->cur_o - 1]->data;
+	((t_disk*)(s->objects[s->cur_o - 1]->data))->cyl =
+		(t_cyl *)(s->objects[s->cur_o - 3]->data);
+	((t_disk*)(s->objects[s->cur_o - 1]->data))->cone = NULL;
 }
 
 void		read_cyl(t_scene *s, char **arr)
@@ -235,24 +256,15 @@ void		read_cyl(t_scene *s, char **arr)
 			c.color = ft_atoi_base(ft_strchr(arr[i], 'x') + 1, 16);
 		(i == 10) ? m.tex = new_tex(arr[i]) : m.tex;
 		(i == 11) ? m.refl = ft_atod(arr[i]) : m.refl;
+		(i == 12) ? m.bamp = ft_atod(arr[i]) : m.bamp;
 	}
 	c.dir = (!c.dir.x && !c.dir.y && !c.dir.z) ? new_v3d(0, 1, 0) :
 		c.dir;
 	s->objects[s->cur_o] = new_cyl(new_vec(new_v3d(c.dir.x, c.dir.y, c.dir.z),
 		new_p3d(c.center.x, c.center.y, c.center.z)), c.radius, c.h,
-		new_material(c.color, m.tex, m.refl));
+		new_material(c.color, m.tex, m.refl, m.bamp));
 	s->cur_o++;
 	add_cyl_top(s);
-	((t_cyl *)(s->objects[s->cur_o - 3]->data))->top =
-		(t_disk*)s->objects[s->cur_o - 2]->data;
-	((t_disk*)(s->objects[s->cur_o - 2]->data))->cyl =
-		(t_cyl *)(s->objects[s->cur_o - 3]->data);
-	((t_disk*)(s->objects[s->cur_o - 2]->data))->cone = NULL;
-	((t_cyl *)(s->objects[s->cur_o - 3]->data))->bot =
-		(t_disk*)s->objects[s->cur_o - 1]->data;
-	((t_disk*)(s->objects[s->cur_o - 1]->data))->cyl =
-		(t_cyl *)(s->objects[s->cur_o - 3]->data);
-	((t_disk*)(s->objects[s->cur_o - 1]->data))->cone = NULL;
 	free_arr(&arr);
 }
 
@@ -313,7 +325,7 @@ void		read_cone(t_scene *s, char **arr)
 		c.dir;
 	s->objects[s->cur_o] = new_cone(new_vec(normalize(new_v3d(c.dir.x, c.dir.y,
 		c.dir.z)), new_p3d(c.center.x, c.center.y, c.center.z)), c.h, c.a,
-			new_material(c.color, m.tex, m.refl));
+			new_material(c.color, m.tex, m.refl, 0));
 	s->cur_o++;
 	add_cone_top(s);
 	((t_cone *)(s->objects[s->cur_o - 2]->data))->top =

@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/14 17:13:21 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/18 17:43:37 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/23 16:34:55 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,6 @@ int		move_hook(int x, int y, t_e *e)
 				* ASP, (double)(y - e->v_y) / (double)e->h), &e->s->cam);
 			e->v_x = x;
 			e->v_y = y;
-			printf("moving %d %d %d\n", x, y, e->k.m_key);
 		}
 		mlx_loop_hook(e->mlx, loop_hook, e);
 	}

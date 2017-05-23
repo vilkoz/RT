@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/07 17:25:07 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/17 17:41:56 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/23 16:40:39 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ t_e			*ft_mlx_init(t_scene *s)
 	t_e		*e;
 
 	e = (t_e *)malloc(sizeof(t_e));
-	printf("%p\n", e);
 	if ((e->mlx = mlx_init()) == NULL)
 		return (NULL);
 	e->h = 700;
