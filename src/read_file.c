@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 18:57:56 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/23 17:26:13 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/23 23:53:28 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,6 @@ void		read_sphere(t_scene *s, char **arr)
 	sp.tex.img = NULL;
 	m.refl = 0;
 	m.bamp = 0;
-	printf("sphere\n");
-	printf("x %p\n", arr[1]);
-	printf("y %p\n", arr[2]);
-	printf("z %p\n", arr[3]);
 	while (arr[++i] != NULL)
 	{
 		(i == 1) ? sp.center.x = ft_atod(arr[i]): 23;
@@ -110,10 +106,6 @@ void		read_light(t_scene *s, char **arr)
 	p.x = 1000;
 	p.y = 1000;
 	p.z = 1000;
-	printf("cam\n");
-	printf("x %p\n", arr[1]);
-	printf("y %p\n", arr[2]);
-	printf("z %p\n", arr[3]);
 	i = 0;
 	while (arr[++i] != NULL)
 	{
@@ -151,7 +143,7 @@ void		read_plane(t_scene *s, char **arr)
 		if (i == 7 && ft_strchr(arr[i], 'x') != NULL)
 			p.color = ft_atoi_base(ft_strchr(arr[i], 'x') + 1, 16);
 		(i == 8) ? p.tex = new_tex(arr[i]) : p.tex;
-		(i == 9) ? m.refl = ft_atod(arr[i]) : m.refl;
+		(i == 9) ? m.refl = (ft_atod(arr[i])) : m.refl;
 		(i == 10) ? m.bamp = ft_atod(arr[i]) : m.bamp;
 	}
 	p.norm = (!p.norm.x && !p.norm.y && !p.norm.z) ? new_v3d(0, 1, 0) : p.norm;
