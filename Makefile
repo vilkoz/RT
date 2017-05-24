@@ -6,11 +6,11 @@
 #    By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/23 14:08:11 by vrybalko          #+#    #+#              #
-#    Updated: 2017/05/23 16:05:01 by vrybalko         ###   ########.fr        #
+#    Updated: 2017/05/24 19:52:48 by vrybalko         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = RTv1
+NAME = RT
 
 IDIR = includes/
 
@@ -26,27 +26,45 @@ FLAGS_X11 = -pthread -lmlx -lXext -lX11 -lm
 
 LIB = libft/libft.a
 
-SRCS = main.c						\
-       ft_hooks.c				\
-			 ft_img_px_put.c	\
-			 ft_mlx_events.c	\
-			 ft_mlx_init.c		\
-			 ray_tools.c			\
-			 render.c					\
-			 scene.c					\
-			 sphere.c					\
-			 cylinder.c				\
-			 cone.c						\
-			 disk.c						\
-			 color.c					\
-			 plane.c					\
-			 matrix.c					\
-			 read_file.c			\
-			 textures.c				\
-			 get_color.c			\
-			 material.c				\
-			 camera.c					\
-			 quaternion.c
+SRCS = main.c								\
+       ft_hooks.c						\
+       ft_hooks1.c					\
+			 ft_img_px_put.c			\
+			 ft_mlx_events.c			\
+			 ft_mlx_init.c				\
+			 ray_tools.c					\
+			 ray_tools1.c					\
+			 ray_tools2.c					\
+			 ray_tools3.c					\
+			 ray_tools4.c					\
+			 ray_tools5.c					\
+			 render.c							\
+			 render1.c						\
+			 scene.c							\
+			 sphere.c							\
+			 sphere1.c						\
+			 cylinder.c						\
+			 cylinder1.c					\
+			 cone.c								\
+			 cone1.c							\
+			 disk.c								\
+			 disk1.c							\
+			 color.c							\
+			 color1.c							\
+			 plane.c							\
+			 plane1.c							\
+			 read_file.c					\
+			 read_cone.c					\
+			 read_cyl.c						\
+			 read_sphere_plane.c	\
+			 read_file_utils.c		\
+			 textures.c						\
+			 get_color.c					\
+			 material.c						\
+			 camera.c							\
+			 quaternion.c					\
+			 quaternion1.c				\
+			 quaternion2.c				\
 
 BINS = $(addprefix $(BIN_DIR), $(SRCS:.c=.o))
 

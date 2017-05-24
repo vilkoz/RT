@@ -6,13 +6,13 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 19:05:49 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/21 23:29:20 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/24 19:46:08 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-t_v3d	get_norm_plane(t_o3d *o, t_p3d inter_p)
+t_v3d		get_norm_plane(t_o3d *o, t_p3d inter_p)
 {
 	int		c[3];
 	t_p3d	g;
@@ -41,7 +41,7 @@ t_v3d	get_norm_plane(t_o3d *o, t_p3d inter_p)
 	return (((t_plane *)o->data)->norm);
 }
 
-int		get_plane_color(t_o3d *o, t_p3d inter_p)
+int			get_plane_color(t_o3d *o, t_p3d inter_p)
 {
 	t_p2d	p;
 	t_plane	*pl;
@@ -60,7 +60,7 @@ int		get_plane_color(t_o3d *o, t_p3d inter_p)
 		return (pl->color);
 }
 
-int		intersect_plane(const t_o3d *data, const t_p3d ray_start,
+int			intersect_plane(const t_o3d *data, const t_p3d ray_start,
 						const t_v3d ray, t_p3d *inter_p)
 {
 	t_plane		*pl;
@@ -84,14 +84,6 @@ int		intersect_plane(const t_o3d *data, const t_p3d ray_start,
 	return (TRUE);
 }
 
-void	rotate_plane(const t_o3d *obj, double angle, t_v3d axis)
-{
-	t_plane		*pl;
-
-	pl = (t_plane *)obj->data;
-	pl->norm = rotate_v_q(pl->norm, axis, angle);
-}
-
 void		move_plane(const t_o3d *obj, t_p2d move, t_cam *cam)
 {
 	t_plane		*c;
@@ -107,11 +99,11 @@ void		move_plane(const t_o3d *obj, t_p2d move, t_cam *cam)
 		pix_vector_cam(new_p2d(0, move.y), cam)));
 	move.x = dist * tan(alpha) * (move.x < 0 ? -1. : 1.);
 	move.y = dist * tan(beta) * (move.y < 0 ? -1. : 1.);
-	c->p = v_to_p(v_add(v_mul(cam->dir_r, move.x),p_to_v(c->p)));
-	c->p = v_to_p(v_add(v_mul(cam->dir_d, move.y),p_to_v(c->p)));
+	c->p = v_to_p(v_add(v_mul(cam->dir_r, move.x), p_to_v(c->p)));
+	c->p = v_to_p(v_add(v_mul(cam->dir_d, move.y), p_to_v(c->p)));
 }
 
-t_o3d	*new_plane(t_p3d p, t_v3d norm, t_material material)
+t_o3d		*new_plane(t_p3d p, t_v3d norm, t_material material)
 {
 	t_plane		*sp;
 	t_o3d		*obj;

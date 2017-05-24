@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 16:11:37 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/23 16:18:30 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/24 19:52:20 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -375,6 +375,34 @@ t_mat				new_mat1(t_v3d x);
 */
 
 t_scene				*read_file(char *name);
+void				free_arr(char ***arr);
+
+/*
+** read_cone.c
+*/
+
+void				read_cone(t_scene *s, char **arr);
+
+/*
+** read_cyl.c
+*/
+
+void				read_cyl(t_scene *s, char **arr);
+
+/*
+** read_sphere_plane.c
+*/
+
+void				read_sphere(t_scene *s, char **arr);
+void				read_light(t_scene *s, char **arr);
+void				read_plane(t_scene *s, char **arr);
+
+/*
+** read_file_utils.c
+*/
+
+void				del_lst(void *content, size_t size);
+void				free_arr(char ***arr);
 
 /*
 ** textures.c
@@ -419,5 +447,49 @@ void				move_cyl(const t_o3d *obj, t_p2d move, t_cam *cam);
 */
 
 void				rotate_cone(const t_o3d *obj, double angle, t_v3d axis);
+
+/*
+** sphere1.c
+*/
+
+int					intersect_sphere(const t_o3d *data, const t_p3d ray_start,
+						const t_v3d ray, t_p3d *inter_p);
+void				move_sphere(const t_o3d *obj, t_p2d move, t_cam *cam);
+void				rotate_sphere(const t_o3d *o, double angle, t_v3d axis);
+
+/*
+** cylinder.c
+*/
+
+t_v3d				get_norm_cyl(t_o3d *dat, t_p3d inter_p);
+int					solver(t_cyl *sp, t_vec v, double *t0, double *t1);
+
+/*
+** cylinder1.c
+*/
+
+void				move_cyl(const t_o3d *obj, t_p2d move, t_cam *cam);
+void				rotate_cyl(const t_o3d *obj, double angle, t_v3d axis);
+int					intersect_cyl(const t_o3d *data, const t_p3d ray_start,
+						const t_v3d ray, t_p3d *inter_p);
+
+/*
+** cone1.c
+*/
+
+void				rotate_cone(const t_o3d *obj, double angle, t_v3d axis);
+void				move_cone(const t_o3d *obj, t_p2d move, t_cam *cam);
+
+/*
+** plane1.c
+*/
+
+void				rotate_plane(const t_o3d *obj, double angle, t_v3d axis);
+
+/*
+** disk1.c
+*/
+
+void				move_disk(const t_o3d *obj, t_p2d move, t_cam *cam);
 
 #endif
