@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 20:16:59 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/24 00:54:07 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/24 17:01:42 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,6 @@ t_p2d		cylinder_coords(t_o3d *dat, t_p3d inter_p)
 ** p - intersection point
 */
 
-//TODO: FIX texture pidorasing
-
 t_p2d		plane_coords(t_vec v, t_p3d p)
 {
 	t_p2d	r;
@@ -75,23 +73,24 @@ t_p2d		plane_coords(t_vec v, t_p3d p)
 	t_v3d	perp;
 	t_v3d	x_axis;
 
-	nx = normalize(cross_product(v.dir, normalize(new_v3d(1, 1, 1))));
+	nx.x = acos(dot_product((new_v3d(1, 0, 0)), normalize(v.dir))) / RAD;
+	if (fabs(nx.x) <= 45 || fabs(nx.x) >= 135)
+		nx = normalize(cross_product(normalize(v.dir), (new_v3d(0, 0, 1))));
+	else
+		nx = normalize(cross_product(normalize(v.dir), (new_v3d(1, 0, 0))));
 	a = v_sub(new_v3d_p(v.p, new_p3d(0, 0, 0)),
 	new_v3d_p(p, new_p3d(0, 0, 0)));
 	perp = v_sub(a, v_mul(nx, dot_product(a, nx)));
-	// r.y = same_dir(perp, cross_product(v.dir, nx)) ?
-	// 	v_len(perp) : -v_len(perp);
-	r.y = v_len(perp);
-	x_axis = new_v3d_p(new_p3d(p.x + perp.x, p.y + perp.y,
-		p.z + perp.z), v.p);
-	// r.x = same_dir(x_axis, nx) ? v_len(x_axis) : -v_len(x_axis);
-	r.x = v_len(x_axis);
+	r.y = same_dir(perp, cross_product(v.dir, nx)) ?
+		v_len(perp) : -v_len(perp);
+	x_axis = v_mul(nx, dot_product(a, nx));
+	r.x = same_dir(x_axis, nx) ? v_len(x_axis) : -v_len(x_axis);
 	return (r);
 }
 
 int			same_dir(t_v3d v1, t_v3d v2)
 {
-	if (acos(dot_product(normalize(v1), normalize(v2))) / RAD > 90)
+	if (acos(dot_product(normalize(v1), normalize(v2))) / RAD >= 90.0)
 		return (FALSE);
 	else
 		return (TRUE);
@@ -145,6 +144,8 @@ t_v3d		normalize(t_v3d v)
 	len = sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
 	if (len == 0)
 		len = 1;
+	if (len - 1.0 < EPS)
+		return (v);
 	return (new_v3d(v.x / len, v.y / len, v.z / len));
 }
 
