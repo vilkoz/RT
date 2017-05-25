@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 16:11:37 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/24 19:52:20 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/25 22:28:53 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,10 @@
 # define COSA2 (sp->cos_a) * (sp->cos_a)
 # define SINA2 (sp->sin_a) * (sp->sin_a)
 # define ASP ((double)((double)e->w / (double)e->h))
-# define SAMPLES 1
-# define THREADS 1
+# ifndef SAMPLES
+#  define SAMPLES 1
+# endif
+# define THREADS 8
 
 # include "../libft/libft.h"
 # include "mlx.h"

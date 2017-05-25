@@ -6,7 +6,7 @@
 #    By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/23 14:08:11 by vrybalko          #+#    #+#              #
-#    Updated: 2017/05/24 19:52:48 by vrybalko         ###   ########.fr        #
+#    Updated: 2017/05/25 22:25:11 by vrybalko         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,15 @@ VPATH = src:includes
 BIN_DIR = bin/
 
 FLAGS = -Wall -Wextra -Werror -I$(IDIR) -g
+
+UNAME_S = $(shell uname -s)
+
+ifeq ($(UNAME_S),Linux)
+	USE_F = X11
+endif
+ifeq ($(UNAME_S),Darwin)
+	USE_F = MLX
+endif
 
 FLAGS_MLX = -lmlx -framework OpenGl -framework AppKit
 
@@ -72,7 +81,7 @@ all: $(NAME)
 
 $(NAME): $(BINS)
 	make -C libft/
-	gcc -o $(NAME) $(BINS) $(FLAGS) $(FLAGS_MLX) $(LIB)
+	gcc -o $(NAME) $(BINS) $(FLAGS) $(FLAGS_$(USE_F)) $(LIB)
 
 $(BIN_DIR)%.o: %.c
 	gcc $(FLAGS) -c -o $@ $<
@@ -87,7 +96,7 @@ fclean: clean
 
 re: fclean all
 
-f: all
-	./$(NAME) res/test.map
-
-r: re f
+anti_alias:
+	/bin/rm -f bin/render.o
+	gcc $(FLAGS) -DSAMPLES=2 -c -o bin/render.o src/render.c
+	gcc -o $(NAME) $(BINS) $(FLAGS) $(FLAGS_$(USE_F)) $(LIB)
