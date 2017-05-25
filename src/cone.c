@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/19 19:12:32 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/24 19:21:01 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/26 00:36:11 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,15 +88,13 @@ int		intersect_cone(const t_o3d *data, const t_p3d ray_start,
 		return (FALSE);
 	*inter_p = v_to_p(v_add(p_to_v(ray_start), v_mul(ray, t0)));
 	dp = new_v3d_p(*inter_p, sp->center);
-	if (!same_dir(dp, sp->dir))
-		return (FALSE);
-	if (sp->h - v_len(v_sub(dp, v_sub(dp, v_mul(sp->dir,
-		dot_product(sp->dir, dp))))) < 0 || distance(*inter_p, ray_start) < EPS)
+	if (sp->h - v_len(v_mul(sp->dir, dot_product(sp->dir, dp))) < 0
+		|| distance(*inter_p, ray_start) < EPS || (!same_dir(dp, sp->dir)))
 	{
 		*inter_p = v_to_p(v_add(p_to_v(ray_start), v_mul(ray, t1)));
 		dp = new_v3d_p(*inter_p, sp->center);
-		if (sp->h - v_len(v_sub(dp, v_sub(dp, v_mul(sp->dir,
-			dot_product(sp->dir, dp))))) < 0 || !same_dir(dp, sp->dir))
+		if (sp->h - v_len(v_mul(sp->dir, dot_product(sp->dir, dp))) < 0
+			|| !same_dir(dp, sp->dir))
 			return (FALSE);
 	}
 	return (TRUE);
