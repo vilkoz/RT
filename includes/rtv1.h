@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 16:11:37 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/26 12:34:04 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/26 12:45:35 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@
 # include <math.h>
 # include <stdio.h>
 # include <fcntl.h>
-# include <time.h>
 # include <pthread.h>
 # include "structs.h"
 # include "quaternion.h"

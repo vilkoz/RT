@@ -6,13 +6,12 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/24 20:01:30 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/24 20:03:36 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/26 12:45:13 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef _STRUCTS_H
 # define _STRUCTS_H
-# include <pthread.h>
 
 typedef struct		s_p2d
 {
