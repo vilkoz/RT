@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 16:11:37 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/26 11:27:29 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/26 12:34:04 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@
 # include "structs.h"
 # include "quaternion.h"
 
-t_e					*ft_mlx_init(t_scene *s);
+t_e					*ft_mlx_init(char *s);
 void				ft_img_px_put(t_e *e, int x, int y, int rgb);
 void				ft_mlx_events(t_e *e);
 int					loop_hook(t_e *e);
@@ -263,5 +263,7 @@ void				rotate_plane(const t_o3d *obj, double angle, t_v3d axis);
 */
 
 void				move_disk(const t_o3d *obj, t_p2d move, t_cam *cam);
+
+void				*g_mlx_pointer;
 
 #endif

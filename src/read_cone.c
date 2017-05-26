@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/24 19:28:18 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/24 19:30:41 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/26 12:39:38 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void		init_cone(t_cone *c, t_material *m)
 	c->h = 10000;
 	c->color = 0xffa0;
 	m->tex.img = NULL;
+	m->tex.w = 0;
+	m->tex.h = 0;
 	m->refl = 0;
 }
 
@@ -76,8 +78,7 @@ void		read_cone(t_scene *s, char **arr)
 
 	init_cone(&c, &m);
 	fill_cone(arr, &c, &m);
-	c.dir = (!c.dir.x && !c.dir.y && !c.dir.z) ? new_v3d(0, 1, 0) :
-		c.dir;
+	c.dir = (!c.dir.x && !c.dir.y && !c.dir.z) ? new_v3d(0, 1, 0) : c.dir;
 	s->objects[s->cur_o] = new_cone(new_vec(normalize(new_v3d(c.dir.x, c.dir.y,
 		c.dir.z)), new_p3d(c.center.x, c.center.y, c.center.z)), c.h, c.a,
 		new_material(c.color, m.tex, m.refl, 0));
