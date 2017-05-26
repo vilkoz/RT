@@ -6,10 +6,12 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/01 17:41:57 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/16 18:11:01 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/05/24 20:01:03 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef _KEYS_H
+# define _KEYS_H
 # ifdef linux
 #  define XK_LATIN1
 #  define XK_MISCELLANY
@@ -63,3 +65,4 @@
 #  define K_U 32
 #  define K_O 31
 # endif
+#endif
