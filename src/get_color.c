@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/22 23:57:04 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/05/24 17:25:39 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/06/04 14:18:27 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int			get_light_color(t_scene *s, t_o3d *obj, t_p3d inter_p)
 (1 - cosv) / 21) : add_colors(light_c, mul_colors(light_c, cosv));
 		}
 		else
-			light_c = shade_colors(obj->get_color(obj, inter_p), 0.975);
+			light_c = shade_colors(obj->get_color(obj, inter_p), 0.8);
 		ret_c = (i == 0) ? light_c : mix_colors(ret_c, light_c);
 	}
 	return (ret_c);
